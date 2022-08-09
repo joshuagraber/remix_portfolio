@@ -1,0 +1,9 @@
+:root[data-theme=jdg-light-mode] {
+  --background-color: #765672;
+}
+
+:root[data-theme=jdg-dark-mode] {
+  --background-color: #060606;
+}
+
+/*# sourceMappingURL=themes.css.map */

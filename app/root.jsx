@@ -1,5 +1,16 @@
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 
+// Stylesheets
+import themes from './theme/themes';
+import variables from './theme/variables';
+
+export function links() {
+	return [
+		{ rel: 'stylesheet', href: themes },
+		{ rel: 'stylesheet', href: variables },
+	];
+}
+
 export const meta = () => ({
 	charset: 'utf-8',
 	title: 'Joshua D. Graber | Writer & JavaScript Developer',
