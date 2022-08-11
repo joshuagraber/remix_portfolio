@@ -1,1 +1,51 @@
-// Create SCSS vars from CSS vars in ./themes
+// Font import
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400&family=Fira+Sans+Condensed:wght@500;600&family=Rubik:wght@300;400;500&display=swap');
+
+/**** COLOR VARS ****/
+// Mapping CSS to SCSS vars
+/* Unnecessary for unchanging neutral, primary, and accent colors, 
+  but doing for the sake of consistency and future flexibility. */
+$color-neutral-0: var(--color-neutral-0);
+$color-neutral-1: var(--color-neutral-1);
+$color-neutral-2: var(--color-neutral-2);
+$color-neutral-3: var(--color-neutral-3);
+$color-neutral-4: var(--color-neutral-4);
+$color-neutral-5: var(--color-neutral-5);
+$color-neutral-6: var(--color-neutral-6);
+$color-neutral-6: var(--color-neutral-6);
+$color-neutral-7: var(--color-neutral-7);
+
+$color-theme-primary-0: var(--color-theme-primary-0);
+$color-theme-primary-1: var(--color-theme-primary-1);
+$color-theme-primary-2: var(--color-theme-primary-2);
+$color-theme-primary-3: var(--color-theme-primary-3);
+$color-theme-primary-4: var(--color-theme-primary-4);
+
+$color-accent-yellow: var(--color-accent-yellow);
+$color-accent-mauve: var(--color-accent-mauve);
+$color-accent-peach: var(--color-accent-peach);
+$color-accent-plum: var(--color-accent-plum);
+$color-accent-forest-green: var(--color-accent-forest-green);
+
+// These are necessary to map, since they will change on dark mode toggle
+$color-background: var(--color-background);
+$color-background-accent-primary: var(--color-background-accent-primary);
+$color-background-accent-secondary: var(--color-background-accent-secondary);
+$color-text-primary: var(--color-text-primary);
+$color-text-secondary: var(--color-text-secondary);
+$color-text-tertiary: var(--color-text-tertiary);
+
+/**** FONT VARS ****/
+$font-heading-primary: 400 48px/125% 'Catamaran', sans-serif;
+$font-heading-secondary: 400 36px/125% 'Catamaran', sans-serif;
+$font-heading-tertiary: 400 24px/125% 'Catamaran', sans-serif;
+$font-heading-tertiary-emphasis: 500 24px/125% 'Fira Sans Condensed', sans-serif;
+$font-heading-quaternary: 400 18px/125% 'Catamaran', sans-serif;
+$font-heading-quaternary-emphasis: 500 18px/125% 'Fira Sans Condensed', sans-serif;
+
+$font-paragraph-primary: 400 16px/125% 'Rubik', sans-serif;
+$font-paragraph-secondary: 400 12px/125% 'Rubik', sans-serif;
+$font-paragraph-tertiary: 400 10px/125% 'Rubik', sans-serif;
+
+$font-button-primary: 500 18px/125% 'Rubik', sans-serif;
+$font-button-secondary: 500 14px/125% 'Rubik', sans-serif;

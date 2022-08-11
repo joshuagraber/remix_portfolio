@@ -1,7 +1,55 @@
+:root {
+	// Neutral and accent vars defined for whole project
+	--color-neutral-0: #0d0d0d;
+	--color-neutral-1: #1e1e1e;
+	--color-neutral-2: #313131;
+	--color-neutral-3: #626161;
+	--color-neutral-4: #7d7c7c;
+	--color-neutral-5: #9e9e9e;
+	--color-neutral-6: #cbcbcb;
+	--color-neutral-6: #d5d5d5;
+	--color-neutral-7: #f5f5f5;
+
+	--color-theme-primary-0: #2b1931;
+	--color-theme-primary-1: #4e2e58;
+	--color-theme-primary-2: #70427e;
+	--color-theme-primary-3: #9457a7;
+	--color-theme-primary-4: #b47cc6;
+
+	--color-accent-yellow: #cebc81;
+	--color-accent-mauve: #b19f9e;
+	--color-accent-peach: #cf8681;
+	--color-accent-plum: #a16e83;
+	--color-accent-forest-green: #479761;
+
+	// Default: dark theme
+	--color-background: var(--color-neutral-0);
+	--color-background-accent-primary: var(--color-accent-mauve);
+	--color-background-accent-secondary: var(--color-accent-plum);
+	--color-text-primary: var(--color-neutral-7);
+	--color-text-secondary: var(--color-neutral-6);
+	--color-text-tertiary: var(--color-neutral-5);
+}
+
+/* Single-use theme vars defined per data.theme attribute 
+	use for bg color, heading and text colors, etc., so that
+	they can be defined once in component / page stylesheets. 
+	Can be overridden by specific vars in cases where the 
+	"standard" for that use case doesn't work well, etc., etc.	*/
 :root[data-theme='jdg-light-mode'] {
-	--background-color: #765672; // ETC
+	--color-background: var(--color-neutral-7);
+	--color-background-accent-primary: var(--color-accent-plum);
+	--color-background-accent-secondary: var(--color-accent-mauve);
+	--color-text-primary: var(--color-neutral-0);
+	--color-text-secondary: var(--color-neutral-1);
+	--color-text-tertiary: var(--color-neutral-2);
 }
 
 :root[data-theme='jdg-dark-mode'] {
-	--background-color: #060606; // ETC
+	--color-background: var(--color-neutral-0);
+	--color-background-accent-primary: var(--color-accent-mauve);
+	--color-background-accent-secondary: var(--color-accent-plum);
+	--color-text-primary: var(--color-neutral-7);
+	--color-text-secondary: var(--color-neutral-6);
+	--color-text-tertiary: var(--color-neutral-5);
 }
