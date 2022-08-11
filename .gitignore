@@ -7,3 +7,6 @@ node_modules
 
 # sass
 *.css.map
+
+# To-dos
+PROJECT_TO_DO.md
