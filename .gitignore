@@ -5,6 +5,9 @@ node_modules
 /public/build
 .env
 
+# TODO Remove this once favicon added
+*favicon*
+
 # sass
 *.css.map
 
