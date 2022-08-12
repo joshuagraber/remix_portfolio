@@ -1,0 +1,11 @@
+.jdg-container-center {
+	max-width: 1250px;
+	position: relative;
+	margin: 0 auto;
+	width: 100%;
+
+	&-disabled {
+		cursor: no-drop;
+		opacity: 30%;
+	}
+}
