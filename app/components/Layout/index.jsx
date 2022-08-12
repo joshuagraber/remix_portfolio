@@ -1,18 +1,19 @@
-import React from 'react';
+// GLOBALS
 import style from './style.css';
 
 // COMPONENTS
-import { ContainerCenter, links as containerCenterLinks } from '../ContainerCenter';
+import { Header, links as headerLinks } from '../Header';
+import { Footer, links as footerLinks } from '../Footer';
 
 export function links() {
-	return [...containerCenterLinks(), { rel: 'stylesheet', href: style }];
+	return [...headerLinks(), ...footerLinks(), { rel: 'stylesheet', href: style }];
 }
 
 export const Layout = ({ children }) => {
 	return (
 		<>
-			<Nav />
-			<ContainerCenter>{children}</ContainerCenter>
+			<Header />
+			{children}
 			<Footer />
 		</>
 	);
