@@ -22,7 +22,7 @@
 	--color-accent-plum: #a16e83;
 	--color-accent-forest-green: #479761;
 
-	// Default: dark theme
+	// Declare vars and default to dark theme
 	--color-background: var(--color-neutral-0);
 	--color-background-accent-primary: var(--color-accent-mauve);
 	--color-background-accent-secondary: var(--color-accent-plum);
@@ -31,7 +31,7 @@
 	--color-text-tertiary: var(--color-neutral-5);
 }
 
-/* Single-use theme vars defined per data.theme attribute 
+/* Single-use theme vars re-assigned per data.theme attribute 
 	use for bg color, heading and text colors, etc., so that
 	they can be defined once in component / page stylesheets. 
 	Can be overridden by specific vars in cases where the 
