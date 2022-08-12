@@ -1,4 +1,4 @@
-import React from 'react';
+// GLOBALS
 import style from './style.css';
 
 // EXT LIBS
