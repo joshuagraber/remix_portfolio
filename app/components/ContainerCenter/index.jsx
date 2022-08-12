@@ -8,7 +8,7 @@ export function links() {
 	return [{ rel: 'stylesheet', href: style }];
 }
 
-export const ContainerCenter = ({ children, disabled }) => {
+export const ContainerCenter = ({ children, disabled = false }) => {
 	const classes = clsx('jdg-container-center', {
 		'jdg-container-center-disabled': disabled,
 	});
