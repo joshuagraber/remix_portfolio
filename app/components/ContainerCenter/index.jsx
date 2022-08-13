@@ -1,11 +1,11 @@
 // GLOBALS
-import style from './style.css';
+import styles from './styles.css';
 
 // EXT LIBS
 import clsx from 'clsx';
 
 export function links() {
-	return [{ rel: 'stylesheet', href: style }];
+	return [{ rel: 'stylesheet', href: styles }];
 }
 
 export const ContainerCenter = ({ children, disabled = false }) => {

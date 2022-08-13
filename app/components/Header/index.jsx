@@ -1,5 +1,5 @@
 // GLOBALS
-import style from './style.css';
+import styles from './styles.css';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from '../ContainerCenter';
@@ -8,7 +8,7 @@ import { ContainerCenter, links as containerCenterLinks } from '../ContainerCent
 import clsx from 'clsx';
 
 export function links() {
-	return [...containerCenterLinks(), { rel: 'stylesheet', href: style }];
+	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 }
 
 export const Header = () => {
