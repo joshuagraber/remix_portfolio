@@ -2,10 +2,12 @@
 import { useTheme } from '~/theme';
 
 export const ThemeToggle = () => {
-	const { toggleTheme } = useTheme();
+	const { theme, toggleTheme } = useTheme();
+	const isDarkMode = theme === 'jdg-dark-mode';
 
 	return (
 		<input
+			checked={isDarkMode}
 			className='jdg-theme-toggle'
 			id='jdg-theme-toggle'
 			onChange={toggleTheme}
