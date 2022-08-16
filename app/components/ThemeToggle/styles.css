@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400&family=Fira+Sans+Condensed:wght@500;600&family=Rubik:wght@300;400;500&display=swap");
+/**** COLOR VARS ****/
+/* Unnecessary for unchanging neutral, primary, and accent colors, 
+  but doing for the sake of consistency and future flexibility. */
+/**** FONT VARS ****/
+.jdg-theme-toggle {
+  position: relative;
+  width: 100px;
+  height: 48px;
+  border-radius: 40px;
+  border: 3px solid var(--color-text-primary);
+}
+.jdg-theme-toggle .jdg-theme-toggle-input {
+  border-radius: 40px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  margin: 0px;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 2;
+}
+.jdg-theme-toggle .jdg-theme-toggle-input:active + .jdg-theme-toggle-label {
+  opacity: 0.5;
+}
+.jdg-theme-toggle .jdg-theme-toggle-input:checked + .jdg-theme-toggle-label {
+  background-color: #000;
+}
+.jdg-theme-toggle .jdg-theme-toggle-input:checked + .jdg-theme-toggle-label:before {
+  background-color: #000;
+  transform: translate(42px, -6px);
+}
+.jdg-theme-toggle .jdg-theme-toggle-input:checked + .jdg-theme-toggle-label:after {
+  background-color: #fff;
+  transform: translate(56px, 0px);
+}
+.jdg-theme-toggle .jdg-theme-toggle-label {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  overflow: hidden;
+  opacity: 1;
+  background-color: var(--color-background);
+  border-radius: 40px;
+  transition: 0.2s ease background-color, 0.2s ease opacity;
+}
+.jdg-theme-toggle .jdg-theme-toggle-label:before, .jdg-theme-toggle .jdg-theme-toggle-label:after {
+  content: "";
+  position: absolute;
+  top: 4.5px;
+  width: 37.5px;
+  height: 37.5px;
+  border-radius: 50%;
+  transition: 0.5s ease transform, 0.2s ease background-color;
+}
+.jdg-theme-toggle .jdg-theme-toggle-label:before {
+  background-color: #fff;
+  transform: translate(-58px, 0px);
+  z-index: 1;
+}
+.jdg-theme-toggle .jdg-theme-toggle-label:after {
+  background-color: #000;
+  transform: translate(8px, 0px);
+  z-index: 0;
+}
+
+/*# sourceMappingURL=styles.css.map */

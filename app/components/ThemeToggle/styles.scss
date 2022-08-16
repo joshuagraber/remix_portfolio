@@ -1,0 +1,78 @@
+@import '../../theme/variables.scss';
+
+.jdg-theme-toggle {
+	position: relative;
+	width: 100px;
+	height: 48px;
+	border-radius: 40px;
+	border: 3px solid $color-text-primary;
+
+	.jdg-theme-toggle-input {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
+		margin: 0px;
+		cursor: pointer;
+		opacity: 0;
+		z-index: 2;
+
+		&:active + .jdg-theme-toggle-label {
+			opacity: 0.5;
+		}
+
+		&:checked + .jdg-theme-toggle-label {
+			background-color: #000;
+		}
+
+		&:checked + .jdg-theme-toggle-label:before {
+			background-color: #000;
+			transform: translate(42px, -6px);
+		}
+
+		&:checked + .jdg-theme-toggle-label:after {
+			background-color: #fff;
+			transform: translate(56px, 0px);
+		}
+	}
+
+	.jdg-theme-toggle-label {
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		bottom: 0px;
+		left: 0px;
+		overflow: hidden;
+		opacity: 1;
+		background-color: $color-background;
+		// box-shadow: 0px 2px 25px #d9d9d9;
+		border-radius: 40px;
+		transition: 0.2s ease background-color, 0.2s ease opacity;
+
+		&:before,
+		&:after {
+			content: '';
+			position: absolute;
+			top: 4.5px;
+			width: 37.5px;
+			height: 37.5px;
+			border-radius: 50%;
+			transition: 0.5s ease transform, 0.2s ease background-color;
+		}
+
+		&:before {
+			background-color: #fff;
+			transform: translate(-58px, 0px);
+			z-index: 1;
+		}
+
+		&:after {
+			background-color: #000;
+			transform: translate(8px, 0px);
+			z-index: 0;
+		}
+	}
+}
