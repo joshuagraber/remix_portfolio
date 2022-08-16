@@ -1,7 +1,18 @@
+@import '../../theme/variables.scss';
+
 .jdg-header {
+	align-items: center;
+	display: flex;
+	height: 100px;
+	padding: 12px 24px;
+
 	.jdg-container-center {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+	}
+
+	:root[data-theme='jdg-dark-mode'] & {
+		background-color: $color-neutral-0;
 	}
 }

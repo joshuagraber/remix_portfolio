@@ -3,6 +3,14 @@
 /* Unnecessary for unchanging neutral, primary, and accent colors, 
   but doing for the sake of consistency and future flexibility. */
 /**** FONT VARS ****/
+*,
+*::before,
+*::after,
+* > * {
+  box-sizing: border-box;
+  margin: 0;
+}
+
 :root {
   background-color: var(--color-background);
   color: var(--color-text-primary);

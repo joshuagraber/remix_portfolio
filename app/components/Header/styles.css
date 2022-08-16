@@ -1,7 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400&family=Fira+Sans+Condensed:wght@500;600&family=Rubik:wght@300;400;500&display=swap");
+/**** COLOR VARS ****/
+/* Unnecessary for unchanging neutral, primary, and accent colors, 
+  but doing for the sake of consistency and future flexibility. */
+/**** FONT VARS ****/
+.jdg-header {
+  align-items: center;
+  display: flex;
+  height: 100px;
+  padding: 12px 24px;
+}
 .jdg-header .jdg-container-center {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+:root[data-theme=jdg-dark-mode] .jdg-header {
+  background-color: var(--color-neutral-0);
 }
 
 /*# sourceMappingURL=styles.css.map */

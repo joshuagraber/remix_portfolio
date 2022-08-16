@@ -18,7 +18,7 @@
   --color-accent-peach: #cf8681;
   --color-accent-plum: #a16e83;
   --color-accent-forest-green: #479761;
-  --color-background: var(--color-neutral-0);
+  --color-background: var(--color-neutral-1);
   --color-background-accent-primary: var(--color-accent-mauve);
   --color-background-accent-secondary: var(--color-accent-plum);
   --color-text-primary: var(--color-neutral-7);
@@ -41,7 +41,7 @@
 }
 
 :root[data-theme=jdg-dark-mode] {
-  --color-background: var(--color-neutral-0);
+  --color-background: var(--color-neutral-1);
   --color-background-accent-primary: var(--color-accent-mauve);
   --color-background-accent-secondary: var(--color-accent-plum);
   --color-text-primary: var(--color-neutral-7);
