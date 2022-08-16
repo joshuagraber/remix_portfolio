@@ -2,6 +2,15 @@ import React from 'react';
 
 const ThemeContext = React.createContext();
 
+const canUseDOM = !!(
+	typeof window !== 'undefined' &&
+	window.document &&
+	window.document.createElement
+);
+
+// "Custom hook" for SSR
+const useLayoutEffect = canUseDOM ? React.useLayoutEffect : () => {};
+
 export const ThemeProvider = ({ children }) => {
 	// HOOKS
 	const [theme, setTheme] = React.useState('jdg-dark-mode');
@@ -14,18 +23,19 @@ export const ThemeProvider = ({ children }) => {
 		themeInLocalStorage = localStorage.getItem('theme');
 	}
 
-	// If so, set theme to one found in LS
-	if (themeInLocalStorage) {
-		setTheme(themeInLocalStorage);
-	}
+	// If exists, set theme to one found in LS on first render only
+	React.useEffect(() => {
+		if (themeInLocalStorage) {
+			setTheme(themeInLocalStorage);
+		}
+	}, []);
 
-	// useLayoutEffect setting both LS and root element
-	React.useLayoutEffect(() => {
+	// Set both LS and root element
+	useLayoutEffect(() => {
 		localStorage.setItem('theme', theme);
 		document.documentElement.dataset.theme = theme;
 	}, [theme]);
 
-	// Ternary toggling based on previous value, since there are only 2 options
 	const toggleTheme = () => {
 		setTheme((prev) => (prev === 'jdg-dark-mode' ? 'jdg-light-mode' : 'jdg-dark-mode'));
 	};
