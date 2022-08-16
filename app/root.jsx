@@ -1,13 +1,18 @@
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 
-// Stylesheets
-import themes from './theme/themes';
-import variables from './theme/variables';
+// STYLESHEETS
+import globalStyles from './theme/global.css';
+import themes from './theme/themes.css';
+import variables from './theme/variables.css';
+
+// CONTEXT
+import { ThemeProvider } from './theme';
 
 export function links() {
 	return [
 		{ rel: 'stylesheet', href: themes },
 		{ rel: 'stylesheet', href: variables },
+		{ rel: 'stylesheet', href: globalStyles },
 	];
 }
 
@@ -17,7 +22,7 @@ export const meta = () => ({
 	viewport: 'width=device-width,initial-scale=1',
 });
 
-export default function App() {
+function App() {
 	return (
 		<html lang='en'>
 			<head>
@@ -36,5 +41,13 @@ export default function App() {
 				<LiveReload />
 			</body>
 		</html>
+	);
+}
+
+export default function AppWrapped() {
+	return (
+		<ThemeProvider>
+			<App />
+		</ThemeProvider>
 	);
 }
