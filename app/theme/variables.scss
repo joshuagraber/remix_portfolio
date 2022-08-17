@@ -14,6 +14,7 @@ $color-neutral-5: var(--color-neutral-5);
 $color-neutral-6: var(--color-neutral-6);
 $color-neutral-6: var(--color-neutral-6);
 $color-neutral-7: var(--color-neutral-7);
+$color-neutral-8: var(--color-neutral-8);
 
 $color-theme-primary-0: var(--color-theme-primary-0);
 $color-theme-primary-1: var(--color-theme-primary-1);
@@ -34,6 +35,17 @@ $color-background-accent-secondary: var(--color-background-accent-secondary);
 $color-text-primary: var(--color-text-primary);
 $color-text-secondary: var(--color-text-secondary);
 $color-text-tertiary: var(--color-text-tertiary);
+
+// Static opaque black values
+$color-neutral-black-opacity_20: rgba(0, 0, 0, 0.2);
+$color-neutral-black-opacity_40: rgba(0, 0, 0, 0.4);
+$color-neutral-black-opacity_60: rgba(0, 0, 0, 0.6);
+$color-neutral-black-opacity_80: rgba(0, 0, 0, 0.8);
+
+$color-neutral-white-opacity_20: rgba(255, 255, 255, 0.2);
+$color-neutral-white-opacity_40: rgba(255, 255, 255, 0.4);
+$color-neutral-white-opacity_60: rgba(255, 255, 255, 0.6);
+$color-neutral-white-opacity_80: rgba(255, 255, 255, 0.8);
 
 /**** FONT VARS ****/
 $font-heading-primary: 400 48px/125% 'Catamaran', sans-serif;
