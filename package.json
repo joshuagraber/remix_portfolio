@@ -3,9 +3,8 @@
 	"sideEffects": false,
 	"scripts": {
 		"build": "sass app/:app && remix build",
-		"dev": "sass app/:app && remix dev",
 		"start": "remix build && run-p start:*",
-		"start:remix": "remix watch",
+		"start:remix": "remix dev",
 		"start:sass": "sass --watch app/:app/"
 	},
 	"dependencies": {
