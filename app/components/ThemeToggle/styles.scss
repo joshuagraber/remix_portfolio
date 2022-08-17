@@ -5,9 +5,13 @@
 	width: 80px;
 	height: 44px;
 	border-radius: 666px;
-	border: 3px solid $color-text-primary;
+	border: 5px solid $color-neutral-8;
+	box-shadow: 0 3px 4px $color-neutral-black-opacity_20, 3px 5px 5px $color-neutral-black-opacity_20,
+		-2px 5px 5px $color-neutral-black-opacity_20, 5px 5px 5px $color-neutral-black-opacity_20;
 
-	.jdg-theme-toggle-label {
+	&-label {
+		box-shadow: 0px 1px 1px inset $color-neutral-black-opacity_40,
+			1px 0px 3px inset $color-neutral-black-opacity_40;
 		position: absolute;
 		top: 0px;
 		right: 0px;
@@ -16,7 +20,6 @@
 		overflow: hidden;
 		opacity: 1;
 		background-color: $color-background;
-		// box-shadow: 0px 2px 25px #d9d9d9;
 		border-radius: 40px;
 		transition: 0.2s ease background-color, 0.2s ease opacity;
 
@@ -24,27 +27,28 @@
 		&:after {
 			content: '';
 			position: absolute;
-			top: 6px;
-			width: 25px;
-			height: 25px;
+			top: 4px;
+			width: 27px;
+			height: 27px;
 			border-radius: 50%;
 			transition: 0.5s ease transform, 0.2s ease background-color;
 		}
 
 		&:before {
-			background-color: #fff;
-			transform: translate(-58px, 0px);
+			background-color: $color-neutral-8;
+			transform: translate(-42px, 0px);
 			z-index: 1;
 		}
 
 		&:after {
-			background-color: #000;
-			transform: translate(8px, 0px);
+			background: linear-gradient(135deg, $color-neutral-0 50%, $color-neutral-6 100%);
+			box-shadow: inset -3px -3px 6px $color-neutral-white-opacity_20;
+			transform: translate(4px, 0px);
 			z-index: 0;
 		}
 	}
 
-	.jdg-theme-toggle-input {
+	&-input {
 		width: 100%;
 		height: 100%;
 		position: absolute;
@@ -55,24 +59,62 @@
 		margin: 0px;
 		cursor: pointer;
 		opacity: 0;
-		z-index: 2;
 
 		&:active + .jdg-theme-toggle-label {
 			opacity: 0.5;
 		}
 
 		&:checked + .jdg-theme-toggle-label {
-			background-color: #000;
+			background-color: $color-neutral-0;
 		}
 
 		&:checked + .jdg-theme-toggle-label:before {
-			background-color: #000;
-			transform: translate(34px, -5px);
+			background-color: $color-neutral-0;
+			transform: translate(30px, -5px);
 		}
 
 		&:checked + .jdg-theme-toggle-label:after {
-			background-color: #fff;
-			transform: translate(43px, 0px);
+			background: linear-gradient(135deg, $color-neutral-5 10%, $color-neutral-8 100%);
+			transform: translate(38px, 0px);
+		}
+	}
+
+	@media (max-width: $mobile) {
+		width: 56px;
+		height: 30px;
+		border: 3px solid $color-neutral-8;
+		box-shadow: 0 3px 4px $color-neutral-black-opacity_20,
+			3px 5px 5px $color-neutral-black-opacity_20, -2px 5px 5px $color-neutral-black-opacity_20,
+			5px 5px 5px $color-neutral-black-opacity_20;
+
+		&-label {
+			box-shadow: 0px 1px 1px inset $color-neutral-black-opacity_40,
+				1px 0px 3px inset $color-neutral-black-opacity_40;
+
+			&:before,
+			&:after {
+				top: 2.5px;
+				width: 20px;
+				height: 20px;
+			}
+
+			&:before {
+				transform: translate(-42px, 0px);
+			}
+
+			&:after {
+				transform: translate(4px, 0px);
+			}
+		}
+
+		&-input {
+			&:checked + .jdg-theme-toggle-label:before {
+				transform: translate(20px, -5px);
+			}
+
+			&:checked + .jdg-theme-toggle-label:after {
+				transform: translate(27px, 0px);
+			}
 		}
 	}
 }
