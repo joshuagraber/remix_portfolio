@@ -6,8 +6,8 @@
 	height: 44px;
 	border-radius: 666px;
 	border: 5px solid $color-neutral-8;
-	box-shadow: 0 3px 4px $color-neutral-black-opacity_20, 3px 5px 5px $color-neutral-black-opacity_20,
-		-2px 5px 5px $color-neutral-black-opacity_20, 5px 5px 5px $color-neutral-black-opacity_20;
+	box-shadow: 0 3px 4px $color-neutral-black-opacity_20, 3px 4px 4px $color-neutral-black-opacity_20,
+		-2px 4px 4px $color-neutral-black-opacity_20, 4px 4px 4px $color-neutral-black-opacity_20;
 
 	&-label {
 		box-shadow: 0px 1px 1px inset $color-neutral-black-opacity_40,
@@ -59,6 +59,7 @@
 		margin: 0px;
 		cursor: pointer;
 		opacity: 0;
+		z-index: 2;
 
 		&:active + .jdg-theme-toggle-label {
 			opacity: 0.5;
@@ -83,13 +84,13 @@
 		width: 56px;
 		height: 30px;
 		border: 3px solid $color-neutral-8;
-		box-shadow: 0 3px 4px $color-neutral-black-opacity_20,
-			3px 5px 5px $color-neutral-black-opacity_20, -2px 5px 5px $color-neutral-black-opacity_20,
-			5px 5px 5px $color-neutral-black-opacity_20;
+		box-shadow: 0 2px 2px $color-neutral-black-opacity_20,
+			1px 3px 3px $color-neutral-black-opacity_20, -1px 3px 3px $color-neutral-black-opacity_20,
+			3px 3px 3px $color-neutral-black-opacity_20;
 
 		&-label {
 			box-shadow: 0px 1px 1px inset $color-neutral-black-opacity_40,
-				1px 0px 3px inset $color-neutral-black-opacity_40;
+				1px 0px 1px inset $color-neutral-black-opacity_40;
 
 			&:before,
 			&:after {
@@ -109,11 +110,11 @@
 
 		&-input {
 			&:checked + .jdg-theme-toggle-label:before {
-				transform: translate(20px, -5px);
+				transform: translate(19px, -5px);
 			}
 
 			&:checked + .jdg-theme-toggle-label:after {
-				transform: translate(27px, 0px);
+				transform: translate(26px, 0px);
 			}
 		}
 	}
