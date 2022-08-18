@@ -10,7 +10,7 @@ node_modules
 
 # sass
 *.css.map
-*css
+*.css
 
 # To-dos
 PROJECT_TO_DO.md
