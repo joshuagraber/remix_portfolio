@@ -5,3 +5,7 @@ Instead of async, use exported array from /components/Experiments/index.jsx
 Which will collect all experiments in the folder (hardcoding because they 
 will be too complex and idiosyncratic to use a CDN)  
 */
+
+export default function Experiments() {
+	return <div>Hello from Experiments page!</div>;
+}
