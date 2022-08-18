@@ -11,4 +11,25 @@
 	background: $color-background;
 	color: $color-text-primary;
 	transition: 0.2s ease background-color, 0.2s ease color;
+
+	font: $font-paragraph-secondary;
+}
+
+a {
+	color: $color-text-primary;
+	font: inherit;
+	text-decoration: none;
+
+	&:active,
+	&:hover {
+		text-decoration: underline $color-accent-primary 1px;
+	}
+
+	&:visited {
+		color: $color-neutral-7;
+	}
+
+	:root[data-theme='jdg-light-mode'] &:visited {
+		color: $color-neutral-1;
+	}
 }
