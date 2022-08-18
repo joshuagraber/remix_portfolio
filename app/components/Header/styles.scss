@@ -13,6 +13,12 @@
 		align-items: center;
 	}
 
+	&-nav-container {
+		display: flex;
+		align-items: center;
+		gap: 24px;
+	}
+
 	:root[data-theme='jdg-dark-mode'] & {
 		background-color: $color-neutral-0;
 	}
