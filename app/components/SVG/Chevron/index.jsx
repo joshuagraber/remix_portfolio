@@ -1,4 +1,4 @@
-export const Chevron = ({ direction, height = '24px', stroke = 'black', width = '24px' }) => {
+export const Chevron = ({ direction, height = '24px', stroke = 'white', width = '24px' }) => {
 	switch (direction) {
 		case 'down':
 			return (
