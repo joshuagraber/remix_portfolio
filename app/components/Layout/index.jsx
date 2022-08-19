@@ -1,4 +1,5 @@
 // GLOBALS
+import { node } from 'prop-types';
 import styles from './styles.css';
 
 // COMPONENTS
@@ -17,4 +18,8 @@ export const Layout = ({ children }) => {
 			<Footer />
 		</>
 	);
+};
+
+Layout.propTypes = {
+	children: node.isRequired,
 };

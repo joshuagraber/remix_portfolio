@@ -1,3 +1,5 @@
+import { string, oneOf } from 'prop-types';
+
 export const Chevron = ({ direction, height = '24px', stroke = 'white', width = '24px' }) => {
 	switch (direction) {
 		case 'down':
@@ -75,4 +77,11 @@ export const Chevron = ({ direction, height = '24px', stroke = 'white', width = 
 		default:
 			return null;
 	}
+};
+
+Chevron.propTypes = {
+	direction: oneOf(['down', 'left', 'right', 'up']),
+	height: string,
+	stroke: string,
+	width: string,
 };

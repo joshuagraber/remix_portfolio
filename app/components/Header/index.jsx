@@ -24,10 +24,13 @@ export function links() {
 }
 
 export const Header = () => {
+	// UPDATING DIMS (essentially listening for resize)
 	const { innerWidth } = useWindowDimensions();
 
+	// HOOKS - STATE
 	const [isMobile, setIsMobile] = React.useState(innerWidth <= 700 ? true : false);
 
+	// HOOKS - EFFECTS
 	React.useEffect(() => {
 		if (innerWidth <= 700) {
 			setIsMobile(true);
@@ -36,6 +39,7 @@ export const Header = () => {
 		setIsMobile(false);
 	}, [innerWidth]);
 
+	// CLASSES
 	const classes = clsx('jdg-header');
 
 	return (

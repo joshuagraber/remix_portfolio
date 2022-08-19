@@ -1,4 +1,5 @@
 // GLOBALS
+import { node, bool } from 'prop-types';
 import styles from './styles.css';
 
 // EXT LIBS
@@ -14,4 +15,9 @@ export const ContainerCenter = ({ children, disabled = false }) => {
 	});
 
 	return <div className={classes}>{children}</div>;
+};
+
+ContainerCenter.propTypes = {
+	children: node,
+	disable: bool,
 };

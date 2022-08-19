@@ -1,6 +1,7 @@
 // GLOBALS
 import React from 'react';
 import { NavLink } from '@remix-run/react';
+import { bool } from 'prop-types';
 import styles from './styles.css';
 
 // EXTERNAL LIBS
@@ -18,6 +19,7 @@ import { NAV_ROUTES } from './data';
 const ACTIVE_CLASS_NAME = 'jdg-nav-link-active';
 const CLASS_NAME = 'jdg-nav-link';
 
+// EXPORTS
 export function links() {
 	return [{ rel: 'stylesheet', href: styles }];
 }
@@ -80,4 +82,8 @@ export const Nav = ({ isMobile }) => {
 			</div>
 		</nav>
 	);
+};
+
+Nav.propTypes = {
+	isMobile: bool.isRequired,
 };
