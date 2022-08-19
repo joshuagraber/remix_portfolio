@@ -13,7 +13,8 @@
 		"@remix-run/serve": "^1.6.7",
 		"clsx": "^1.2.1",
 		"react": "^17.0.2",
-		"react-dom": "^17.0.2"
+		"react-dom": "^17.0.2",
+		"ssr-window": "^4.0.2"
 	},
 	"devDependencies": {
 		"@remix-run/dev": "^1.6.7",
