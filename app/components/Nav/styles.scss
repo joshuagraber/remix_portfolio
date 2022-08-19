@@ -1,7 +1,85 @@
 @import '../../theme/variables.scss';
 
 .jdg-nav {
-	.jdg-nav-link {
-		color: $color-text-primary;
+	&-open-button {
+		cursor: pointer;
+		display: none;
+		background-color: unset;
+		border: unset;
+	}
+
+	&-links-container {
+		align-items: center;
+		display: flex;
+		gap: 16px;
+	}
+
+	&-link {
+		border-radius: 5px;
+		line-height: 59px;
+		font-family: 'Catamaran';
+		font-size: 20px;
+		text-align: center;
+		transition: 0.2s ease background-color;
+
+		&-active,
+		&:hover {
+			text-decoration: 3px solid underline $color-theme-primary-4;
+			text-underline-offset: 6px;
+		}
+
+		:root[data-theme='jdg-light-mode'] &-active,
+		:root[data-theme='jdg-light-mode'] &:hover {
+			text-decoration-color: $color-theme-primary-1;
+		}
+	}
+
+	@media (max-width: $mobile) {
+		display: flex;
+		flex-direction: column-reverse;
+		gap: 12px;
+
+		&-links-container {
+			flex-wrap: wrap;
+			justify-content: space-between;
+			max-height: 0;
+			overflow: hidden;
+			transform: rotateX(90deg);
+			transition: all 0.5s;
+		}
+
+		&-open-button[aria-expanded='true'] ~ &-links-container {
+			margin-top: 16px;
+			max-height: 500px;
+			transform: rotateX(0);
+		}
+
+		&-open-button {
+			display: block;
+		}
+
+		&-link {
+			background-color: $color-neutral-white-opacity_40;
+			flex: 0 1;
+			font-size: 16px;
+			line-height: 125%;
+			padding: 8px 12px 5px;
+			border-bottom: 3px solid transparent;
+
+			&-active,
+			&:hover {
+				border-bottom: 3px solid $color-theme-primary-4;
+				text-decoration: none;
+			}
+
+			:root[data-theme='jdg-light-mode'] & {
+				background-color: $color-neutral-black-opacity_20;
+				&-active,
+				&:hover {
+					border-bottom: 3px solid $color-theme-primary-1;
+					text-decoration: none;
+				}
+			}
+		}
 	}
 }

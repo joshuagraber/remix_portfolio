@@ -1,1 +1,1 @@
-export const NAV_ROUTES = ['about', 'blog', 'experiments', 'work'];
+export const NAV_ROUTES = ['about', 'work', 'experiments', 'blog'];

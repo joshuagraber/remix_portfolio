@@ -1,5 +1,6 @@
 // GLOBALS
 import styles from './styles.css';
+import { Link } from '@remix-run/react';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from '../ContainerCenter';
@@ -8,6 +9,7 @@ import { ThemeToggle, links as themeToggleLinks } from '../ThemeToggle';
 
 // EXT LIBS
 import clsx from 'clsx';
+import { getWindow } from 'ssr-window';
 
 export function links() {
 	return [
@@ -19,19 +21,19 @@ export function links() {
 }
 
 export const Header = () => {
+	const window = getWindow();
+	const isMobile = window.innerWidth <= 700;
 	const classes = clsx('jdg-header');
 
 	return (
 		<div className={classes}>
 			<ContainerCenter>
-				<div className='jdg-header-name-container'>
+				<Link className='jdg-header-name-container' to='/'>
 					<h1 className='jdg-header-name-heading'>Joshua D. Graber</h1>
 					<p className='jdg-header-name-sub-heading'>Syntax: language and code.</p>
-				</div>
-				<div className='jdg-header-nav-container'>
-					<Nav />
-					<ThemeToggle />
-				</div>
+				</Link>
+				<Nav isMobile={isMobile} />
+				<ThemeToggle />
 			</ContainerCenter>
 		</div>
 	);

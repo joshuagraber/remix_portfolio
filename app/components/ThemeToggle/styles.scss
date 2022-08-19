@@ -1,13 +1,15 @@
 @import '../../theme/variables.scss';
 
 .jdg-theme-toggle {
-	position: relative;
-	width: 80px;
-	height: 44px;
 	border-radius: 666px;
 	border: 5px solid $color-neutral-8;
 	box-shadow: 0 3px 4px $color-neutral-black-opacity_20, 3px 4px 4px $color-neutral-black-opacity_20,
 		-2px 4px 4px $color-neutral-black-opacity_20, 4px 4px 4px $color-neutral-black-opacity_20;
+	display: block;
+	height: 44px;
+	margin-left: 24px;
+	position: relative;
+	width: 80px;
 
 	&-label {
 		box-shadow: 0px 1px 1px inset $color-neutral-black-opacity_40,
@@ -71,7 +73,9 @@
 
 		&:checked + .jdg-theme-toggle-label:before {
 			background-color: $color-neutral-0;
-			transform: translate(30px, -5px);
+			height: 25px;
+			width: 25px;
+			transform: translate(28px, -2px);
 		}
 
 		&:checked + .jdg-theme-toggle-label:after {
@@ -87,6 +91,7 @@
 		box-shadow: 0 2px 2px $color-neutral-black-opacity_20,
 			1px 3px 3px $color-neutral-black-opacity_20, -1px 3px 3px $color-neutral-black-opacity_20,
 			3px 3px 3px $color-neutral-black-opacity_20;
+		min-width: 56px;
 
 		&-label {
 			box-shadow: 0px 1px 1px inset $color-neutral-black-opacity_40,
@@ -110,12 +115,25 @@
 
 		&-input {
 			&:checked + .jdg-theme-toggle-label:before {
-				transform: translate(19px, -5px);
+				height: 18px;
+				width: 18px;
+				transform: translate(20px, -1px);
 			}
 
 			&:checked + .jdg-theme-toggle-label:after {
 				transform: translate(26px, 0px);
 			}
 		}
+	}
+
+	:root[data-theme='jdg-dark-mode'] & {
+		box-shadow: 0 2px 2px $color-neutral-white-opacity_20,
+			2px 3px 3px $color-neutral-white-opacity_20, -1px 3px 3px $color-neutral-white-opacity_20,
+			3px 3px 3px $color-neutral-white-opacity_20;
+	}
+
+	:root[data-theme='jdg-dark-mode'] &-label {
+		box-shadow: 0px 2px 1px inset $color-neutral-white-opacity_40,
+			2px 0px 3px inset $color-neutral-white-opacity_40;
 	}
 }

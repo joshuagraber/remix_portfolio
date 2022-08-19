@@ -3,23 +3,75 @@
 .jdg-header {
 	align-items: center;
 	display: flex;
-	height: 100px;
+	height: min-content;
 	padding: 12px 24px;
 	transition: 0.2s ease background-color;
 
 	.jdg-container-center {
-		display: flex;
-		justify-content: space-between;
 		align-items: center;
+		display: grid;
+		grid-template-columns: 1fr auto auto;
+		grid-template-rows: repeat(2, auto);
 	}
 
-	&-nav-container {
-		display: flex;
-		align-items: center;
-		gap: 24px;
+	.jdg-nav {
+		grid-column: 2;
+	}
+
+	.jdg-theme-toggle {
+		grid-column: 3;
+	}
+
+	&-name-container {
+		grid-column: 1;
+	}
+
+	&-name-container:hover {
+		text-decoration: none;
+	}
+
+	&-name-heading {
+		font: $font-heading-primary;
+	}
+
+	&-name-sub-heading {
+		font: $font-heading-quaternary-emphasis;
 	}
 
 	:root[data-theme='jdg-dark-mode'] & {
 		background-color: $color-neutral-0;
+	}
+
+	@media (max-width: $mobile) {
+		// Handle rearrangment of nav on mobile
+		.jdg-container-center {
+			grid-template-columns: 1fr auto;
+		}
+
+		.jdg-theme-toggle {
+			grid-column: 2;
+			align-self: start;
+		}
+
+		.jdg-nav {
+			justify-self: center;
+			grid-column: 1 / -1;
+			grid-row: 2;
+			width: 100%;
+
+			&-links-container {
+				> * {
+					flex-grow: 1;
+				}
+			}
+		}
+
+		&-name-heading {
+			font: $font-heading-tertiary;
+		}
+
+		&-name-sub-heading {
+			font-size: 16px;
+		}
 	}
 }
