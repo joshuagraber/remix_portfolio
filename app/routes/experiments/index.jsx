@@ -6,6 +6,20 @@ Which will collect all experiments in the folder (hardcoding because they
 will be too complex and idiosyncratic to use a CDN)  
 */
 
+// COMPONENTS
+import { ContainerCenter, links as containerCenterLinks } from '~/components/ContainerCenter';
+import { Layout, links as layoutLinks } from '~/components/Layout';
+
+export function links() {
+	return [...containerCenterLinks(), ...layoutLinks()];
+}
+
 export default function Experiments() {
-	return <div>Hello from Experiments page!</div>;
+	return (
+		<Layout>
+			<ContainerCenter>
+				<div>Hello from Experiments page!</div>
+			</ContainerCenter>
+		</Layout>
+	);
 }

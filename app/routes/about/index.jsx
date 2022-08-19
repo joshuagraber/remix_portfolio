@@ -1,12 +1,11 @@
 // GLOBALS
-// import styles from './styles.css';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from '~/components/ContainerCenter';
 import { Layout, links as layoutLinks } from '~/components/Layout';
 
 export function links() {
-	return [...layoutLinks()];
+	return [...containerCenterLinks(), ...layoutLinks()];
 }
 
 export default function About() {
