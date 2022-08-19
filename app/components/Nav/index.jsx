@@ -7,6 +7,7 @@ import styles from './styles.css';
 import clsx from 'clsx';
 
 // HOOKS
+import { useEffectDidUpdate } from '~/hooks/useEffectDidUpdate';
 import { useTheme } from '~/theme';
 
 // COMPONENTS
@@ -23,22 +24,23 @@ export function links() {
 
 export const Nav = ({ isMobile }) => {
 	// HOOKS - STATE
-	const [isExpanded, setIsExpanded] = React.useState(true);
+	const [isExpanded, setIsExpanded] = React.useState(false);
+
+	// HOOKS - EFFECTS
+	useEffectDidUpdate(() => {
+		if (!isMobile) {
+			setIsExpanded(true);
+		}
+		if (isMobile) {
+			setIsExpanded((wasExpanded) => !wasExpanded);
+		}
+	}, [isMobile]);
 
 	// HOOKS - CUSTOM
 	const { theme } = useTheme();
 
-	// HOOKS - EFFECTS
-	React.useEffect(() => {
-		if (isMobile) {
-			setIsExpanded(false);
-		}
-	}, [isMobile]);
-
 	// CLASSES
-	const classes = clsx('jdg-nav', {
-		'jdg-nav-mobile': isMobile,
-	});
+	const classes = clsx('jdg-nav');
 
 	// VARS
 	const chevronDirection = isExpanded ? 'up' : 'down';

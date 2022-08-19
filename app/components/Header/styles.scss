@@ -43,6 +43,7 @@
 	}
 
 	@media (max-width: $mobile) {
+		padding: 24px 24px 8px;
 		// Handle rearrangment of nav on mobile
 		.jdg-container-center {
 			grid-template-columns: 1fr auto;

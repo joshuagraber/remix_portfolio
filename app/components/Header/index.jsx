@@ -1,15 +1,18 @@
 // GLOBALS
+import React from 'react';
 import styles from './styles.css';
 import { Link } from '@remix-run/react';
+
+// EXT LIBS
+import clsx from 'clsx';
+
+// HOOKS
+import { useWindowDimensions } from '~/hooks/useWindowDimensions';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from '../ContainerCenter';
 import { Nav, links as navLinks } from '../Nav';
 import { ThemeToggle, links as themeToggleLinks } from '../ThemeToggle';
-
-// EXT LIBS
-import clsx from 'clsx';
-import { getWindow } from 'ssr-window';
 
 export function links() {
 	return [
@@ -21,8 +24,18 @@ export function links() {
 }
 
 export const Header = () => {
-	const window = getWindow();
-	const isMobile = window.innerWidth <= 700;
+	const { innerWidth } = useWindowDimensions();
+
+	const [isMobile, setIsMobile] = React.useState(innerWidth <= 700 ? true : false);
+
+	React.useEffect(() => {
+		if (innerWidth <= 700) {
+			setIsMobile(true);
+			return;
+		}
+		setIsMobile(false);
+	}, [innerWidth]);
+
 	const classes = clsx('jdg-header');
 
 	return (
