@@ -6,6 +6,7 @@ import styles from './styles.css';
 
 // EXTERNAL LIBS
 import clsx from 'clsx';
+import { getWindow } from 'ssr-window';
 
 // HOOKS
 import { useEffectDidUpdate } from '~/hooks/useEffectDidUpdate';
@@ -25,6 +26,7 @@ export function links() {
 }
 
 export const Nav = ({ isMobile }) => {
+	const window = getWindow();
 	// HOOKS - STATE
 	const [isExpanded, setIsExpanded] = React.useState(false);
 
@@ -34,6 +36,20 @@ export const Nav = ({ isMobile }) => {
 			setIsExpanded((wasExpanded) => !wasExpanded);
 		}
 	}, [isMobile]);
+
+	useEffectDidUpdate(() => {
+		function clearingClick(e) {
+			if (!e?.target?.classList?.contains('jdg-nav')) {
+				setIsExpanded(false);
+			}
+		}
+		if (isMobile && isExpanded) {
+			window.addEventListener('click', clearingClick);
+		}
+		return () => {
+			window.removeEventListener('click', clearingClick);
+		};
+	}, [isExpanded, isMobile]);
 
 	React.useEffect(() => {
 		if (!isMobile) {
@@ -59,14 +75,14 @@ export const Nav = ({ isMobile }) => {
 	return (
 		<nav className={classes}>
 			<button
-				aria-controls='menu-list'
+				aria-controls='jdg-nav-menu'
 				aria-expanded={isExpanded}
 				className='jdg-nav-open-button'
 				onClick={onMenuButtonClick}
 			>
 				<Chevron direction={chevronDirection} stroke={chevronStroke} />
 			</button>
-			<div className='jdg-nav-links-container'>
+			<menu aria-hidden={!isExpanded} className='jdg-nav-menu' id='jdg-nav-menu'>
 				{NAV_ROUTES.map((route) => {
 					const routeTitleCased = route[0].toUpperCase() + route.slice(1);
 					return (
@@ -76,13 +92,14 @@ export const Nav = ({ isMobile }) => {
 								isActive ? `${CLASS_NAME} ${ACTIVE_CLASS_NAME}` : `${CLASS_NAME}`
 							}
 							key={route}
+							role='menuitem'
 							to={`/${route}`}
 						>
 							{routeTitleCased}
 						</NavLink>
 					);
 				})}
-			</div>
+			</menu>
 		</nav>
 	);
 };
