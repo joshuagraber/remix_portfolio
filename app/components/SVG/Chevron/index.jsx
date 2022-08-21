@@ -80,7 +80,7 @@ export const Chevron = ({ direction, height = '24px', stroke = 'white', width = 
 };
 
 Chevron.propTypes = {
-	direction: oneOf(['down', 'left', 'right', 'up']),
+	direction: oneOf(['down', 'left', 'right', 'up']).isRequired,
 	height: string,
 	stroke: string,
 	width: string,

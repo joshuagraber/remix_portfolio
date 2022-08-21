@@ -1,6 +1,6 @@
 import { oneOf, string } from 'prop-types';
 
-export const SocialIcon = ({ color, type }) => {
+export const SocialIcon = ({ color = 'white', type }) => {
 	switch (type) {
 		case 'email':
 			return (
@@ -75,5 +75,5 @@ export const SocialIcon = ({ color, type }) => {
 
 SocialIcon.propTypes = {
 	color: string,
-	type: oneOf(['email', 'github', 'linkedin', 'twitter']),
+	type: oneOf(['email', 'github', 'linkedin', 'twitter']).isRequired,
 };
