@@ -1,0 +1,40 @@
+@import '../../theme/variables.scss';
+
+.jdg-footer {
+	background: linear-gradient(to top, $color-neutral-0, $color-background);
+	font-family: 'Catamaran';
+	position: fixed;
+	bottom: 0;
+	height: 120px;
+	left: 0;
+	right: 0;
+
+	.jdg-container-center {
+		align-items: flex-end;
+		display: flex;
+		height: 100%;
+		padding: 0 24px 24px;
+		justify-content: space-between;
+	}
+
+	&-contact {
+		align-items: center;
+		display: flex;
+		gap: 16px;
+	}
+
+	:root[data-theme='jdg-light-mode'] & {
+		background: $color-background;
+	}
+
+	@media (max-width: $mobile) {
+		height: 140px;
+
+		.jdg-container-center {
+			align-items: center;
+			justify-content: flex-start;
+			flex-direction: column-reverse;
+			gap: 16px;
+		}
+	}
+}
