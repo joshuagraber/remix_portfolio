@@ -30,11 +30,14 @@ export const Nav = ({ isMobile }) => {
 
 	// HOOKS - EFFECTS
 	useEffectDidUpdate(() => {
-		if (!isMobile) {
-			setIsExpanded(true);
-		}
 		if (isMobile) {
 			setIsExpanded((wasExpanded) => !wasExpanded);
+		}
+	}, [isMobile]);
+
+	React.useEffect(() => {
+		if (!isMobile) {
+			setIsExpanded(true);
 		}
 	}, [isMobile]);
 

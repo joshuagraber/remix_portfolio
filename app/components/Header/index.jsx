@@ -28,11 +28,11 @@ export const Header = () => {
 	const { innerWidth } = useWindowDimensions();
 
 	// HOOKS - STATE
-	const [isMobile, setIsMobile] = React.useState(innerWidth <= 700 ? true : false);
+	const [isMobile, setIsMobile] = React.useState(innerWidth <= 750 ? true : false);
 
 	// HOOKS - EFFECTS
 	React.useEffect(() => {
-		if (innerWidth <= 700) {
+		if (innerWidth <= 750) {
 			setIsMobile(true);
 			return;
 		}
