@@ -18,7 +18,7 @@
 	&-link {
 		border-radius: 5px;
 		line-height: 59px;
-		font-family: 'Catamaran';
+		font-family: 'Catamaran', sans-serif;
 		font-size: 20px;
 		text-align: center;
 		transition: 0.2s ease background-color;
@@ -61,7 +61,7 @@
 
 		&-link {
 			background-color: $color-neutral-white-opacity_40;
-			flex: 1 1;
+			flex: 1 0;
 			font-size: 16px;
 			line-height: 125%;
 			padding: 8px 12px 5px;

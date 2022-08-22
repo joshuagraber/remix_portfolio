@@ -43,6 +43,12 @@
 		background-color: $color-neutral-0;
 	}
 
+	@media (max-width: 850px) {
+		&-name-heading {
+			font-size: 36px;
+		}
+	}
+
 	@media (max-width: $mobile) {
 		padding: 24px 24px 8px;
 		// Handle rearrangment of nav on mobile
@@ -61,7 +67,7 @@
 			grid-row: 2;
 			width: 100%;
 
-			&-links-container {
+			&-menu {
 				> * {
 					flex-grow: 1;
 				}
