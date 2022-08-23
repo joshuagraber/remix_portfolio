@@ -2,7 +2,7 @@
 
 .jdg-footer {
 	background: linear-gradient(to top, $color-neutral-0, $color-background);
-	font-family: 'Catamaran';
+	font-family: 'Catamaran', sans-serif;
 	position: fixed;
 	bottom: 0;
 	height: 120px;
@@ -15,6 +15,10 @@
 		height: 100%;
 		padding: 0 24px 24px;
 		justify-content: space-between;
+	}
+
+	&-attribution {
+		font-size: 12px;
 	}
 
 	&-contact {
