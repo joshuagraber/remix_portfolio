@@ -14,7 +14,7 @@ export const Layout = ({ children }) => {
 	return (
 		<>
 			<Header />
-			<main>{children}</main>
+			<main className='jdg-main'>{children}</main>
 			<Footer />
 		</>
 	);
