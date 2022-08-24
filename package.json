@@ -2,13 +2,12 @@
 	"private": true,
 	"sideEffects": false,
 	"scripts": {
-		"build": "sass app/:app && remix build",
-		"start": "cross-env NODE_ENV=production node ./server.js",
-		"start:remix": "remix dev",
-		"start:sass": "sass --watch app/:app/",
-		"dev": "remix build && run-p \"dev:*\"",
-		"dev:node": "cross-env NODE_ENV=development nodemon ./server.js --watch ./server.js",
-		"dev:remix": "remix watch"
+		"postinstall": "npm run build",
+		"build": "sass app/:app/ && remix build",
+		"start": "npm run build && node server.js",
+		"dev": "remix build && run-p dev:*",
+		"dev:remix": "remix dev",
+		"dev:sass": "sass --watch app/:app/"
 	},
 	"dependencies": {
 		"@remix-run/express": "^1.6.7",

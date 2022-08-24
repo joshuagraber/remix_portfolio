@@ -7,5 +7,5 @@ This app was bootstrapped with [Remix](https://remix.run/docs)
 Running the app locally in development mode with HMR:
 
 ```sh
-npm start
+npm run dev
 ```
