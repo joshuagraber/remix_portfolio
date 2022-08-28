@@ -92,6 +92,7 @@ export const Nav = ({ isMobile }) => {
 								isActive ? `${CLASS_NAME} ${ACTIVE_CLASS_NAME}` : `${CLASS_NAME}`
 							}
 							key={route}
+							prefetch='intent'
 							role='menuitem'
 							to={`/${route}`}
 						>

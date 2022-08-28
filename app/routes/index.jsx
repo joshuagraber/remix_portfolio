@@ -3,17 +3,28 @@ import { Link } from '@remix-run/react';
 import styles from './styles.css';
 
 // COMPONENTS
+import { Arrow } from '../components/SVG/Arrow';
 import { ContainerCenter, links as containerCenterLinks } from '~/components/ContainerCenter';
 import { Layout, links as layoutLinks } from '~/components/Layout';
+
+// HOOKS
+import { useTheme } from '~/theme';
 
 // ASSETS
 import headshot from '../assets/headshot-mock.png';
 
+// EXPORTS
 export function links() {
 	return [...containerCenterLinks(), ...layoutLinks(), { rel: 'stylesheet', href: styles }];
 }
 
 export default function Index() {
+	// HOOKS - CUSTOM
+	const { theme } = useTheme();
+
+	// VARS
+	const arrowStroke = theme === 'jdg-light-mode' ? 'black' : 'white';
+
 	return (
 		<Layout>
 			<ContainerCenter>
@@ -28,7 +39,9 @@ export default function Index() {
 					<h2>Editing</h2>
 					<h2>JavaScript development</h2>
 
-					<Link to='/about'>Learn more {/* TODO: find arrow icon to use here */}</Link>
+					<Link prefetch='intent' to='/about'>
+						Learn more <Arrow stroke={arrowStroke} direction='right' />
+					</Link>
 				</div>
 			</ContainerCenter>
 		</Layout>
