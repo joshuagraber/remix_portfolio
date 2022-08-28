@@ -9,6 +9,7 @@
 	left: 0;
 	margin-top: -$footer-height-desktop;
 	right: 0;
+	transition: 0.2s ease background-image, 0.2s ease background-color;
 
 	.jdg-container-center {
 		align-items: flex-end;
