@@ -1,5 +1,4 @@
 // GLOBALS
-import { Link } from '@remix-run/react';
 import styles from './styles.css';
 
 // EXT LIBS
