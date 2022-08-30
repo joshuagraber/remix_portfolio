@@ -5,7 +5,6 @@ import { bool } from 'prop-types';
 import styles from './styles.css';
 
 // EXTERNAL LIBS
-import clsx from 'clsx';
 import { getWindow } from 'ssr-window';
 
 // HOOKS
@@ -34,18 +33,21 @@ export const Nav = ({ isMobile }) => {
 	const { theme } = useTheme();
 
 	// HOOKS - EFFECTS
+	// Force expanded state on desk
 	React.useEffect(() => {
 		if (!isMobile) {
 			setIsExpanded(true);
 		}
 	}, [isMobile]);
 
+	// Leave collapsed on mobile on first render
 	useEffectDidUpdate(() => {
 		if (isMobile) {
 			setIsExpanded((wasExpanded) => !wasExpanded);
 		}
 	}, [isMobile]);
 
+	// If it's open and on mobile, we close it on a click anywhere other than the nav
 	useEffectDidUpdate(() => {
 		if (isMobile && isExpanded) {
 			window.addEventListener('click', clearingClick);
@@ -55,14 +57,11 @@ export const Nav = ({ isMobile }) => {
 		};
 
 		function clearingClick(e) {
-			if (!e?.target?.classList?.contains('jdg-nav')) {
+			if (!e?.target?.classList?.contains('jdg-nav-menu')) {
 				setIsExpanded(false);
 			}
 		}
 	}, [isExpanded, isMobile]);
-
-	// CLASSES
-	const classes = clsx('jdg-nav');
 
 	// VARS
 	const chevronDirection = isExpanded ? 'up' : 'down';
@@ -74,7 +73,7 @@ export const Nav = ({ isMobile }) => {
 	};
 
 	return (
-		<nav className={classes}>
+		<nav className='jdg-nav'>
 			<button
 				aria-controls='jdg-nav-menu'
 				aria-expanded={isExpanded}

@@ -47,9 +47,7 @@ export default function Index() {
 		}
 
 		if (timeout) {
-			return () => {
-				clearTimeout(timeout);
-			};
+			return () => clearTimeout(timeout);
 		}
 	}, [isFirstTimeVisitor]);
 
