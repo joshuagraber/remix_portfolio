@@ -33,14 +33,15 @@ export const Nav = ({ isMobile }) => {
 	const { theme } = useTheme();
 
 	// HOOKS - EFFECTS
-	// Force expanded state on desk
+	// Always force expanded state on desk
 	React.useEffect(() => {
 		if (!isMobile) {
 			setIsExpanded(true);
 		}
 	}, [isMobile]);
 
-	// Leave collapsed on mobile on first render
+	/* Leave collapsed on mobile on first render,
+	 listen for re-size after that. */
 	useEffectDidUpdate(() => {
 		if (isMobile) {
 			setIsExpanded((wasExpanded) => !wasExpanded);
@@ -51,10 +52,8 @@ export const Nav = ({ isMobile }) => {
 	useEffectDidUpdate(() => {
 		if (isMobile && isExpanded) {
 			window.addEventListener('click', clearingClick);
+			return () => window.removeEventListener('click', clearingClick);
 		}
-		return () => {
-			window.removeEventListener('click', clearingClick);
-		};
 
 		function clearingClick(e) {
 			if (!e?.target?.classList?.contains('jdg-nav-menu')) {
