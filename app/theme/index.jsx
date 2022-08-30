@@ -1,15 +1,9 @@
 import React from 'react';
 
+// Util
+import { useLayoutEffect } from '~/hooks/useLayoutEffectSSR';
+
 const ThemeContext = React.createContext();
-
-const canUseDOM = !!(
-	typeof window !== 'undefined' &&
-	window.document &&
-	window.document.createElement
-);
-
-// "Custom hook" for SSR
-const useLayoutEffect = canUseDOM ? React.useLayoutEffect : () => {};
 
 export const ThemeProvider = ({ children }) => {
 	// HOOKS
