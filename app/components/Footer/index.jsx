@@ -13,7 +13,7 @@ import { ContainerCenter, links as containerCenterLinks } from '../ContainerCent
 import { SocialIcon } from '../SVG/Social';
 
 // CONSTANTS
-import { SOCIAL_LINKS } from './data';
+import { SOCIAL_LINKS } from '../../utils/constants';
 
 // EXPORTS
 export function links() {

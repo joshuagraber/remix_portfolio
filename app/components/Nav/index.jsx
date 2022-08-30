@@ -16,7 +16,7 @@ import { useTheme } from '~/theme';
 import { Chevron } from '../SVG/Chevron';
 
 // CONSTANTS
-import { NAV_ROUTES } from './data';
+import { NAV_ROUTES } from '../../utils/constants';
 const ACTIVE_CLASS_NAME = 'jdg-nav-link-active';
 const CLASS_NAME = 'jdg-nav-link';
 
@@ -30,7 +30,16 @@ export const Nav = ({ isMobile }) => {
 	// HOOKS - STATE
 	const [isExpanded, setIsExpanded] = React.useState(false);
 
+	// HOOKS - CUSTOM
+	const { theme } = useTheme();
+
 	// HOOKS - EFFECTS
+	React.useEffect(() => {
+		if (!isMobile) {
+			setIsExpanded(true);
+		}
+	}, [isMobile]);
+
 	useEffectDidUpdate(() => {
 		if (isMobile) {
 			setIsExpanded((wasExpanded) => !wasExpanded);
@@ -38,27 +47,19 @@ export const Nav = ({ isMobile }) => {
 	}, [isMobile]);
 
 	useEffectDidUpdate(() => {
-		function clearingClick(e) {
-			if (!e?.target?.classList?.contains('jdg-nav')) {
-				setIsExpanded(false);
-			}
-		}
 		if (isMobile && isExpanded) {
 			window.addEventListener('click', clearingClick);
 		}
 		return () => {
 			window.removeEventListener('click', clearingClick);
 		};
-	}, [isExpanded, isMobile]);
 
-	React.useEffect(() => {
-		if (!isMobile) {
-			setIsExpanded(true);
+		function clearingClick(e) {
+			if (!e?.target?.classList?.contains('jdg-nav')) {
+				setIsExpanded(false);
+			}
 		}
-	}, [isMobile]);
-
-	// HOOKS - CUSTOM
-	const { theme } = useTheme();
+	}, [isExpanded, isMobile]);
 
 	// CLASSES
 	const classes = clsx('jdg-nav');
