@@ -2,7 +2,6 @@
 
 .jdg-main {
 	.jdg-home-image {
-		animation: fade_in linear 2s;
 		border-radius: 50%;
 		display: block;
 		flex: 1 0;
@@ -44,7 +43,6 @@
 	}
 
 	.jdg-home-text-container {
-		animation: fade_in_text linear 2.5s 1s;
 		display: flex;
 		flex: 1 1;
 		flex-direction: column;
@@ -74,6 +72,8 @@
 		justify-content: center;
 		padding: 100px 24px;
 
+		// Handle animation cases
+		// TODO: write a mixin to do this more succinctly
 		&-hide-text {
 			.jdg-home-text-container {
 				max-width: 0;
@@ -82,8 +82,27 @@
 		}
 
 		&-hide-image {
-			.jdg-home-text-container {
+			.jdg-home-image-container {
 				opacity: 0;
+			}
+		}
+
+		&-no-animation {
+			.jdg-home-image-container {
+				animation: fade_in 2s ease;
+			}
+			.jdg-home-text-container {
+				animation: fade_in 2s ease;
+				max-width: 600px;
+			}
+		}
+
+		&-show-animation {
+			.jdg-home-image-container {
+				animation: fade_in linear 2s;
+			}
+			.jdg-home-text-container {
+				animation: fade_in_text linear 2s 1s;
 			}
 		}
 	}
@@ -140,7 +159,7 @@
 		max-width: 0;
 		opacity: 0;
 	}
-	40% {
+	50% {
 		opacity: 0;
 		max-width: 600px;
 	}
