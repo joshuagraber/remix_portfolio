@@ -4,4 +4,4 @@ export const SOCIAL_LINKS = [
 	['github', 'https://www.github.com/joshuagraber'],
 	['linkedin', 'https://www.linkedin.com/in/joshuadgraber'],
 ];
-export const NAV_ROUTES = ['about', 'work', 'experiments', 'blog'];
+export const NAV_ROUTES = ['work', 'experiments', 'blog'];

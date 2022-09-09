@@ -32,7 +32,12 @@ export default function Index() {
 
 	// HOOKS - EFFECTS
 	React.useEffect(() => {
+		if (typeof isFirstTimeVisitor === 'undefined') {
+			return;
+		}
+
 		let timeout = null;
+
 		if (isFirstTimeVisitor) {
 			timeout = setTimeout(() => {
 				setimageIsHidden(false);
@@ -40,8 +45,7 @@ export default function Index() {
 			}, 1000); // Timeout should match CSS animation delay
 		}
 
-		// Checking false explicitly because the hook returns undefined if unset
-		if (isFirstTimeVisitor === false) {
+		if (!isFirstTimeVisitor) {
 			setimageIsHidden(false);
 			setTextIsHidden(false);
 		}
@@ -53,7 +57,7 @@ export default function Index() {
 
 	// VARS
 	const arrowStroke = theme === 'jdg-light-mode' ? 'black' : 'white';
-	const pending = typeof isFirstTimeVisitor === 'undefined';
+	const firstTimeVisitorUnset = typeof isFirstTimeVisitor === 'undefined';
 
 	// CLASSES
 	const classes = clsx('jdg-home-container-center', {
@@ -66,7 +70,7 @@ export default function Index() {
 	return (
 		<Layout>
 			<ContainerCenter className={classes}>
-				{!pending && (
+				{!firstTimeVisitorUnset && (
 					<>
 						<div className='jdg-home-image-container'>
 							<figure className='jdg-home-image'>
@@ -79,7 +83,7 @@ export default function Index() {
 							<h2>Editing</h2>
 							<h2>JavaScript development</h2>
 
-							<Link prefetch='intent' to='/about'>
+							<Link prefetch='intent' to='work'>
 								Learn more <Arrow stroke={arrowStroke} direction='right' />
 							</Link>
 						</div>

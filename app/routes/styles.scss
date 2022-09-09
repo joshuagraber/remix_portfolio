@@ -1,5 +1,6 @@
 @import '../theme/variables.scss';
 
+// Home page
 .jdg-main {
 	.jdg-home-image {
 		border-radius: 50%;
@@ -38,7 +39,7 @@
 		}
 
 		&:hover figcaption {
-			opacity: 100%;
+			opacity: 1;
 		}
 	}
 
@@ -99,10 +100,10 @@
 
 		&-show-animation {
 			.jdg-home-image-container {
-				animation: fade_in linear 2s;
+				animation: fade_in linear 2.5s;
 			}
 			.jdg-home-text-container {
-				animation: fade_in_text linear 2s 1s;
+				animation: fade_in_text cubic-bezier(0.34, 1.56, 0.41, 1) 2.5s 1s;
 			}
 		}
 	}
@@ -145,6 +146,20 @@
 	}
 }
 
+// Contact page
+.jdg-main {
+	.jdg-contact-container-center {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+		justify-content: center;
+		max-width: 600px;
+		padding: 120px 24px;
+	}
+}
+
+// Animation keyframes
 @keyframes fade_in {
 	0% {
 		opacity: 0;
