@@ -33,7 +33,7 @@ const ContactFormPage = ({ formData }) => {
 const ContactFormModal = ({ fetcher, formData }) => {
 	return (
 		<div className='jdg-contact-form-container'>
-			<fetcher.Form className='jdg-contact-form' method='post'>
+			<fetcher.Form action='/contact' className='jdg-contact-form' method='post'>
 				<fieldset className='jdg-contact-form-input-fields'>
 					<legend>Contact me</legend>
 					<label htmlFor='name'>Your Name</label>
