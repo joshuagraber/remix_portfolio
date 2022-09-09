@@ -22,24 +22,30 @@
 	--color-accent-plum: #a16e83;
 	--color-accent-forest-green: #479761;
 
+	// Static opacity adjusted values
+	--color-neutral-black-opacity_20: rgba(0, 0, 0, 0.2);
+	--color-neutral-black-opacity_40: rgba(0, 0, 0, 0.4);
+	--color-neutral-black-opacity_60: rgba(0, 0, 0, 0.6);
+	--color-neutral-black-opacity_80: rgba(0, 0, 0, 0.8);
+
+	--color-neutral-white-opacity_20: rgba(255, 255, 255, 0.2);
+	--color-neutral-white-opacity_40: rgba(255, 255, 255, 0.4);
+	--color-neutral-white-opacity_60: rgba(255, 255, 255, 0.6);
+	--color-neutral-white-opacity_80: rgba(255, 255, 255, 0.8);
+
 	// Declare vars and default to dark theme
 	--color-background: var(--color-neutral-1);
-	--color-background-accent-primary: var(--color-accent-mauve);
-	--color-background-accent-secondary: var(--color-accent-plum);
+	--color-accent-primary: var(--color-accent-mauve);
+	--color-accent-secondary: var(--color-accent-plum);
 	--color-text-primary: var(--color-neutral-7);
 	--color-text-secondary: var(--color-neutral-6);
 	--color-text-tertiary: var(--color-neutral-5);
 }
 
-/* Single-use theme vars re-assigned per data.theme attribute 
-	use for bg color, heading and text colors, etc., so that
-	they can be defined once in component / page stylesheets. 
-	Can be overridden by specific vars in cases where the 
-	"standard" for that use case doesn't work well, etc.	*/
 :root[data-theme='jdg-light-mode'] {
 	--color-background: var(--color-neutral-8);
-	--color-background-accent-primary: var(--color-accent-plum);
-	--color-background-accent-secondary: var(--color-accent-mauve);
+	--color-accent-primary: var(--color-accent-plum);
+	--color-accent-secondary: var(--color-accent-mauve);
 	--color-text-primary: var(--color-neutral-0);
 	--color-text-secondary: var(--color-neutral-1);
 	--color-text-tertiary: var(--color-neutral-2);
@@ -47,8 +53,8 @@
 
 :root[data-theme='jdg-dark-mode'] {
 	--color-background: var(--color-neutral-1);
-	--color-background-accent-primary: var(--color-accent-mauve);
-	--color-background-accent-secondary: var(--color-accent-plum);
+	--color-accent-primary: var(--color-accent-mauve);
+	--color-accent-secondary: var(--color-accent-plum);
 	--color-text-primary: var(--color-neutral-7);
 	--color-text-secondary: var(--color-neutral-6);
 	--color-text-tertiary: var(--color-neutral-5);

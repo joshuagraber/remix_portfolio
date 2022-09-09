@@ -1,4 +1,5 @@
 @import '../theme/variables.scss';
+@import '../theme/themes.css';
 
 // Home page
 .jdg-main {
@@ -12,18 +13,18 @@
 		position: relative;
 
 		img {
-			border: 2px solid $color-accent-primary;
+			border: 2px solid var(--color-accent-primary);
 			border-radius: 50%;
-			box-shadow: -3px -1px 5px 5px $color-neutral-white-opacity_40;
+			box-shadow: -3px -1px 5px 5px var(--color-neutral-white-opacity_40);
 			width: 100%;
 
 			:root[data-theme='jdg-light-mode'] & {
-				box-shadow: -3px -1px 5px 5px $color-neutral-black-opacity_40;
+				box-shadow: -3px -1px 5px 5px var(--color-neutral-black-opacity_40);
 			}
 		}
 
 		figcaption {
-			background-color: $color-neutral-black-opacity_40;
+			background-color: var(--color-neutral-black-opacity_40);
 			bottom: 10%;
 			opacity: 0;
 			padding: 12px;
@@ -34,7 +35,7 @@
 			transition: opacity 0.5s ease;
 
 			:root[data-theme='jdg-light-mode'] & {
-				color: $color-neutral-8;
+				color: var(--color-neutral-8);
 			}
 		}
 
@@ -155,7 +156,7 @@
 		gap: 32px;
 		justify-content: center;
 		max-width: 600px;
-		padding: 120px 24px;
+		padding: 80px 0 24px;
 	}
 }
 

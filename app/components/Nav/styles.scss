@@ -1,4 +1,5 @@
 @import '../../theme/variables.scss';
+@import '../../theme/themes.css';
 
 .jdg-nav {
 	&-open-button {
@@ -25,13 +26,13 @@
 
 		&-active,
 		&:hover {
-			text-decoration: 3px solid underline $color-theme-primary-4;
+			text-decoration: 3px solid underline var(-var(--color-theme-primary-4));
 			text-underline-offset: 6px;
 		}
 
 		:root[data-theme='jdg-light-mode'] &-active,
 		:root[data-theme='jdg-light-mode'] &:hover {
-			text-decoration-color: $color-theme-primary-1;
+			text-decoration-color: var(--color-theme-primary-1);
 		}
 	}
 
@@ -60,7 +61,7 @@
 		}
 
 		&-link {
-			background-color: $color-neutral-white-opacity_40;
+			background-color: var(--color-neutral-white-opacity_40);
 			flex: 1 0;
 			font-size: 16px;
 			line-height: 125%;
@@ -69,15 +70,15 @@
 
 			&-active,
 			&:hover {
-				border-bottom: 3px solid $color-theme-primary-4;
+				border-bottom: 3px solid var(--color-theme-primary-4);
 				text-decoration: none;
 			}
 
 			:root[data-theme='jdg-light-mode'] & {
-				background-color: $color-neutral-black-opacity_20;
+				background-color: var(--color-neutral-black-opacity_20);
 				&-active,
 				&:hover {
-					border-bottom: 3px solid $color-theme-primary-1;
+					border-bottom: 3px solid var(--color-theme-primary-1);
 					text-decoration: none;
 				}
 			}

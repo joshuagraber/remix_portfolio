@@ -1,7 +1,8 @@
 @import '../../theme/variables.scss';
+@import '../../theme/themes.css';
 
 .jdg-footer {
-	background: linear-gradient(to top, $color-neutral-0, $color-background);
+	background: linear-gradient(to top, var(--color-neutral-0), var(--color-background));
 	font-family: 'Catamaran', sans-serif;
 	position: fixed;
 	bottom: 0;
@@ -30,7 +31,7 @@
 	}
 
 	:root[data-theme='jdg-light-mode'] & {
-		background: $color-background;
+		background: var(--color-background);
 	}
 
 	@media (max-width: $mobile) {

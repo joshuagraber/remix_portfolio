@@ -10,49 +10,7 @@ $footer-height-desktop: 120px;
 $footer-height-mobile: 140px;
 
 /**** COLOR VARS ****/
-// Mapping CSS to SCSS vars
-/* Unnecessary for unchanging neutral, primary, and accent colors, 
-  but doing for the sake of consistency and flexibility. */
-$color-neutral-0: var(--color-neutral-0);
-$color-neutral-1: var(--color-neutral-1);
-$color-neutral-2: var(--color-neutral-2);
-$color-neutral-3: var(--color-neutral-3);
-$color-neutral-4: var(--color-neutral-4);
-$color-neutral-5: var(--color-neutral-5);
-$color-neutral-6: var(--color-neutral-6);
-$color-neutral-7: var(--color-neutral-7);
-$color-neutral-8: var(--color-neutral-8);
-
-$color-theme-primary-0: var(--color-theme-primary-0);
-$color-theme-primary-1: var(--color-theme-primary-1);
-$color-theme-primary-2: var(--color-theme-primary-2);
-$color-theme-primary-3: var(--color-theme-primary-3);
-$color-theme-primary-4: var(--color-theme-primary-4);
-
-$color-accent-yellow: var(--color-accent-yellow);
-$color-accent-mauve: var(--color-accent-mauve);
-$color-accent-peach: var(--color-accent-peach);
-$color-accent-plum: var(--color-accent-plum);
-$color-accent-forest-green: var(--color-accent-forest-green);
-
-// These are necessary to map, since they will change on dark mode toggle
-$color-background: var(--color-background);
-$color-accent-primary: var(--color-background-accent-primary);
-$color-accent-secondary: var(--color-background-accent-secondary);
-$color-text-primary: var(--color-text-primary);
-$color-text-secondary: var(--color-text-secondary);
-$color-text-tertiary: var(--color-text-tertiary);
-
-// Static opacity-adjusted values
-$color-neutral-black-opacity_20: rgba(0, 0, 0, 0.2);
-$color-neutral-black-opacity_40: rgba(0, 0, 0, 0.4);
-$color-neutral-black-opacity_60: rgba(0, 0, 0, 0.6);
-$color-neutral-black-opacity_80: rgba(0, 0, 0, 0.8);
-
-$color-neutral-white-opacity_20: rgba(255, 255, 255, 0.2);
-$color-neutral-white-opacity_40: rgba(255, 255, 255, 0.4);
-$color-neutral-white-opacity_60: rgba(255, 255, 255, 0.6);
-$color-neutral-white-opacity_80: rgba(255, 255, 255, 0.8);
+// These live in theme/themes
 
 /**** FONT VARS ****/
 $font-heading-primary: 300 42px/125% 'Catamaran', sans-serif;

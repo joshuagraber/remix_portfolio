@@ -1,10 +1,13 @@
 @import '../../theme/variables.scss';
+@import '../../theme/themes.css';
 
 .jdg-theme-toggle {
 	border-radius: 666px;
-	border: 5px solid $color-neutral-8;
-	box-shadow: 0 3px 4px $color-neutral-black-opacity_20, 3px 4px 4px $color-neutral-black-opacity_20,
-		-2px 4px 4px $color-neutral-black-opacity_20, 4px 4px 4px $color-neutral-black-opacity_20;
+	border: 5px solid var(--color-neutral-8);
+	box-shadow: 0 3px 4px var(--color-neutral-black-opacity_20),
+		3px 4px 4px var(--color-neutral-black-opacity_20),
+		-2px 4px 4px var(--color-neutral-black-opacity_20),
+		4px 4px 4px var(--color-neutral-black-opacity_20);
 	display: block;
 	height: 44px;
 	margin-left: 24px;
@@ -12,8 +15,8 @@
 	width: 80px;
 
 	&-label {
-		box-shadow: 0px 1px 1px inset $color-neutral-black-opacity_40,
-			1px 0px 3px inset $color-neutral-black-opacity_40;
+		box-shadow: 0px 1px 1px inset var(--color-neutral-black-opacity_40),
+			1px 0px 3px inset var(--color-neutral-black-opacity_40);
 		position: absolute;
 		top: 0px;
 		right: 0px;
@@ -21,7 +24,7 @@
 		left: 0px;
 		overflow: hidden;
 		opacity: 1;
-		background-color: $color-background;
+		background-color: var(--color-background);
 		border-radius: 40px;
 		transition: 0.2s ease background-color, 0.2s ease opacity;
 
@@ -37,14 +40,14 @@
 		}
 
 		&:before {
-			background-color: $color-neutral-8;
+			background-color: var(--color-neutral-8);
 			transform: translate(-42px, 0px);
 			z-index: 1;
 		}
 
 		&:after {
-			background: linear-gradient(135deg, $color-neutral-0 50%, $color-neutral-6 100%);
-			box-shadow: inset -3px -3px 6px $color-neutral-white-opacity_20;
+			background: linear-gradient(135deg, var(--color-neutral-0) 50%, var(--color-neutral-6) 100%);
+			box-shadow: inset -3px -3px 6px var(-var(--color-neutral-white-opacity_20));
 			transform: translate(4px, 0px);
 			z-index: 0;
 		}
@@ -68,18 +71,18 @@
 		}
 
 		&:checked + .jdg-theme-toggle-label {
-			background-color: $color-neutral-0;
+			background-color: var(--color-neutral-0);
 		}
 
 		&:checked + .jdg-theme-toggle-label:before {
-			background-color: $color-neutral-0;
+			background-color: var(--color-neutral-0);
 			height: 25px;
 			width: 25px;
 			transform: translate(28px, -2px);
 		}
 
 		&:checked + .jdg-theme-toggle-label:after {
-			background: linear-gradient(135deg, $color-neutral-5 10%, $color-neutral-8 100%);
+			background: linear-gradient(135deg, var(--color-neutral-5) 10%, var(--color-neutral-8) 100%);
 			transform: translate(38px, 0px);
 		}
 	}
@@ -87,15 +90,16 @@
 	@media (max-width: $mobile) {
 		width: 56px;
 		height: 30px;
-		border: 3px solid $color-neutral-8;
-		box-shadow: 0 2px 2px $color-neutral-black-opacity_20,
-			1px 3px 3px $color-neutral-black-opacity_20, -1px 3px 3px $color-neutral-black-opacity_20,
-			3px 3px 3px $color-neutral-black-opacity_20;
+		border: 3px solid var(--color-neutral-8);
+		box-shadow: 0 2px 2px var(--color-neutral-black-opacity_20),
+			1px 3px 3px var(--color-neutral-black-opacity_20),
+			-1px 3px 3px var(--color-neutral-black-opacity_20),
+			3px 3px 3px var(--color-neutral-black-opacity_20);
 		min-width: 56px;
 
 		&-label {
-			box-shadow: 0px 1px 1px inset $color-neutral-black-opacity_40,
-				1px 0px 1px inset $color-neutral-black-opacity_40;
+			box-shadow: 0px 1px 1px inset var(--color-neutral-black-opacity_40),
+				1px 0px 1px inset var(--color-neutral-black-opacity_40);
 
 			&:before,
 			&:after {
@@ -127,13 +131,14 @@
 	}
 
 	:root[data-theme='jdg-dark-mode'] & {
-		box-shadow: 0 2px 2px $color-neutral-white-opacity_20,
-			2px 3px 3px $color-neutral-white-opacity_20, -1px 3px 3px $color-neutral-white-opacity_20,
-			3px 3px 3px $color-neutral-white-opacity_20;
+		box-shadow: 0 2px 2px var(--color-neutral-white-opacity_20),
+			2px 3px 3px var(--color-neutral-white-opacity_20),
+			-1px 3px 3px var(--color-neutral-white-opacity_20),
+			3px 3px 3px var(--color-neutral-white-opacity_20);
 	}
 
 	:root[data-theme='jdg-dark-mode'] &-label {
-		box-shadow: 0px 2px 1px inset $color-neutral-white-opacity_40,
-			2px 0px 3px inset $color-neutral-white-opacity_40;
+		box-shadow: 0px 2px 1px inset var(--color-neutral-white-opacity_40),
+			2px 0px 3px inset var(--color-neutral-white-opacity_40);
 	}
 }

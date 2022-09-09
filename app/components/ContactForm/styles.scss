@@ -1,4 +1,5 @@
 @import '../../theme/variables.scss';
+@import '../../theme/themes.css';
 
 .jdg-contact-form-container {
 	height: 100%;
@@ -10,11 +11,12 @@
 	display: flex;
 	flex-direction: column;
 	padding: 12px;
-	gap: 24px;
+	position: relative;
+	gap: 36px;
 
 	&-input-fields {
-		border: 2px solid $color-text-primary;
-		border-radius: 24px;
+		border: 2px solid var(--color-text-primary);
+		border-radius: 16px;
 		display: flex;
 		flex-direction: column;
 		gap: 16px;
@@ -23,8 +25,17 @@
 		width: 100%;
 
 		legend {
-			font: $font-heading-primary;
+			background-color: var(--color-accent-primary);
 			font-size: 36px;
+			font: $font-heading-primary;
+			border-radius: 12px;
+			color: var(--color-neutral-1);
+			padding: 12px;
+			transform: skewX(5deg);
+
+			:root[data-theme='jdg-light-mode'] & {
+				color: var(--color-neutral-8);
+			}
 		}
 	}
 
@@ -34,13 +45,21 @@
 
 	input,
 	textarea {
-		background-color: $color-neutral-2;
-		border: 1px solid $color-text-primary;
+		background-color: var(--color-neutral-2);
+		border: 1px solid var(--color-text-primary);
 		border-radius: 8px;
 		color: inherit;
 
 		&:focus {
-			border-color: $color-theme-primary-1;
+			border-color: var(--color-theme-primary-1);
+		}
+
+		:root[data-theme='jdg-light-mode'] & {
+			background-color: var(--color-neutral-7);
+
+			&:focus {
+				border-color: var(--color-theme-primary-4);
+			}
 		}
 	}
 
@@ -57,9 +76,9 @@
 
 	button {
 		background-color: transparent;
-		border: 2px solid $color-text-primary;
-		border-radius: 24px;
-		color: $color-text-primary;
+		border: 2px solid var(--color-text-primary);
+		border-radius: 16px;
+		color: var(--color-text-primary);
 		cursor: pointer;
 		font: 'Catamaran';
 		font-size: 18px;
@@ -69,9 +88,9 @@
 
 	&-thank-you {
 		align-items: center;
-		border: 2px solid $color-text-primary;
+		border: 2px solid var(--color-text-primary);
 		border-radius: 24px;
-		background-color: $color-background;
+		background-color: var(--color-background);
 		bottom: 0;
 		display: flex;
 		justify-content: center;
