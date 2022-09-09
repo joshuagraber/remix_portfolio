@@ -4,8 +4,14 @@ This app was bootstrapped with [Remix](https://remix.run/docs)
 
 ## Development
 
-Running the app locally in development mode with HMR:
+Run the app locally in development mode with HMR:
 
 ```sh
 npm run dev
+```
+
+Run the app locally in production mode with HMR:
+
+```sh
+npm start
 ```
