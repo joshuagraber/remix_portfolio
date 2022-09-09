@@ -1,0 +1,84 @@
+@import '../../theme/variables.scss';
+
+.jdg-contact-form-container {
+	height: 100%;
+	position: relative;
+	width: 100%;
+}
+
+.jdg-contact-form {
+	display: flex;
+	flex-direction: column;
+	padding: 12px;
+	gap: 24px;
+
+	&-input-fields {
+		border: 2px solid $color-text-primary;
+		border-radius: 24px;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		max-width: 600px;
+		padding: 18px;
+		width: 100%;
+
+		legend {
+			font: $font-heading-primary;
+			font-size: 36px;
+		}
+	}
+
+	label {
+		align-self: flex-end;
+	}
+
+	input,
+	textarea {
+		background-color: $color-neutral-2;
+		border: 1px solid $color-text-primary;
+		border-radius: 8px;
+		color: inherit;
+
+		&:focus {
+			border-color: $color-theme-primary-1;
+		}
+	}
+
+	textarea {
+		min-height: 150px;
+		padding: 8px;
+		width: 100%;
+	}
+
+	input[type='text'] {
+		height: 36px;
+		padding: 0 8px;
+	}
+
+	button {
+		background-color: transparent;
+		border: 2px solid $color-text-primary;
+		border-radius: 24px;
+		color: $color-text-primary;
+		cursor: pointer;
+		font: 'Catamaran';
+		font-size: 18px;
+		letter-spacing: 1.4px;
+		padding: 12px 16px;
+	}
+
+	&-thank-you {
+		align-items: center;
+		border: 2px solid $color-text-primary;
+		border-radius: 24px;
+		background-color: $color-background;
+		bottom: 0;
+		display: flex;
+		justify-content: center;
+		left: 0;
+		position: absolute;
+		right: 0;
+		top: 0;
+		z-index: 2;
+	}
+}
