@@ -1,5 +1,4 @@
 @import '../../theme/variables.scss';
-@import '../../theme/themes.css';
 
 .jdg-nav {
 	&-open-button {
@@ -26,7 +25,7 @@
 
 		&-active,
 		&:hover {
-			text-decoration: 3px solid underline var(-var(--color-theme-primary-4));
+			text-decoration: 3px solid underline var(--color-theme-primary-4);
 			text-underline-offset: 6px;
 		}
 

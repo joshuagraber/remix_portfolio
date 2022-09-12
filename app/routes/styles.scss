@@ -1,5 +1,4 @@
 @import '../theme/variables.scss';
-@import '../theme/themes.css';
 
 // Home page
 .jdg-main {
@@ -156,7 +155,7 @@
 		gap: 32px;
 		justify-content: center;
 		max-width: 600px;
-		padding: 80px 0 24px;
+		padding: 24px 0 80px;
 	}
 }
 

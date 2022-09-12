@@ -3,7 +3,6 @@ import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@re
 // STYLESHEETS
 import globalStyles from './theme/global.css';
 import themes from './theme/themes.css';
-import variables from './theme/variables.css';
 
 // CONTEXT
 import { ThemeProvider } from './theme';
@@ -11,7 +10,6 @@ import { ThemeProvider } from './theme';
 export function links() {
 	return [
 		{ rel: 'stylesheet', href: themes },
-		{ rel: 'stylesheet', href: variables },
 		{ rel: 'stylesheet', href: globalStyles },
 	];
 }
@@ -22,32 +20,28 @@ export const meta = () => ({
 	viewport: 'width=device-width,initial-scale=1',
 });
 
-function App() {
-	return (
-		<html lang='en'>
-			<head>
-				<Meta />
-
-				<Links />
-			</head>
-
-			<body>
-				<Outlet />
-
-				<ScrollRestoration />
-
-				<Scripts />
-
-				<LiveReload />
-			</body>
-		</html>
-	);
-}
-
-export default function AppWrapped() {
+export default function App() {
 	return (
 		<ThemeProvider>
-			<App />
+			<html lang='en'>
+				<head>
+					<Meta />
+
+					<Links />
+				</head>
+
+				<body>
+					<div id='app'>
+						<Outlet />
+
+						<ScrollRestoration />
+
+						<Scripts />
+
+						<LiveReload />
+					</div>
+				</body>
+			</html>
 		</ThemeProvider>
 	);
 }
