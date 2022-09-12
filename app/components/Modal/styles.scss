@@ -1,0 +1,70 @@
+@import '../../theme/variables.scss';
+
+.jdg-modal {
+	.jdg-modal-backdrop {
+		align-items: center;
+		background-color: var(--color-neutral-black-opacity_60);
+		display: flex;
+		height: 100vh;
+		justify-content: center;
+		left: 0;
+		overflow: hidden;
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 99;
+	}
+
+	.jdg-modal-container {
+		position: relative;
+	}
+
+	.jdg-modal-icon-container {
+		align-items: center;
+		background: var(--color-neutral-white-opacity_20);
+		border-radius: 50%;
+		cursor: pointer;
+		display: flex;
+		height: 40px;
+		justify-content: center;
+		position: absolute;
+		right: 10px;
+		top: 6px;
+		width: 40px;
+		z-index: 101;
+
+		&:hover {
+			background: var(--color-neutral-black-opacity_20);
+		}
+	}
+
+	.jdg-modal-content {
+		background-color: var(--color-background);
+		border-radius: 16px;
+		overflow-y: auto;
+		max-height: 672px;
+		padding: 48px;
+		width: 640px;
+		z-index: 100;
+	}
+
+	@media (max-width: 650px) {
+		.jdg-modal-content {
+			border-radius: unset;
+			height: 100vh;
+			max-height: none;
+			padding: 32px;
+			width: 100vw;
+		}
+	}
+
+	@media (max-width: 475px) {
+		.jdg-modal-container {
+			margin: 16px;
+		}
+
+		.jdg-modal-content {
+			padding: 24px;
+		}
+	}
+}
