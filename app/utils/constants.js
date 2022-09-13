@@ -1,5 +1,5 @@
 export const SOCIAL_LINKS = [
-	['email', ''], // TODO: Use a modal instead, send to backend script or js-mail
+	['email', ''],
 	['twitter', 'https://www.twitter.com/joshuadgraber'],
 	['github', 'https://www.github.com/joshuagraber'],
 	['linkedin', 'https://www.linkedin.com/in/joshuadgraber'],
