@@ -1,15 +1,15 @@
 // GLOBALS
 import styles from './styles.css';
 
-// EXT LIBS
-import clsx from 'clsx';
-
 // HOOKS
 import { useTheme } from '~/theme';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from '../ContainerCenter';
 import { SocialIcon } from '../SVG/Social';
+
+// UTILS
+import { handleKeyDownLikeClick } from '~/utils/utils';
 
 // CONSTANTS
 import { SOCIAL_LINKS } from '../../utils/constants';
@@ -28,6 +28,15 @@ export const Footer = () => {
 	// VARS
 	const iconColor = theme === 'jdg-light-mode' ? 'black' : 'white';
 
+	// HANDLER
+	const onClick = () => {
+		setIsContactModalDisplayed(true);
+	};
+
+	const onKeyDown = (event) => {
+		handleKeyDownLikeClick(onClick, event);
+	};
+
 	return (
 		<div className='jdg-footer'>
 			<ContainerCenter>
@@ -40,11 +49,13 @@ export const Footer = () => {
 						if (type === 'email') {
 							return (
 								<div
+									aria-label='Open contact form'
 									className='jdg-footer-contact-link'
 									key={type}
-									onClick={() => setIsContactModalDisplayed(true)}
-									// onKeyDown={} TODO
+									onClick={onClick}
+									onKeyDown={onKeyDown}
 									role={'button'}
+									tabIndex='0'
 								>
 									<SocialIcon color={iconColor} type={type} />
 								</div>

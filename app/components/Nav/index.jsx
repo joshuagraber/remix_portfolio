@@ -14,6 +14,9 @@ import { useTheme } from '~/theme';
 // COMPONENTS
 import { Chevron } from '../SVG/Chevron';
 
+// UTILS
+import { handleKeyDownLikeClick } from '~/utils/utils';
+
 // CONSTANTS
 import { NAV_ROUTES } from '../../utils/constants';
 const ACTIVE_CLASS_NAME = 'jdg-nav-link-active';
@@ -52,13 +55,27 @@ export const Nav = ({ isMobile }) => {
 	useEffectDidUpdate(() => {
 		if (isMobile && isExpanded) {
 			window.addEventListener('click', clearingClick);
-			return () => window.removeEventListener('click', clearingClick);
+			window.addEventListener('keydown', clearingKeypress);
+
+			return () => {
+				window.removeEventListener('click', clearingClick);
+				window.removeEventListener('keydown', clearingKeypress);
+			};
 		}
 
-		function clearingClick(e) {
-			if (!e?.target?.classList?.contains('jdg-nav-menu')) {
+		function clearingClick(event) {
+			if (!event?.target?.classList?.contains('jdg-nav-link')) {
+				event.preventDefault();
+			}
+			event.stopPropagation();
+
+			if (!event?.target?.classList?.contains('jdg-nav')) {
 				setIsExpanded(false);
 			}
+		}
+
+		function clearingKeypress(event) {
+			handleKeyDownLikeClick(clearingClick, event);
 		}
 	}, [isExpanded, isMobile]);
 
@@ -67,7 +84,7 @@ export const Nav = ({ isMobile }) => {
 	const chevronStroke = theme === 'jdg-light-mode' ? 'black' : 'white';
 
 	// HANDLER
-	const onMenuButtonClick = () => {
+	const onClick = () => {
 		setIsExpanded((wasExpanded) => !wasExpanded);
 	};
 
@@ -77,7 +94,9 @@ export const Nav = ({ isMobile }) => {
 				aria-controls='jdg-nav-menu'
 				aria-expanded={isExpanded}
 				className='jdg-nav-open-button'
-				onClick={onMenuButtonClick}
+				onClick={onClick}
+				tabIndex='0'
+				type='button'
 			>
 				<Chevron direction={chevronDirection} stroke={chevronStroke} />
 			</button>
@@ -93,6 +112,7 @@ export const Nav = ({ isMobile }) => {
 							key={route}
 							prefetch='intent'
 							role='menuitem'
+							tabIndex={isExpanded ? '0' : '-1'}
 							to={`/${route}`}
 						>
 							{routeTitleCased}

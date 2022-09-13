@@ -7,43 +7,30 @@ import { Portal } from '../Portal';
 import { Transition } from 'react-transition-group';
 import { X } from '../SVG/X';
 
+// HOOKS
+import { useTheme } from '~/theme';
+
 // EXTERNAL LIBS
 import clsx from 'clsx';
 import { getDocument } from 'ssr-window';
 
-// HOOKS
-import { useEffectDidUpdate } from '../../hooks/useEffectDidUpdate';
-import { useTheme } from '~/theme';
+// UTILS
+import { handleKeyDownLikeClick } from '~/utils/utils';
 
 // EXPORTS
 export function links() {
 	return [{ rel: 'stylesheet', href: styles }];
 }
 
-export const Modal = (props) => {
+export const Modal = ({ className = '', children, hide, isVisible = false }) => {
+	// GLOBALS
 	const document = getDocument();
 
-	const {
-		className = '',
-		children,
-		hide,
-		isClosable = true,
-		isSuccess = false,
-		isVisible = false,
-	} = props;
-
-	// HOOKS - CUSTOM
+	// CONTEXT
 	const { theme } = useTheme();
 
 	// HOOKS - EFFECTS
-	// Hide modal on completion
-	useEffectDidUpdate(() => {
-		if (isSuccess) {
-			hide();
-		}
-	}, [isSuccess]);
-
-	// Handle effect for scroll lock
+	// Lock scroll
 	React.useEffect(() => {
 		const rootDataSet = document.querySelector('html')?.dataset;
 
@@ -59,28 +46,22 @@ export const Modal = (props) => {
 		};
 	}, [isVisible]);
 
-	// TODO: write onKeyDown handler, use here.
 	// Handlers
-	// const handleOnKeyDown = (event) => {
-	//   onKeyDown([
-	//     {
-	//       event,
-	//       key: 'Enter',
-	//       handler: closeHandler
-	//     }
-	//   ]);
-	// };
+	const handleCloseModalKeyDown = (event) => {
+		event.stopPropagation();
+		handleKeyDownLikeClick(closeModal, event);
+	};
 
-	const stopClickBubble = (event) => {
+	const stopPropagation = (event) => {
 		event.stopPropagation();
 	};
 
-	const closeHandler = (event) => {
+	const closeModal = (event) => {
 		event.stopPropagation();
 		hide();
 	};
 
-	// Vars
+	// VARS
 	const transitionProps = {
 		in: isVisible,
 		mountOnEnter: true,
@@ -102,29 +83,29 @@ export const Modal = (props) => {
 					'jdg-modal-exited': state === 'exited',
 				});
 
+				// TODO: set up handler to focus modal when it opens
+
 				return (
 					<Portal className={classes}>
 						<div
 							aria-modal='true'
 							className='jdg-modal-backdrop'
-							onClick={stopClickBubble}
-							onKeyDown={stopClickBubble}
+							onClick={stopPropagation}
+							onKeyDown={stopPropagation}
 							role='dialog'
 						>
 							<div className='jdg-modal-container'>
-								{/* Icon */}
-								{isClosable && (
-									<div
-										className='jdg-modal-icon-container'
-										onClick={closeHandler}
-										// onKeyDown={handleOnKeyDown}
-										role='button'
-										tabIndex={0}
-									>
-										<X stroke={closeModalStroke} />
-									</div>
-								)}
-								{/* Body */}
+								<div
+									aria-label='Close modal'
+									className='jdg-modal-icon-container'
+									onClick={closeModal}
+									onKeyDown={handleCloseModalKeyDown}
+									role='button'
+									tabIndex='0'
+								>
+									<X stroke={closeModalStroke} />
+								</div>
+
 								<div className='jdg-modal-content'>{children}</div>
 							</div>
 						</div>
