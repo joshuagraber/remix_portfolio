@@ -53,6 +53,10 @@ export function links() {
 	];
 }
 
+export const meta = () => ({
+	title: 'Joshua D. Graber | Contact',
+});
+
 export default function Contact() {
 	// HOOKS - NAV
 	const navigate = useNavigate();
@@ -88,14 +92,12 @@ export default function Contact() {
 	}, [formData, hasResponseMessageFinishedDisplaying]);
 
 	return (
-		<Layout>
-			<ContainerCenter className='jdg-contact-container-center'>
-				<ContactForm
-					data={formData}
-					isResponseFinished={hasResponseMessageFinishedDisplaying}
-					type='page'
-				/>
-			</ContainerCenter>
-		</Layout>
+		<ContainerCenter className='jdg-contact-container-center'>
+			<ContactForm
+				data={formData}
+				isResponseFinished={hasResponseMessageFinishedDisplaying}
+				type='page'
+			/>
+		</ContainerCenter>
 	);
 }

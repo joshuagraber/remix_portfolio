@@ -1,17 +1,19 @@
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from '~/components/ContainerCenter';
-import { Layout, links as layoutLinks } from '~/components/Layout';
 
+// EXPORTS
 export function links() {
-	return [...containerCenterLinks(), ...layoutLinks()];
+	return [...containerCenterLinks()];
 }
+
+export const meta = () => ({
+	title: 'Joshua D. Graber | Blog',
+});
 
 export default function Blog() {
 	return (
-		<Layout>
-			<ContainerCenter>
-				<div>Hello from Blog page!</div>;
-			</ContainerCenter>
-		</Layout>
+		<ContainerCenter>
+			<div>Hello from Blog page!</div>;
+		</ContainerCenter>
 	);
 }

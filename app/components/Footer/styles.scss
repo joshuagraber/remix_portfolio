@@ -28,6 +28,10 @@
 		align-items: center;
 		display: flex;
 		gap: 16px;
+
+		&-link {
+			cursor: pointer;
+		}
 	}
 
 	:root[data-theme='jdg-light-mode'] & {

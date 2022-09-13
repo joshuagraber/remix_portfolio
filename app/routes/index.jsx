@@ -6,7 +6,6 @@ import styles from './styles.css';
 // COMPONENTS
 import { Arrow } from '../components/SVG/Arrow';
 import { ContainerCenter, links as containerCenterLinks } from '~/components/ContainerCenter';
-import { Layout, links as layoutLinks } from '~/components/Layout';
 
 // HOOKS
 import { useIsFirstTimeVisitor } from '~/hooks/useIsFirstTimeVisitor';
@@ -18,7 +17,7 @@ import clsx from 'clsx';
 
 // EXPORTS
 export function links() {
-	return [...containerCenterLinks(), ...layoutLinks(), { rel: 'stylesheet', href: styles }];
+	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 }
 
 export default function Index() {
@@ -68,28 +67,26 @@ export default function Index() {
 	});
 
 	return (
-		<Layout>
-			<ContainerCenter className={classes}>
-				{!firstTimeVisitorUnset && (
-					<>
-						<div className='jdg-home-image-container'>
-							<figure className='jdg-home-image'>
-								<img src={headshot} alt='Joshua D. Graber close-up headshot' />
-								<figcaption>Photo by Grace Rosselli</figcaption>
-							</figure>
-						</div>
-						<div className='jdg-home-text-container'>
-							<h2>Writing</h2>
-							<h2>Editing</h2>
-							<h2>JavaScript development</h2>
+		<ContainerCenter className={classes}>
+			{!firstTimeVisitorUnset && (
+				<>
+					<div className='jdg-home-image-container'>
+						<figure className='jdg-home-image'>
+							<img src={headshot} alt='Joshua D. Graber close-up headshot' />
+							<figcaption>Photo by Grace Rosselli</figcaption>
+						</figure>
+					</div>
+					<div className='jdg-home-text-container'>
+						<h2>Writing</h2>
+						<h2>Editing</h2>
+						<h2>JavaScript development</h2>
 
-							<Link prefetch='intent' to='work'>
-								Learn more <Arrow stroke={arrowStroke} direction='right' />
-							</Link>
-						</div>
-					</>
-				)}
-			</ContainerCenter>
-		</Layout>
+						<Link prefetch='intent' to='work'>
+							Learn more <Arrow stroke={arrowStroke} direction='right' />
+						</Link>
+					</div>
+				</>
+			)}
+		</ContainerCenter>
 	);
 }

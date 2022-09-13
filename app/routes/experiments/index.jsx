@@ -8,18 +8,20 @@ will be too complex and idiosyncratic to use a CDN)
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from '~/components/ContainerCenter';
-import { Layout, links as layoutLinks } from '~/components/Layout';
 
+// EXPORTS
 export function links() {
-	return [...containerCenterLinks(), ...layoutLinks()];
+	return [...containerCenterLinks()];
 }
+
+export const meta = () => ({
+	title: 'Joshua D. Graber | Experiments',
+});
 
 export default function Experiments() {
 	return (
-		<Layout>
-			<ContainerCenter>
-				<div>Hello from Experiments page!</div>
-			</ContainerCenter>
-		</Layout>
+		<ContainerCenter>
+			<div>Hello from Experiments page!</div>
+		</ContainerCenter>
 	);
 }

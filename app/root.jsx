@@ -1,14 +1,26 @@
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
-
-// STYLESHEETS
+// GLOBALS
+import {
+	Links,
+	LiveReload,
+	Meta,
+	// Outlet,
+	Scripts,
+	ScrollRestoration,
+	useOutlet,
+} from '@remix-run/react';
 import globalStyles from './theme/global.css';
 import themes from './theme/themes.css';
 
+// COMPONENTS
+import { Layout, links as layoutLinks } from './components/Layout';
+
 // CONTEXT
+import { AppProvider } from './context';
 import { ThemeProvider } from './theme';
 
 export function links() {
 	return [
+		...layoutLinks(),
 		{ rel: 'stylesheet', href: themes },
 		{ rel: 'stylesheet', href: globalStyles },
 	];
@@ -21,27 +33,32 @@ export const meta = () => ({
 });
 
 export default function App() {
+	// HOOKS - REMIX
+	const outlet = useOutlet();
+
 	return (
-		<ThemeProvider>
-			<html lang='en'>
-				<head>
-					<Meta />
+		<AppProvider>
+			<ThemeProvider>
+				<html lang='en'>
+					<head>
+						<Meta />
 
-					<Links />
-				</head>
+						<Links />
+					</head>
 
-				<body>
-					<div id='app'>
-						<Outlet />
+					<body>
+						<div id='app'>
+							<Layout>{outlet}</Layout>
 
-						<ScrollRestoration />
+							<ScrollRestoration />
 
-						<Scripts />
+							<Scripts />
 
-						<LiveReload />
-					</div>
-				</body>
-			</html>
-		</ThemeProvider>
+							<LiveReload />
+						</div>
+					</body>
+				</html>
+			</ThemeProvider>
+		</AppProvider>
 	);
 }
