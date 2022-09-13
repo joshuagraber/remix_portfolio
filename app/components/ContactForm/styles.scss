@@ -1,5 +1,4 @@
 @import '../../theme/variables.scss';
-@import '../../theme/themes.css';
 
 .jdg-contact-form-container {
 	height: 100%;
@@ -27,7 +26,7 @@
 		legend {
 			background-color: var(--color-accent-primary);
 			font-size: 36px;
-			font: $font-heading-primary;
+			font: $font-heading-secondary;
 			border-radius: 12px;
 			color: var(--color-neutral-1);
 			padding: 12px;
@@ -86,7 +85,7 @@
 		padding: 12px 16px;
 	}
 
-	&-thank-you {
+	&-response {
 		align-items: center;
 		border: 2px solid var(--color-text-primary);
 		border-radius: 24px;

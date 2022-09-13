@@ -1,6 +1,6 @@
-// GLOBALS
+import React from 'react';
 import { json } from '@remix-run/node';
-import { useActionData } from '@remix-run/react';
+import { useActionData, useNavigate } from '@remix-run/react';
 import styles from './styles.css';
 
 // COMPONENTS
@@ -16,12 +16,32 @@ export async function action({ request }) {
 	const email = submission.get('email');
 	const message = submission.get('message');
 
-	// Log is in the server, not browser
-	console.log({ name, email, message });
+	try {
+		// Log is in the server, not browser
+		console.log({ name, email, message });
 
-	return json({
-		thankYouMessage: `Thank you for your email, ${name}. It has been submitted successfully.`,
-	});
+		// TODO:
+		// Set up nodemailer async func, import and use here
+		return json(
+			{
+				success: {
+					heading: `Thank you for your email, ${name}.`,
+					body: 'It has been submitted successfully.',
+				},
+			},
+			{ status: 200 }
+		);
+	} catch (error) {
+		return json(
+			{
+				error: {
+					heading: `Sorry, ${name}, something didn't work.`,
+					body: 'Your email failed to send. Please try submitting your message again.',
+				},
+			},
+			{ status: error.status }
+		);
+	}
 }
 
 export function links() {
@@ -34,12 +54,47 @@ export function links() {
 }
 
 export default function Contact() {
+	// HOOKS - NAV
+	const navigate = useNavigate();
+
+	// HOOKS - REMIX
 	const formData = useActionData();
+
+	// HOOKS - STATE
+	const [hasResponseMessageFinishedDisplaying, setHasResponseMessageFinishedDisplaying] =
+		React.useState(false);
+
+	// HOOKS - EFFECTS
+	React.useEffect(() => {
+		if (typeof formData === 'undefined') {
+			return;
+		}
+		let timeout = null;
+		// When success, redirect to /work
+		if (formData.success) {
+			timeout = setTimeout(() => {
+				navigate('/work');
+			}, 2500);
+		}
+		// When error, display error message for 4.5s, then return to form
+		if (formData?.error && !hasResponseMessageFinishedDisplaying) {
+			timeout = setTimeout(() => {
+				setHasResponseMessageFinishedDisplaying(true);
+			}, 4500);
+		}
+		if (timeout) {
+			return () => clearTimeout(timeout);
+		}
+	}, [formData, hasResponseMessageFinishedDisplaying]);
 
 	return (
 		<Layout>
 			<ContainerCenter className='jdg-contact-container-center'>
-				<ContactForm formData={formData} type='page' />
+				<ContactForm
+					data={formData}
+					isResponseFinished={hasResponseMessageFinishedDisplaying}
+					type='page'
+				/>
 			</ContainerCenter>
 		</Layout>
 	);
