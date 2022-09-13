@@ -20,9 +20,9 @@ import { ThemeProvider } from './theme';
 
 export function links() {
 	return [
-		...layoutLinks(),
 		{ rel: 'stylesheet', href: themes },
 		{ rel: 'stylesheet', href: globalStyles },
+		...layoutLinks(),
 	];
 }
 
