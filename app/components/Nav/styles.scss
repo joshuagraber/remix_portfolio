@@ -24,7 +24,8 @@
 		transition: 0.2s ease background-color;
 
 		&-active,
-		&:hover {
+		&:hover,
+		&:focus {
 			text-decoration: 3px solid underline var(--color-theme-primary-4);
 			text-underline-offset: 6px;
 		}

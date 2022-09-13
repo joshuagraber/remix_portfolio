@@ -1,6 +1,42 @@
 @import '../../theme/variables.scss';
 
 .jdg-modal {
+	opacity: 0;
+	transition: opacity 0.7s ease;
+
+	// Transition states
+	&-entering {
+		opacity: 0;
+
+		.jdg-modal-container {
+			transform: scale(0);
+		}
+	}
+
+	&-entered {
+		opacity: 1;
+
+		.jdg-modal-container {
+			transform: scale(1);
+		}
+	}
+
+	&-exiting {
+		opacity: 1;
+
+		.jdg-modal-container {
+			transform: scale(1);
+		}
+	}
+
+	&-exited {
+		opacity: 0;
+
+		.jdg-modal-container {
+			transform: scale(0);
+		}
+	}
+
 	.jdg-modal-backdrop {
 		align-items: center;
 		background-color: var(--color-neutral-black-opacity_60);
@@ -17,6 +53,7 @@
 
 	.jdg-modal-container {
 		position: relative;
+		transition: transform 0.3s ease;
 	}
 
 	.jdg-modal-icon-container {
@@ -33,7 +70,8 @@
 		width: 40px;
 		z-index: 101;
 
-		&:hover {
+		&:hover,
+		&:focus {
 			background: var(--color-neutral-black-opacity_20);
 		}
 	}
@@ -42,7 +80,7 @@
 		background-color: var(--color-background);
 		border-radius: 16px;
 		overflow-y: auto;
-		max-height: 672px;
+		max-height: 650px;
 		padding: 48px;
 		width: 640px;
 		z-index: 100;

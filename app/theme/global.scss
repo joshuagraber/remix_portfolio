@@ -14,6 +14,17 @@ body,
 	min-height: 100vh;
 }
 
+// Remove default outline and border for inputs and links
+input:focus,
+select:focus,
+textarea:focus,
+a:focus,
+button:focus,
+*[role='button']:focus {
+	outline: none;
+	border: none;
+}
+
 :root {
 	background: var(--color-background);
 	color: var(--color-text-primary);
@@ -31,8 +42,10 @@ a {
 	text-decoration: none;
 
 	&:active,
-	&:hover {
+	&:hover,
+	&:focus {
 		text-decoration: underline var(--color-accent-primary) 1px;
+		text-underline-offset: 6px;
 	}
 
 	&:visited {
@@ -42,11 +55,4 @@ a {
 	:root[data-theme='jdg-light-mode'] &:visited {
 		color: var(--color-neutral-1);
 	}
-}
-
-// Remove default outline for inputs on some browsers
-input:focus,
-select:focus,
-textarea:focus {
-	outline: none;
 }
