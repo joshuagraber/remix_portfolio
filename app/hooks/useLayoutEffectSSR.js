@@ -1,10 +1,7 @@
 import React from 'react';
 
-export const canUseDOM = !!(
-	typeof window !== 'undefined' &&
-	window.document &&
-	window.document.createElement
-);
+// UTIL
+import { canUseDOM } from '~/utils/utils';
 
 // "Custom hook" for SSR
 export const useLayoutEffect = canUseDOM ? React.useLayoutEffect : () => {};

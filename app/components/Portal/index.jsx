@@ -3,7 +3,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 
 // Hooks
-import { canUseDOM } from '~/hooks/useLayoutEffectSSR';
+import { canUseDOM } from '../../utils/utils';
 
 export const Portal = ({ className, children }) => {
 	// HOOKS - STATE
