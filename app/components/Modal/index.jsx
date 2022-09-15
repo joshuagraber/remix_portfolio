@@ -1,6 +1,7 @@
 // GLOBALS
 import React from 'react';
 import styles from './styles.css';
+import { bool, func, node, string } from 'prop-types';
 
 // COMPONENTS
 import { Portal } from '../Portal';
@@ -114,4 +115,11 @@ export const Modal = ({ className = '', children, hide, isVisible = false }) => 
 			}}
 		</Transition>
 	);
+};
+
+Modal.propTypes = {
+	className: string,
+	children: node.isRequired,
+	hide: func.isRequired,
+	isVisible: bool.isRequired,
 };

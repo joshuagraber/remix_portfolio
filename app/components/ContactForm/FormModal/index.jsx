@@ -1,6 +1,7 @@
 // GLOBALS
 import React from 'react';
 import { useFetcher } from '@remix-run/react';
+import { func } from 'prop-types';
 
 // COMPONENTS
 import { ContactFormFieldset } from '../Fieldset';
@@ -31,15 +32,13 @@ export const ContactFormModal = ({ hide }) => {
 				hide();
 			}, 2500);
 		}
-		// Only reset if ref is applied to el and action returns success
-		if (ref.current && fetcher.type === 'done') {
-			ref.current.reset();
-		}
+
 		if (fetcher?.data?.error && !hasResponseMessageFinishedDisplaying) {
 			timeout = setTimeout(() => {
 				setHasResponseMessageFinishedDisplaying(true);
 			}, 4500);
 		}
+
 		if (timeout) {
 			return () => clearTimeout(timeout);
 		}
@@ -58,10 +57,15 @@ export const ContactFormModal = ({ hide }) => {
 				<ContactFormFieldset />
 				<button type='submit'>Send your message now</button>
 			</fetcher.Form>
+
 			<ContactFormResponseMessage
 				data={fetcher.data}
 				isResponseFinished={hasResponseMessageFinishedDisplaying}
 			/>
 		</div>
 	);
+};
+
+ContactFormModal.propTypes = {
+	hide: func,
 };

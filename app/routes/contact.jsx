@@ -6,7 +6,6 @@ import styles from './styles.css';
 // COMPONENTS
 import { ContactForm, links as contactFormLinks } from '~/components/ContactForm';
 import { ContainerCenter, links as containerCenterLinks } from '~/components/ContainerCenter';
-import { Layout, links as layoutLinks } from '~/components/Layout';
 
 // EXPORTS
 export async function action({ request }) {
@@ -45,12 +44,7 @@ export async function action({ request }) {
 }
 
 export function links() {
-	return [
-		...contactFormLinks(),
-		...containerCenterLinks(),
-		...layoutLinks(),
-		{ rel: 'stylesheet', href: styles },
-	];
+	return [...contactFormLinks(), ...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 }
 
 export const meta = () => ({
@@ -65,8 +59,7 @@ export default function Contact() {
 	const formData = useActionData();
 
 	// HOOKS - STATE
-	const [hasResponseMessageFinishedDisplaying, setHasResponseMessageFinishedDisplaying] =
-		React.useState(false);
+	const [isResponseFinished, setIsResponseFinished] = React.useState(false);
 
 	// HOOKS - EFFECTS
 	React.useEffect(() => {
@@ -74,30 +67,29 @@ export default function Contact() {
 			return;
 		}
 		let timeout = null;
+
 		// When success, redirect to /work
 		if (formData.success) {
 			timeout = setTimeout(() => {
 				navigate('/work');
 			}, 2500);
 		}
+
 		// When error, display error message for 4.5s, then return to form
-		if (formData?.error && !hasResponseMessageFinishedDisplaying) {
+		if (formData?.error && !isResponseFinished) {
 			timeout = setTimeout(() => {
-				setHasResponseMessageFinishedDisplaying(true);
+				setIsResponseFinished(true);
 			}, 4500);
 		}
+
 		if (timeout) {
 			return () => clearTimeout(timeout);
 		}
-	}, [formData, hasResponseMessageFinishedDisplaying]);
+	}, [formData, isResponseFinished]);
 
 	return (
 		<ContainerCenter className='jdg-contact-container-center'>
-			<ContactForm
-				data={formData}
-				isResponseFinished={hasResponseMessageFinishedDisplaying}
-				type='page'
-			/>
+			<ContactForm data={formData} isResponseFinished={isResponseFinished} type='page' />
 		</ContainerCenter>
 	);
 }

@@ -1,3 +1,6 @@
+// GLOBALS
+import { oneOf, string } from 'prop-types';
+
 export const X = ({ height = '24px', stroke = 'white', width = '24px' }) => (
 	<svg
 		width={width}
@@ -14,3 +17,9 @@ export const X = ({ height = '24px', stroke = 'white', width = '24px' }) => (
 		/>
 	</svg>
 );
+
+X.propTypes = {
+	height: string,
+	stroke: oneOf('white', 'black'),
+	width: string,
+};

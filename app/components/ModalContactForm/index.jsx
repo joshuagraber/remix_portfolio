@@ -1,4 +1,5 @@
-import React from 'react';
+// GLOBALS
+import { bool, func } from 'prop-types';
 
 // COMPONENTS
 import { ContactForm, links as contactFormLinks } from '../ContactForm';
@@ -15,4 +16,9 @@ export const ModalContactForm = ({ hide, isVisible }) => {
 			<ContactForm hide={hide} type='modal' />
 		</Modal>
 	);
+};
+
+ModalContactForm.propTypes = {
+	hide: func.isRequired,
+	isVisible: bool.isRequired,
 };

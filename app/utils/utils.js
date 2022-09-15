@@ -8,6 +8,8 @@ export const canUseDOM = !!(
 );
 
 // Keydown handler
+// TODO: just use react-aria (https://react-spectrum.adobe.com/react-aria/useKeyboard.html)
+// TODO: and use it elsewhere (like the theme toggle) as well
 export function handleKeyDownLikeClick(handler, event) {
 	if (!handler || !event) {
 		throw new Error('Pass handleKeyDownLikeClick both a handler and a keyboard event, please.');

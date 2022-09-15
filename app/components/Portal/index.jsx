@@ -1,6 +1,7 @@
 // GLOBALS
 import React from 'react';
 import { createPortal } from 'react-dom';
+import { node, string } from 'prop-types';
 
 // Hooks
 import { canUseDOM } from '../../utils/utils';
@@ -36,4 +37,9 @@ export const Portal = ({ className, children }) => {
 	portal.className = className;
 	portal.key = className;
 	return createPortal(children, portal);
+};
+
+Portal.propTypes = {
+	className: string,
+	children: node.isRequired,
 };
