@@ -20,6 +20,6 @@ export const X = ({ height = '24px', stroke = 'white', width = '24px' }) => (
 
 X.propTypes = {
 	height: string,
-	stroke: oneOf('white', 'black'),
+	stroke: oneOf(['white', 'black']),
 	width: string,
 };
