@@ -60,3 +60,8 @@
 	--color-text-secondary: var(--color-neutral-6);
 	--color-text-tertiary: var(--color-neutral-5);
 }
+
+// Until theme is set, display nothing
+:root[data-theme='unset'] {
+	display: none;
+}
