@@ -1,5 +1,4 @@
 :root {
-	// Neutral and accent vars defined for whole project
 	--color-neutral-0: #0d0d0d;
 	--color-neutral-1: #1e1e1e;
 	--color-neutral-2: #313131;
@@ -7,8 +6,10 @@
 	--color-neutral-4: #7d7c7c;
 	--color-neutral-5: #9e9e9e;
 	--color-neutral-6: #cbcbcb;
-	--color-neutral-7: #d5d5d5;
-	--color-neutral-8: #fff;
+	--color-neutral-7: #b9b9b9;
+	--color-neutral-8: #ecebeb;
+	--color-neutral-9: #ebe8e8;
+	--color-neutral-10: #fff;
 
 	--color-theme-primary-0: #2b1931;
 	--color-theme-primary-1: #4e2e58;
@@ -43,7 +44,7 @@
 }
 
 :root[data-theme='jdg-light-mode'] {
-	--color-background: var(--color-neutral-8);
+	--color-background: var(--color-neutral-10);
 	--color-accent-primary: var(--color-accent-plum);
 	--color-accent-secondary: var(--color-accent-mauve);
 	--color-text-primary: var(--color-neutral-0);

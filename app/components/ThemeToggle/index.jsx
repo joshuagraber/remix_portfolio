@@ -1,16 +1,22 @@
+// GLOBALS
+import styles from './styles.css';
+
 // UTIL
 import { useTheme } from '~/theme';
-
-import styles from './styles.css';
 
 export function links() {
 	return [{ rel: 'stylesheet', href: styles }];
 }
 
+// TODO: Refactor to use react-aria
 export const ThemeToggle = () => {
+	// HOOKS - CUSTOM
 	const { theme, toggleTheme } = useTheme();
+
+	// VARS
 	const isDarkMode = theme === 'jdg-dark-mode';
 
+	// HANDLERS
 	const handleChange = () => {
 		toggleTheme();
 	};
@@ -18,13 +24,15 @@ export const ThemeToggle = () => {
 	return (
 		<div className='jdg-theme-toggle'>
 			<input
+				aria-label='toggle dark and light theme'
+				aria-checked={isDarkMode}
 				checked={isDarkMode}
 				className='jdg-theme-toggle-input'
 				id='jdg-theme-toggle'
 				onChange={handleChange}
 				type='checkbox'
 			/>
-			<label htmlFor='jdg-theme-toggle' className='jdg-theme-toggle-label'></label>
+			<label htmlFor='jdg-theme-toggle' className='jdg-theme-toggle-label' />
 		</div>
 	);
 };

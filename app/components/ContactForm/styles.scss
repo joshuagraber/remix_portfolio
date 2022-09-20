@@ -33,7 +33,7 @@
 			transform: skewX(5deg);
 
 			:root[data-theme='jdg-light-mode'] & {
-				color: var(--color-neutral-8);
+				color: var(--color-neutral-10);
 			}
 		}
 	}
@@ -54,7 +54,7 @@
 		}
 
 		:root[data-theme='jdg-light-mode'] & {
-			background-color: var(--color-neutral-7);
+			background-color: var(--color-neutral-8);
 
 			&:focus {
 				border-color: var(--color-theme-primary-4);

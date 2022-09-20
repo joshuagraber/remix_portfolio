@@ -13,6 +13,7 @@ import { useTheme } from '~/theme';
 
 // EXTERNAL LIBS
 import clsx from 'clsx';
+import FocusTrap from 'focus-trap-react';
 import { getDocument } from 'ssr-window';
 
 // UTILS
@@ -26,6 +27,7 @@ export function links() {
 export const Modal = ({ className = '', children, hide, isVisible = false }) => {
 	// GLOBALS
 	const document = getDocument();
+	const ref = React.useRef();
 
 	// CONTEXT
 	const { theme } = useTheme();
@@ -67,7 +69,7 @@ export const Modal = ({ className = '', children, hide, isVisible = false }) => 
 		in: isVisible,
 		mountOnEnter: true,
 		unmountOnExit: true,
-		timeout: 100,
+		timeout: 400,
 	};
 
 	const closeModalStroke = theme === 'jdg-light-mode' ? 'black' : 'white';
@@ -84,8 +86,6 @@ export const Modal = ({ className = '', children, hide, isVisible = false }) => 
 					'jdg-modal-exited': state === 'exited',
 				});
 
-				// TODO: set up handler to focus modal when it opens
-
 				return (
 					<Portal className={classes}>
 						<div
@@ -95,20 +95,22 @@ export const Modal = ({ className = '', children, hide, isVisible = false }) => 
 							onKeyDown={stopPropagation}
 							role='dialog'
 						>
-							<div className='jdg-modal-container'>
-								<div
-									aria-label='Close modal'
-									className='jdg-modal-icon-container'
-									onClick={closeModal}
-									onKeyDown={handleCloseModalKeyDown}
-									role='button'
-									tabIndex='0'
-								>
-									<X stroke={closeModalStroke} />
-								</div>
+							<FocusTrap focusTrapOptions={{ fallbackFocus: ref }}>
+								<div className='jdg-modal-container' ref={ref}>
+									<div
+										aria-label='Close modal'
+										className='jdg-modal-icon-container'
+										onClick={closeModal}
+										onKeyDown={handleCloseModalKeyDown}
+										role='button'
+										tabIndex={0}
+									>
+										<X stroke={closeModalStroke} />
+									</div>
 
-								<div className='jdg-modal-content'>{children}</div>
-							</div>
+									<div className='jdg-modal-content'>{children}</div>
+								</div>
+							</FocusTrap>
 						</div>
 					</Portal>
 				);

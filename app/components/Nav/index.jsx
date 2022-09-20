@@ -6,6 +6,7 @@ import styles from './styles.css';
 
 // EXTERNAL LIBS
 import { getWindow } from 'ssr-window';
+import { useLink } from 'react-aria';
 
 // HOOKS
 import { useEffectDidUpdate } from '~/hooks/useEffectDidUpdate';
@@ -88,6 +89,36 @@ export const Nav = ({ isMobile }) => {
 		setIsExpanded((wasExpanded) => !wasExpanded);
 	};
 
+	// SUBCOMPONENT
+	const AriaNavLink = ({ route }) => {
+		const ref = React.useRef();
+		const ariaProps = {
+			elementType: 'a',
+		};
+
+		const { linkProps } = useLink(ariaProps, ref);
+
+		const routeTitleCased = route[0].toUpperCase() + route.slice(1);
+
+		return (
+			<NavLink
+				{...linkProps}
+				aria-hidden={!isExpanded}
+				className={({ isActive }) =>
+					isActive ? `${CLASS_NAME} ${ACTIVE_CLASS_NAME}` : `${CLASS_NAME}`
+				}
+				onClick={onClick}
+				prefetch='intent'
+				ref={ref}
+				role='menuitem'
+				tabIndex={isExpanded ? 0 : -1}
+				to={`/${route}`}
+			>
+				{routeTitleCased}
+			</NavLink>
+		);
+	};
+
 	return (
 		<nav className='jdg-nav'>
 			<button
@@ -102,22 +133,7 @@ export const Nav = ({ isMobile }) => {
 			</button>
 			<menu aria-hidden={!isExpanded} className='jdg-nav-menu' id='jdg-nav-menu'>
 				{NAV_ROUTES.map((route) => {
-					const routeTitleCased = route[0].toUpperCase() + route.slice(1);
-					return (
-						<NavLink
-							aria-hidden={!isExpanded}
-							className={({ isActive }) =>
-								isActive ? `${CLASS_NAME} ${ACTIVE_CLASS_NAME}` : `${CLASS_NAME}`
-							}
-							key={route}
-							prefetch='intent'
-							role='menuitem'
-							tabIndex={isExpanded ? '0' : '-1'}
-							to={`/${route}`}
-						>
-							{routeTitleCased}
-						</NavLink>
-					);
+					return <AriaNavLink key={route} route={route} />;
 				})}
 			</menu>
 		</nav>

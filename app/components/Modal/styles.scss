@@ -2,7 +2,7 @@
 
 .jdg-modal {
 	opacity: 0;
-	transition: opacity 0.7s ease;
+	transition: opacity 0.4s ease;
 
 	// Transition states
 	&-entering {
@@ -22,19 +22,13 @@
 	}
 
 	&-exiting {
-		opacity: 1;
-
 		.jdg-modal-container {
-			transform: scale(1);
+			transform: scale(0);
 		}
 	}
 
 	&-exited {
 		opacity: 0;
-
-		.jdg-modal-container {
-			transform: scale(0);
-		}
 	}
 
 	.jdg-modal-backdrop {
@@ -53,12 +47,12 @@
 
 	.jdg-modal-container {
 		position: relative;
-		transition: transform 0.3s ease;
+		transition: transform 0.4s ease;
 	}
 
 	.jdg-modal-icon-container {
 		align-items: center;
-		background: var(--color-neutral-white-opacity_20);
+		background: var(--color-neutral-black-opacity_20);
 		border-radius: 50%;
 		cursor: pointer;
 		display: flex;
@@ -72,13 +66,23 @@
 
 		&:hover,
 		&:focus {
-			background: var(--color-neutral-black-opacity_20);
+			background: var(--color-neutral-white-opacity_20);
+		}
+
+		:root[data-theme='jdg-light-mode'] & {
+			background: var(--color-neutral-8);
+
+			&:hover,
+			&:focus {
+				background: var(--color-neutral-7);
+			}
 		}
 	}
 
 	.jdg-modal-content {
 		background-color: var(--color-background);
 		border-radius: 16px;
+		height: 90vh;
 		overflow-y: auto;
 		max-height: 650px;
 		padding: 48px;

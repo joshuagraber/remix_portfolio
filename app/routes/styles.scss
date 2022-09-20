@@ -1,5 +1,8 @@
 @import '../theme/variables.scss';
 
+// Vars
+$text-container-width: 620px;
+
 // Home page
 .jdg-main {
 	.jdg-home-image {
@@ -34,11 +37,12 @@
 			transition: opacity 0.5s ease;
 
 			:root[data-theme='jdg-light-mode'] & {
-				color: var(--color-neutral-8);
+				color: var(--color-neutral-10);
 			}
 		}
 
-		&:hover figcaption {
+		&:hover figcaption,
+		&:focus figcaption {
 			opacity: 1;
 		}
 	}
@@ -48,7 +52,7 @@
 		flex: 1 1;
 		flex-direction: column;
 		gap: 16px;
-		max-width: 600px;
+		max-width: $text-container-width;
 
 		h2 {
 			font: $font-heading-primary;
@@ -94,7 +98,7 @@
 			}
 			.jdg-home-text-container {
 				animation: fade_in 2s ease;
-				max-width: 600px;
+				max-width: $text-container-width;
 			}
 		}
 
@@ -176,10 +180,10 @@
 	}
 	50% {
 		opacity: 0;
-		max-width: 600px;
+		max-width: $text-container-width;
 	}
 	100% {
 		opacity: 1;
-		max-width: 600px;
+		max-width: $text-container-width;
 	}
 }

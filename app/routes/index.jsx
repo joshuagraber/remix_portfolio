@@ -41,7 +41,7 @@ export default function Index() {
 			timeout = setTimeout(() => {
 				setimageIsHidden(false);
 				setTextIsHidden(false);
-			}, 1000); // Timeout should match CSS animation delay
+			}, 1100); // Timeout should match CSS animation delay
 		}
 
 		if (!isFirstTimeVisitor) {
@@ -59,6 +59,7 @@ export default function Index() {
 	const firstTimeVisitorUnset = typeof isFirstTimeVisitor === 'undefined';
 
 	// CLASSES
+	// TODO: use CSSTransition in combination with this
 	const classes = clsx('jdg-home-container-center', {
 		'jdg-home-container-center-hide-text': textIsHidden,
 		'jdg-home-container-center-hide-image': imageIsHidden,
@@ -73,7 +74,7 @@ export default function Index() {
 					<div className='jdg-home-image-container'>
 						<figure className='jdg-home-image'>
 							<img src={headshot} alt='Joshua D. Graber close-up headshot' />
-							<figcaption>Photo by Grace Rosselli</figcaption>
+							<figcaption>Photo by Jasmine!</figcaption>
 						</figure>
 					</div>
 					<div className='jdg-home-text-container'>

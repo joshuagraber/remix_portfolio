@@ -4,8 +4,24 @@
 	&-open-button {
 		cursor: pointer;
 		display: none;
-		background-color: unset;
+		background-color: var(--color-neutral-0);
 		border: unset;
+		border-radius: 5px;
+		transition: background-color 0.2s ease;
+
+		&:hover,
+		&:focus {
+			background-color: var(--color-neutral-2);
+		}
+
+		:root[data-theme='jdg-light-mode'] & {
+			background-color: var(--color-neutral-10);
+
+			&:hover,
+			&:focus {
+				background-color: var(--color-neutral-8);
+			}
+		}
 	}
 
 	&-menu {
@@ -69,13 +85,15 @@
 			border-bottom: 3px solid transparent;
 
 			&-active,
-			&:hover {
+			&:hover,
+			&:focus {
 				border-bottom: 3px solid var(--color-theme-primary-4);
 				text-decoration: none;
 			}
 
 			:root[data-theme='jdg-light-mode'] & {
 				background-color: var(--color-neutral-black-opacity_20);
+
 				&-active,
 				&:hover {
 					border-bottom: 3px solid var(--color-theme-primary-1);
