@@ -1,5 +1,5 @@
 // GLOBALS
-import { bool, oneOf, shape, string } from 'prop-types';
+import { bool, oneOf, shape, string, undefined } from 'prop-types';
 
 export const ContactFormResponseMessage = ({ data, isResponseFinished }) => {
 	// VARS
@@ -25,6 +25,7 @@ ContactFormResponseMessage.propTypes = {
 	data: oneOf([
 		shape({ current: shape({ headline: string, body: string }) }),
 		shape({ error: shape({ headline: string, body: string }) }),
-	]).isRequired,
+		undefined,
+	]),
 	isResponseFinished: bool.isRequired,
 };
