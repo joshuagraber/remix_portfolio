@@ -3,14 +3,16 @@
 	"sideEffects": false,
 	"scripts": {
 		"postinstall": "npm run build",
-		"build": "sass app/:app/ && css && remix build",
+		"build": "npm run build:sass && npm run build:css && remix build",
+		"build:sass": "sass styles/:styles/",
+		"build:css": "npx postcss styles/**/*.css --dir app/styles --use autoprefixer",
 		"dev": "run-p dev:*",
 		"dev:remix": "remix dev",
 		"dev:styles": "run-p styles:*",
-		"styles:css": "npx postcss styles/**/*.css --dir app/styles --use autoprefixer --watch",
 		"start": "remix build && run-p start:*",
 		"start:remix": "node server.js",
 		"start:styles": "run-p styles:*",
+		"styles:css": "npx postcss styles/**/*.css --dir app/styles --use autoprefixer --watch",
 		"styles:sass": "sass --watch styles/:styles/"
 	},
 	"dependencies": {
@@ -52,6 +54,7 @@
 	"browserslist": [
 		"last 4 versions",
 		"> .2%",
+		"Firefox ESR",
 		"iOS >= 8",
 		"not dead"
 	]
