@@ -72,7 +72,7 @@ export const Accordion = ({ children, isDisabled = false, isOpen = false, headin
 				</button>
 			</div>
 			<div aria-hidden={!isAccordionOpen} className='jdg-accordion-body' id='jdg-accordion-body'>
-				{children}
+				<div className='jdg-accordion-body-container'>{children}</div>
 			</div>
 		</div>
 	);
