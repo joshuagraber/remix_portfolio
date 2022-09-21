@@ -1,4 +1,4 @@
-@import '../../theme/variables.scss';
+@import '../../styles/theme/variables.scss';
 
 .jdg-header {
 	align-items: center;
@@ -12,6 +12,7 @@
 		display: grid;
 		grid-template-columns: 1fr auto auto;
 		grid-template-rows: repeat(2, auto);
+		width: 100%;
 	}
 
 	.jdg-nav {

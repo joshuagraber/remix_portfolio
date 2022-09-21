@@ -2,7 +2,7 @@
 import React from 'react';
 import { NavLink } from '@remix-run/react';
 import { bool } from 'prop-types';
-import styles from './styles.css';
+import styles from '../../styles/nav.css';
 
 // EXTERNAL LIBS
 import { getWindow } from 'ssr-window';
@@ -65,12 +65,9 @@ export const Nav = ({ isMobile }) => {
 		}
 
 		function clearingClick(event) {
-			if (!event?.target?.classList?.contains('jdg-nav-link')) {
-				event.preventDefault();
-			}
 			event.stopPropagation();
 
-			if (!event?.target?.classList?.contains('jdg-nav')) {
+			if (!event?.target?.classList?.contains('jdg-nav') && isMobile) {
 				setIsExpanded(false);
 			}
 		}
@@ -87,6 +84,12 @@ export const Nav = ({ isMobile }) => {
 	// HANDLER
 	const onClick = () => {
 		setIsExpanded((wasExpanded) => !wasExpanded);
+	};
+
+	const onLinkClick = () => {
+		if (isMobile) {
+			onClick();
+		}
 	};
 
 	// SUBCOMPONENT
@@ -107,7 +110,7 @@ export const Nav = ({ isMobile }) => {
 				className={({ isActive }) =>
 					isActive ? `${CLASS_NAME} ${ACTIVE_CLASS_NAME}` : `${CLASS_NAME}`
 				}
-				onClick={onClick}
+				onClick={onLinkClick}
 				prefetch='intent'
 				ref={ref}
 				role='menuitem'

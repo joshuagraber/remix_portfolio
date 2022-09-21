@@ -1,6 +1,6 @@
 // GLOBALS
 import { node, bool, string } from 'prop-types';
-import styles from './styles.css';
+import styles from '../../styles/container-center.css';
 
 // EXT LIBS
 import clsx from 'clsx';

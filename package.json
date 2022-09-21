@@ -3,13 +3,15 @@
 	"sideEffects": false,
 	"scripts": {
 		"postinstall": "npm run build",
-		"build": "sass app/:app/ && remix build",
-		"start": "remix build && run-p start:*",
-		"start:remix": "node server.js",
-		"start:sass": "sass --watch app/:app/",
+		"build": "sass app/:app/ && css && remix build",
 		"dev": "run-p dev:*",
 		"dev:remix": "remix dev",
-		"dev:sass": "sass --watch app/:app/"
+		"dev:styles": "run-p styles:*",
+		"styles:css": "npx postcss styles/**/*.css --dir app/styles --use autoprefixer --watch",
+		"start": "remix build && run-p start:*",
+		"start:remix": "node server.js",
+		"start:styles": "run-p styles:*",
+		"styles:sass": "sass --watch styles/:styles/"
 	},
 	"dependencies": {
 		"@remix-run/express": "^1.6.7",
@@ -34,14 +36,23 @@
 		"@remix-run/eslint-config": "^1.6.7",
 		"@types/react": "^18.0.15",
 		"@types/react-dom": "^18.0.6",
+		"autoprefixer": "^10.4.12",
 		"eslint": "^8.20.0",
 		"nodemon": "^2.0.19",
 		"npm-run-all": "^4.1.5",
+		"postcss": "^8.4.16",
+		"postcss-cli": "^10.0.0",
 		"prop-types": "^15.8.1",
 		"rmx-cli": "^0.3.1",
 		"sass": "^1.54.3"
 	},
 	"engines": {
 		"node": ">=14"
-	}
+	},
+	"browserslist": [
+		"last 4 versions",
+		"> .2%",
+		"iOS >= 8",
+		"not dead"
+	]
 }

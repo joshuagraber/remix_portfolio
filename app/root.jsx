@@ -8,8 +8,9 @@ import {
 	ScrollRestoration,
 	useOutlet,
 } from '@remix-run/react';
-import globalStyles from './theme/global.css';
-import themes from './theme/themes.css';
+
+import globalStyles from './styles/global.css';
+import themes from './styles/themes.css';
 
 // COMPONENTS
 import { Layout, links as layoutLinks } from './components/Layout';

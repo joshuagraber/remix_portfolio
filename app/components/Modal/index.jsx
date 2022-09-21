@@ -1,7 +1,7 @@
 // GLOBALS
 import React from 'react';
-import styles from './styles.css';
 import { bool, func, node, string } from 'prop-types';
+import styles from '../../styles/modal.css';
 
 // COMPONENTS
 import { Portal } from '../Portal';
@@ -87,7 +87,7 @@ export const Modal = ({ className = '', children, hide, isVisible = false }) => 
 				});
 
 				return (
-					<Portal className={classes}>
+					<Portal className={classes} id='jdg-modal-container' tabIndex={-1}>
 						<div
 							aria-modal='true'
 							className='jdg-modal-backdrop'
@@ -95,7 +95,16 @@ export const Modal = ({ className = '', children, hide, isVisible = false }) => 
 							onKeyDown={stopPropagation}
 							role='dialog'
 						>
-							<FocusTrap focusTrapOptions={{ fallbackFocus: ref }}>
+							<FocusTrap
+								focusTrapOptions={{
+									initialFocus: true,
+									fallbackFocus: () => {
+										if (ref.current) {
+											return ref.current;
+										}
+									},
+								}}
+							>
 								<div className='jdg-modal-container' ref={ref}>
 									<div
 										aria-label='Close modal'

@@ -1,5 +1,5 @@
 // GLOBALS
-import styles from './styles.css';
+import styles from '../../styles/footer.css';
 
 // HOOKS
 import { useTheme } from '~/theme';

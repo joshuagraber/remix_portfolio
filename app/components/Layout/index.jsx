@@ -1,6 +1,6 @@
 // GLOBALS
 import { node } from 'prop-types';
-import styles from './styles.css';
+import styles from '../../styles/layout.css';
 
 // COMPONENTS
 import { Header, links as headerLinks } from '../Header';

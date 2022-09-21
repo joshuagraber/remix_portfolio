@@ -1,5 +1,5 @@
 // GLOBALS
-import styles from './styles.css';
+import styles from '../../styles/toggle.css';
 
 // UTIL
 import { useTheme } from '~/theme';

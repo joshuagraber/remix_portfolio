@@ -1,7 +1,7 @@
 import React from 'react';
 import { json } from '@remix-run/node';
 import { useActionData, useNavigate } from '@remix-run/react';
-import styles from './styles.css';
+import styles from '../styles/index.css';
 
 // COMPONENTS
 import { ContactForm, links as contactFormLinks } from '~/components/ContactForm';

@@ -1,6 +1,6 @@
 // GLOBALS
 import React from 'react';
-import styles from './styles.css';
+import styles from '../../styles/header.css';
 import { Link } from '@remix-run/react';
 
 // EXT LIBS

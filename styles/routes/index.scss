@@ -163,6 +163,36 @@ $text-container-width: 620px;
 	}
 }
 
+// Work page
+.jdg-main {
+	.jdg-work-container-center {
+		display: flex;
+		flex-direction: column;
+		gap: 42px;
+		padding: 48px 24px 140px;
+	}
+
+	.jdg-work-heading {
+		text-align: center;
+		font: $font-heading-tertiary-emphasis;
+		font-size: 36px;
+		letter-spacing: 1.5px;
+		margin-bottom: 16px;
+	}
+
+	.jdg-work-about-container {
+		margin: 0 auto;
+		max-width: 600px;
+		width: 100%;
+	}
+
+	.jdg-work-work-container {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+}
+
 // Animation keyframes
 @keyframes fade_in {
 	0% {

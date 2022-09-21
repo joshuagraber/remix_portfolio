@@ -1,6 +1,6 @@
 // TODO: Add client-side validation.
 // GLOBALS
-import styles from './styles.css';
+import styles from '../../styles/contact-form.css';
 
 // COMPONENTS
 import { ContactFormPage } from './FormPage';

@@ -1,7 +1,7 @@
 // GLOBALS
 import React from 'react';
 import { Link } from '@remix-run/react';
-import styles from './styles.css';
+import styles from '../styles/index.css';
 
 // COMPONENTS
 import { Arrow } from '../components/SVG/Arrow';
