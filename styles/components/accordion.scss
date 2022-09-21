@@ -1,0 +1,50 @@
+@import '../../styles/theme/variables.scss';
+
+.jdg-accordion {
+	background-color: var(--color-background);
+	border: 1px solid var(--color-text-primary);
+	border-radius: 16px;
+	color: var(--color-text-primary);
+	overflow-y: hidden;
+	position: relative;
+	width: 100%;
+
+	&-heading-container {
+		background-color: inherit;
+		display: block;
+		border: unset;
+		height: 100%;
+		width: 100%;
+		z-index: 2;
+	}
+
+	&-button {
+		background-color: var(--color-background);
+		border: unset;
+		color: inherit;
+		cursor: pointer;
+		font: $font-heading-tertiary;
+		height: 100%;
+		line-height: 150%;
+		display: flex;
+		justify-content: space-between;
+		padding: 24px 24px 0;
+		width: 100%;
+	}
+
+	&-body {
+		max-height: 0;
+		opacity: 0;
+		padding: 0 24px 24px;
+		position: relative;
+		transition: opacity 0.3s 0.1s ease, max-height 0.4s 0.1s ease;
+		z-index: 1;
+	}
+
+	&-active {
+		.jdg-accordion-body {
+			max-height: 500px;
+			opacity: 1;
+		}
+	}
+}
