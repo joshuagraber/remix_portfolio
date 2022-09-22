@@ -41,18 +41,22 @@ a {
 	font: inherit;
 	text-decoration: none;
 
-	&:active,
 	&:hover,
+	&:active,
 	&:focus {
-		text-decoration: underline var(--color-theme-primary-4) 3px;
+		text-decoration: underline var(--color-theme-primary-1) 3px;
 		text-underline-offset: 6px;
+
+		:root[data-theme='jdg-light-mode'] & {
+			color: var(--color-neutral-4);
+		}
 	}
 
 	&:visited {
 		color: var(--color-neutral-7);
-	}
 
-	:root[data-theme='jdg-light-mode'] &:visited {
-		color: var(--color-neutral-1);
+		:root[data-theme='jdg-light-mode'] & {
+			color: var(--color-neutral-1);
+		}
 	}
 }
