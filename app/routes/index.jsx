@@ -20,6 +20,10 @@ export function links() {
 	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 }
 
+export const handle = () => {
+	return { animatePresence: false, ref: React.createRef() };
+};
+
 export default function Index() {
 	// HOOKS - STATE
 	const [textIsHidden, setTextIsHidden] = React.useState(true);

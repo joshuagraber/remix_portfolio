@@ -1,6 +1,8 @@
 // GLOBALS
-import { node } from 'prop-types';
+import { useLocation, useMatches, useOutlet } from '@remix-run/react';
 import styles from '../../styles/layout.css';
+
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
 // COMPONENTS
 import { Header, links as headerLinks } from '../Header';
@@ -19,14 +21,40 @@ export function links() {
 	];
 }
 
-export const Layout = ({ children }) => {
-	// CONTEXT
+export const Layout = () => {
+	// HOOKS - CONTEXT
 	const { isContactModalDisplayed, setIsContactModalDisplayed } = useIsContactModalDisplayed();
+
+	// HOOKs - GLOBAL
+	const { pathname } = useLocation();
+	// HOOKS - REMIX
+	const outlet = useOutlet();
+	const routeMatch = useMatches().find(
+		(match) => match.pathname === pathname && match.id !== 'root'
+	);
+	const { animatePresence, ref } = routeMatch.handle();
+	const timeout = animatePresence ? 300 : 0;
 
 	return (
 		<>
 			<Header />
-			<main className='jdg-main'>{children}</main>
+			<SwitchTransition>
+				<CSSTransition
+					classNames='jdg-main'
+					key={pathname}
+					nodeRef={ref}
+					timeout={timeout}
+					unmountOnExit
+				>
+					{() => {
+						return (
+							<main className='jdg-main' ref={ref}>
+								{outlet}
+							</main>
+						);
+					}}
+				</CSSTransition>
+			</SwitchTransition>
 			<Footer />
 			<ModalContactForm
 				hide={() => setIsContactModalDisplayed(false)}
@@ -34,8 +62,4 @@ export const Layout = ({ children }) => {
 			/>
 		</>
 	);
-};
-
-Layout.propTypes = {
-	children: node.isRequired,
 };

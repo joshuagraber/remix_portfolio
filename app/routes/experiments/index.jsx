@@ -5,18 +5,25 @@ Instead of async, use exported array from /components/Experiments/index.jsx
 Which will collect all experiments in the folder (hardcoding because they 
 will be too complex and idiosyncratic to use a CDN)  
 */
+// GLOBALS
+import React from 'react';
+import styles from '../../styles/index.css';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from '~/components/ContainerCenter';
 
 // EXPORTS
 export function links() {
-	return [...containerCenterLinks()];
+	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 }
 
 export const meta = () => ({
 	title: 'Joshua D. Graber | Experiments',
 });
+
+export const handle = () => {
+	return { animatePresence: true, ref: React.createRef() };
+};
 
 export default function Experiments() {
 	return (

@@ -1,13 +1,5 @@
 // GLOBALS
-import {
-	Links,
-	LiveReload,
-	Meta,
-	// Outlet,
-	Scripts,
-	ScrollRestoration,
-	useOutlet,
-} from '@remix-run/react';
+import { Links, LiveReload, Meta, Scripts, ScrollRestoration } from '@remix-run/react';
 
 import globalStyles from './styles/global.css';
 import themes from './styles/themes.css';
@@ -34,9 +26,6 @@ export const meta = () => ({
 });
 
 export default function App() {
-	// HOOKS - REMIX
-	const outlet = useOutlet();
-
 	return (
 		<AppProvider>
 			<ThemeProvider>
@@ -49,7 +38,7 @@ export default function App() {
 
 					<body>
 						<div id='app'>
-							<Layout>{outlet}</Layout>
+							<Layout />
 
 							<ScrollRestoration />
 

@@ -51,6 +51,10 @@ export const meta = () => ({
 	title: 'Joshua D. Graber | Contact',
 });
 
+export const handle = () => {
+	return { animatePresence: true, ref: React.createRef() };
+};
+
 export default function Contact() {
 	// HOOKS - NAV
 	const navigate = useNavigate();
