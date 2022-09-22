@@ -66,7 +66,7 @@ export const Accordion = ({ children, isDisabled = false, isOpen = false, headin
 					type='button'
 				>
 					<div className='jdg-accordion-heading-text'>{heading}</div>
-					<div className='jdg-accordion-arrow'>
+					<div className='jdg-accordion-icon'>
 						<Chevron direction={chevronDirection} stroke={chevronStroke} />
 					</div>
 				</button>
