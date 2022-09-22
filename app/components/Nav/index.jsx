@@ -68,10 +68,9 @@ export const Nav = ({ isMobile }) => {
 		}
 
 		function clearingClick(event) {
-			const isNavClick = event?.target === navRef.current || navRef.current.contains(event?.target);
+			const isNavClick = navRef.current.contains(event?.target) ?? event?.target === navRef.current;
 
 			if (!isNavClick && isMobile) {
-				console.log('clearingClick conditional');
 				event.stopPropagation();
 				setIsExpanded(false);
 			}
