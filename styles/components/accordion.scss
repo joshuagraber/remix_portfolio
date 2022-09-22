@@ -10,6 +10,12 @@
 	width: 100%;
 	transition: background-color 0.2s ease, color 0.2s ease;
 
+	&:has(.jdg-accordion-button:focus),
+	&:hover,
+	&-active {
+		border-color: var(--color-accent-primary);
+	}
+
 	&-heading-container {
 		background-color: inherit;
 		border: unset;
