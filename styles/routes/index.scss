@@ -129,7 +129,7 @@ $text-container-width: 620px;
 	@media (max-width: $mobile) {
 		.jdg-container-center {
 			flex-direction: column;
-			padding: 48px 24px 60px;
+			padding: 48px 24px 200px;
 		}
 
 		.jdg-home-image-container {
@@ -169,20 +169,18 @@ $text-container-width: 620px;
 		display: flex;
 		flex-direction: column;
 		gap: 42px;
+		max-width: 800px;
 		padding: 48px 24px 140px;
 	}
 
 	.jdg-work-heading {
 		text-align: center;
-		font: $font-heading-tertiary-emphasis;
-		font-size: 36px;
-		letter-spacing: 1.5px;
+		font: $font-heading-secondary;
 		margin-bottom: 16px;
 	}
 
 	.jdg-work-about-container {
 		margin: 0 auto;
-		max-width: 600px;
 		width: 100%;
 	}
 

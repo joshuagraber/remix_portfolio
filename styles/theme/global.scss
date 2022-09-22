@@ -44,7 +44,7 @@ a {
 	&:active,
 	&:hover,
 	&:focus {
-		text-decoration: underline var(--color-accent-primary) 1px;
+		text-decoration: underline var(--color-theme-primary-4) 3px;
 		text-underline-offset: 6px;
 	}
 
