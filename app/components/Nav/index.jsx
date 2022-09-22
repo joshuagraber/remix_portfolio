@@ -29,7 +29,10 @@ export function links() {
 }
 
 export const Nav = ({ isMobile }) => {
+	// HOOKS - GLOBAL
 	const window = getWindow();
+	const navRef = React.useRef();
+
 	// HOOKS - STATE
 	const [isExpanded, setIsExpanded] = React.useState(false);
 
@@ -65,9 +68,11 @@ export const Nav = ({ isMobile }) => {
 		}
 
 		function clearingClick(event) {
-			event.stopPropagation();
+			const isNavClick = event?.target === navRef.current || navRef.current.contains(event?.target);
 
-			if (!event?.target?.classList?.contains('jdg-nav') && isMobile) {
+			if (!isNavClick && isMobile) {
+				console.log('clearingClick conditional');
+				event.stopPropagation();
 				setIsExpanded(false);
 			}
 		}
@@ -94,12 +99,12 @@ export const Nav = ({ isMobile }) => {
 
 	// SUBCOMPONENT
 	const AriaNavLink = ({ route }) => {
-		const ref = React.useRef();
+		const navLinkRef = React.useRef();
 		const ariaProps = {
 			elementType: 'a',
 		};
 
-		const { linkProps } = useLink(ariaProps, ref);
+		const { linkProps } = useLink(ariaProps, navLinkRef);
 
 		const routeTitleCased = route[0].toUpperCase() + route.slice(1);
 
@@ -112,7 +117,7 @@ export const Nav = ({ isMobile }) => {
 				}
 				onClick={onLinkClick}
 				prefetch='intent'
-				ref={ref}
+				ref={navLinkRef}
 				role='menuitem'
 				tabIndex={isExpanded ? 0 : -1}
 				to={`/${route}`}
@@ -123,7 +128,7 @@ export const Nav = ({ isMobile }) => {
 	};
 
 	return (
-		<nav className='jdg-nav'>
+		<nav className='jdg-nav' ref={navRef}>
 			<button
 				aria-controls='jdg-nav-menu'
 				aria-expanded={isExpanded}
@@ -132,7 +137,11 @@ export const Nav = ({ isMobile }) => {
 				tabIndex='0'
 				type='button'
 			>
-				<Chevron direction={chevronDirection} stroke={chevronStroke} />
+				<Chevron
+					className='jdg-nav-open-button-icon'
+					direction={chevronDirection}
+					stroke={chevronStroke}
+				/>
 			</button>
 			<menu aria-hidden={!isExpanded} className='jdg-nav-menu' id='jdg-nav-menu'>
 				{NAV_ROUTES.map((route) => {

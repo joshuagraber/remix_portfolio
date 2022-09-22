@@ -9,6 +9,10 @@
 		border-radius: 5px;
 		transition: background-color 0.2s ease;
 
+		&-icon {
+			animation: flip 0.3s ease;
+		}
+
 		&:hover,
 		&:focus {
 			background-color: var(--color-neutral-2);
@@ -101,5 +105,16 @@
 				}
 			}
 		}
+	}
+}
+
+@keyframes flip {
+	0% {
+		opacity: 0;
+		rotate: 180deg;
+	}
+	100% {
+		opacity: 1;
+		rotate: 0deg;
 	}
 }
