@@ -1,7 +1,7 @@
 @import '../theme/variables.scss';
 
 // Vars
-$text-container-width: 620px;
+$home-text-container-width: 620px;
 
 // Home page
 .jdg-main {
@@ -52,7 +52,7 @@ $text-container-width: 620px;
 		flex: 1 1;
 		flex-direction: column;
 		gap: 16px;
-		max-width: $text-container-width;
+		max-width: $home-text-container-width;
 
 		h2 {
 			font: $font-heading-primary;
@@ -98,7 +98,7 @@ $text-container-width: 620px;
 			}
 			.jdg-home-text-container {
 				animation: fade_in 2s ease;
-				max-width: $text-container-width;
+				max-width: $home-text-container-width;
 			}
 		}
 
@@ -208,10 +208,10 @@ $text-container-width: 620px;
 	}
 	50% {
 		opacity: 0;
-		max-width: $text-container-width;
+		max-width: $home-text-container-width;
 	}
 	100% {
 		opacity: 1;
-		max-width: $text-container-width;
+		max-width: $home-text-container-width;
 	}
 }
