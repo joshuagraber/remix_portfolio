@@ -5,7 +5,7 @@ import styles from '../../styles/modal.css';
 
 // COMPONENTS
 import { Portal } from '../Portal';
-import { Transition } from 'react-transition-group';
+import { CSSTransition } from 'react-transition-group';
 import { X } from '../SVG/X';
 
 // HOOKS
@@ -66,6 +66,7 @@ export const Modal = ({ className = '', children, hide, isVisible = false }) => 
 
 	// VARS
 	const transitionProps = {
+		classNames: 'jdg-modal',
 		in: isVisible,
 		mountOnEnter: true,
 		unmountOnExit: true,
@@ -76,7 +77,7 @@ export const Modal = ({ className = '', children, hide, isVisible = false }) => 
 
 	// Render
 	return (
-		<Transition {...transitionProps}>
+		<CSSTransition {...transitionProps}>
 			{(state) => {
 				const classes = clsx('jdg-modal', className, {
 					// Transitions
@@ -124,7 +125,7 @@ export const Modal = ({ className = '', children, hide, isVisible = false }) => 
 					</Portal>
 				);
 			}}
-		</Transition>
+		</CSSTransition>
 	);
 };
 

@@ -1,7 +1,7 @@
 // GLOBALS
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { node, string } from 'prop-types';
+import { any, func, node, oneOf, shape, string } from 'prop-types';
 
 // Hooks
 import { canUseDOM } from '../../utils/utils';
@@ -42,4 +42,5 @@ export const Portal = ({ className, children }) => {
 Portal.propTypes = {
 	className: string,
 	children: node.isRequired,
+	innerRef: oneOf([func, shape({ current: any })]),
 };
