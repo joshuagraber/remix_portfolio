@@ -8,12 +8,23 @@
 	overflow-y: hidden;
 	position: relative;
 	width: 100%;
-	transition: background-color 0.2s ease, color 0.2s ease;
+	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 
-	&:has(.jdg-accordion-button:focus),
 	&:hover,
-	&-active {
+	&:has(.jdg-accordion-button:focus) {
 		border-color: var(--color-accent-primary);
+	}
+
+	&-active,
+	&-active:hover,
+	&-active:has(.jdg-accordion-button:focus) {
+		border-color: var(--color-accent-secondary);
+	}
+
+	&-active:hover,
+	&-active:has(.jdg-accordion-button:focus) {
+		box-shadow: 1px 1px 3px var(--color-theme-primary-3-opacity-50);
+		transition: box-shadow 0.2s ease;
 	}
 
 	&-heading-container {
