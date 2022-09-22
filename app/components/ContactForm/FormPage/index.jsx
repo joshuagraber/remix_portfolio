@@ -1,7 +1,7 @@
 // GLOBALS
 import React from 'react';
 import { Form } from '@remix-run/react';
-import { shape, string, bool, oneOf } from 'prop-types';
+import { shape, string, bool, oneOf, undefined } from 'prop-types';
 
 // COMPONENTS
 import { ContactFormFieldset } from '../Fieldset';
@@ -39,6 +39,7 @@ ContactFormPage.propTypes = {
 	data: oneOf([
 		shape({ current: shape({ headline: string, body: string }) }),
 		shape({ error: shape({ headline: string, body: string }) }),
-	]).isRequired,
+		undefined,
+	]),
 	isResponseFinished: bool.isRequired,
 };
