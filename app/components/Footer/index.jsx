@@ -54,7 +54,7 @@ export const Footer = () => {
 									key={type}
 									onClick={onClick}
 									onKeyDown={onKeyDown}
-									role={'button'}
+									role='button'
 									tabIndex='0'
 								>
 									<SocialIcon color={iconColor} type={type} />

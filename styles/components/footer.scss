@@ -30,7 +30,24 @@
 		gap: 16px;
 
 		&-link {
+			border-radius: 666px;
+			height: auto;
 			cursor: pointer;
+
+			svg {
+				height: 24px;
+				width: 24px;
+			}
+
+			&:hover,
+			&:focus {
+				// box-shadow: inset 0 0 2px 5px var(--color-accent-primary);
+
+				svg > path {
+					// fill: var(--color-neutral-black-opacity_60);
+					stroke: var(--color-neutral-white-opacity_80);
+				}
+			}
 		}
 	}
 
