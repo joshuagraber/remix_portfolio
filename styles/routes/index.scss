@@ -26,7 +26,7 @@ $home-text-container-width: 620px;
 		}
 
 		figcaption {
-			background-color: var(--color-neutral-black-opacity_40);
+			background-color: var(--color-theme-primary-3-opacity-50);
 			bottom: 10%;
 			opacity: 0;
 			padding: 12px;
@@ -36,8 +36,8 @@ $home-text-container-width: 620px;
 			text-align: center;
 			transition: opacity 0.5s ease;
 
-			:root[data-theme='jdg-light-mode'] & {
-				color: var(--color-neutral-10);
+			:root[data-theme='jdg-dark-mode'] & {
+				color: var(--color-neutral-0);
 			}
 		}
 
