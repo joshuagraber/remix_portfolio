@@ -10,13 +10,16 @@ export function links() {
 	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 }
 
-export const meta = () => ({
-	title: 'Joshua D. Graber | Blog',
-});
+export function meta() {
+	return {
+		description: 'Blog posts on art, writing, technology, etcetera, by Joshua D. Graber',
+		title: 'Joshua D. Graber | Blog',
+	};
+}
 
-export const handle = () => {
+export function handle() {
 	return { animatePresence: true, ref: React.createRef() };
-};
+}
 
 export default function Blog() {
 	return (

@@ -20,9 +20,9 @@ export function links() {
 	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 }
 
-export const handle = () => {
+export function handle() {
 	return { animatePresence: false, ref: React.createRef() };
-};
+}
 
 export default function Index() {
 	// HOOKS - STATE

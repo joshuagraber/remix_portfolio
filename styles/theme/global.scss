@@ -48,7 +48,7 @@ a {
 		text-underline-offset: 6px;
 
 		:root[data-theme='jdg-light-mode'] & {
-			color: var(--color-neutral-4);
+			text-decoration-color: var(--color-theme-primary-4);
 		}
 	}
 

@@ -47,13 +47,16 @@ export function links() {
 	return [...contactFormLinks(), ...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 }
 
-export const meta = () => ({
-	title: 'Joshua D. Graber | Contact',
-});
+export function meta() {
+	return {
+		description: 'Send an email to Joshua D. Graber',
+		title: 'Joshua D. Graber | Contact',
+	};
+}
 
-export const handle = () => {
+export function handle() {
 	return { animatePresence: true, ref: React.createRef() };
-};
+}
 
 export default function Contact() {
 	// HOOKS - NAV

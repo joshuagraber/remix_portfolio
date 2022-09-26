@@ -19,11 +19,14 @@ export function links() {
 	];
 }
 
-export const meta = () => ({
-	charset: 'utf-8',
-	title: 'Joshua D. Graber | Writer & JavaScript Developer',
-	viewport: 'width=device-width,initial-scale=1',
-});
+export function meta() {
+	return {
+		charset: 'utf-8',
+		description: 'Award-winning writer, literary editor, full stack JavaScript web developer.',
+		title: 'Joshua D. Graber | Writer & JavaScript Developer',
+		viewport: 'width=device-width,initial-scale=1',
+	};
+}
 
 export default function App() {
 	return (

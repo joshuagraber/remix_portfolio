@@ -30,7 +30,7 @@
 		gap: 16px;
 
 		&-link {
-			border-radius: 666px;
+			border-bottom: 3px solid transparent;
 			height: auto;
 			cursor: pointer;
 
@@ -41,11 +41,18 @@
 
 			&:hover,
 			&:focus {
-				// box-shadow: inset 0 0 2px 5px var(--color-accent-primary);
+				border-bottom: 3px solid var(--color-theme-primary-1);
 
 				svg > path {
-					// fill: var(--color-neutral-black-opacity_60);
 					stroke: var(--color-neutral-white-opacity_80);
+				}
+
+				:root[data-theme='jdg-light-mode'] & {
+					border-bottom-color: var(--color-theme-primary-4);
+
+					svg > path {
+						stroke: var(--color-neutral-black-opacity_60);
+					}
 				}
 			}
 		}

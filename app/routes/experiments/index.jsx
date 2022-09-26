@@ -17,13 +17,16 @@ export function links() {
 	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 }
 
-export const meta = () => ({
-	title: 'Joshua D. Graber | Experiments',
-});
+export function meta() {
+	return {
+		description: "Joshua D. Graber's experiments with language and code",
+		title: 'Joshua D. Graber | Experiments',
+	};
+}
 
-export const handle = () => {
+export function handle() {
 	return { animatePresence: true, ref: React.createRef() };
-};
+}
 
 export default function Experiments() {
 	return (

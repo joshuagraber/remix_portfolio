@@ -14,17 +14,31 @@ export function links() {
 	return [...accordionLinks(), ...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 }
 
-export const meta = () => ({
-	title: 'Joshua D. Graber | Work',
-});
+export function meta() {
+	return {
+		description: "Learn about Joshua D. Graber's writing, editing, and web development work",
+		title: 'Joshua D. Graber | Work',
+	};
+}
 
-export const handle = () => {
+export function handle() {
 	return { animatePresence: true, ref: React.createRef() };
-};
+}
 
 export default function Work() {
 	// HOOKS - CONTEXT
 	const { setIsContactModalDisplayed } = useIsContactModalDisplayed();
+
+	// SUB-COMPONENT
+	const EmailLink = () => {
+		// TODO: set up useLink, etc., use throughout page where email modal is opened.
+		// Maybe also elsewhere (footer, etc.) where modal triggered?
+		return (
+			<div onClick={() => setIsContactModalDisplayed(true)} role='button'>
+				Open email modal
+			</div>
+		);
+	};
 
 	return (
 		<ContainerCenter className='jdg-work-container-center'>
@@ -76,10 +90,6 @@ export default function Work() {
 					ipsam voluptatibus eligendi amet animi illum incidunt suscipit nihil repudiandae? Odio
 					consectetur error doloribus possimus similique aliquam quaerat modi nihil maxime neque.
 				</Accordion>
-			</div>
-
-			<div onClick={() => setIsContactModalDisplayed(true)} role='button'>
-				Open email modal
 			</div>
 		</ContainerCenter>
 	);
