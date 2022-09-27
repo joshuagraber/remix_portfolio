@@ -3,16 +3,17 @@
 	"sideEffects": false,
 	"scripts": {
 		"postinstall": "npm run build",
-		"build": "npm run build:sass && npm run build:css && remix build",
+		"build": "run-s clean build:* && remix build",
 		"build:sass": "sass styles/:styles/",
-		"build:css": "npx postcss styles/**/*.css --dir app/styles --use autoprefixer",
+		"build:css": "postcss styles/**/*.css --dir app/styles --use autoprefixer",
+		"clean": "rimraf ./build ./.cache ./public/build ./app/styles",
 		"dev": "run-p dev:*",
-		"dev:remix": "remix dev",
 		"dev:styles": "run-p styles:*",
+		"dev:remix": "remix dev",
 		"start": "remix build && run-p start:*",
 		"start:remix": "node server.js",
 		"start:styles": "run-p styles:*",
-		"styles:css": "npx postcss styles/**/*.css --dir app/styles --use autoprefixer --watch",
+		"styles:css": "postcss styles/**/*.css --dir app/styles --use autoprefixer --watch",
 		"styles:sass": "sass --watch styles/:styles/"
 	},
 	"dependencies": {
@@ -45,6 +46,7 @@
 		"postcss": "^8.4.16",
 		"postcss-cli": "^10.0.0",
 		"prop-types": "^15.8.1",
+		"rimraf": "^3.0.2",
 		"rmx-cli": "^0.3.1",
 		"sass": "^1.54.3"
 	},
