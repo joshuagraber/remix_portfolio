@@ -23,7 +23,7 @@
 
 	&-active:hover,
 	&-active:has(.jdg-accordion-button:focus) {
-		box-shadow: 1px 1px 3px var(--color-theme-primary-3-opacity-50);
+		box-shadow: 1px 1px 3px var(--color-theme-primary-3-opacity_50);
 		transition: box-shadow 0.2s ease;
 	}
 

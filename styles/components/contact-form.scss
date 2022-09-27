@@ -24,15 +24,15 @@
 		width: 100%;
 
 		legend {
-			background-color: var(--color-accent-primary);
+			background-color: var(--color-theme-primary-1);
 			font-size: 36px;
 			font: $font-heading-secondary;
 			border-radius: 12px;
-			color: var(--color-neutral-1);
 			padding: 12px;
 			transform: skewX(5deg);
 
 			:root[data-theme='jdg-light-mode'] & {
+				background-color: var(--color-theme-primary-4);
 				color: var(--color-neutral-10);
 			}
 		}

@@ -25,17 +25,31 @@ button:focus,
 	border: none;
 }
 
+// Remove default styles on autofill selected input
+:-webkit-autofill,
+:-webkit-autofill:hover,
+:-webkit-autofill:focus {
+	// border: 1px solid transparent;
+	// -webkit-text-fill-color: var(--color-text-primary);
+	// -webkit-box-shadow: 0 0 0px 1000px #000 inset;
+	transition: background-color 600000000s 0s, color 600000000s 0s,
+		-webkit-text-fill-color 600000000s 0s;
+}
+
+// Globals on the root
 :root {
 	background: var(--color-background);
 	color: var(--color-text-primary);
 	font: $font-paragraph-secondary;
 	transition: 0.2s ease background-color, 0.2s ease color;
 
+	// When modals are open
 	&[data-lockscroll='true'] {
 		overflow: hidden;
 	}
 }
 
+// Anchors
 a {
 	color: var(--color-text-primary);
 	font: inherit;
