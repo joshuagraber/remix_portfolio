@@ -32,6 +32,7 @@
 		"react-dom": "^18.2.0",
 		"react-stately": "^3.17.0",
 		"react-transition-group": "^4.4.5",
+		"remix-utils": "^3.3.0",
 		"ssr-window": "^4.0.2"
 	},
 	"devDependencies": {
