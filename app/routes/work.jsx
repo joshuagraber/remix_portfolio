@@ -10,6 +10,16 @@ import { ContainerCenter, links as containerCenterLinks } from '~/components/Con
 import { useIsContactModalDisplayed } from '~/context';
 
 // EXPORTS
+export async function loader({ request }) {
+	return {
+		canonical: request.url,
+	};
+}
+
+export function dynamicLinks({ data }) {
+	return [{ rel: 'canonical', href: data.canonical }];
+}
+
 export function links() {
 	return [...accordionLinks(), ...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 }
@@ -21,9 +31,11 @@ export function meta() {
 	};
 }
 
-export function handle() {
-	return { animatePresence: true, ref: React.createRef() };
-}
+export const handle = {
+	animatePresence: true,
+	dynamicLinks,
+	ref: React.createRef(),
+};
 
 export default function Work() {
 	// HOOKS - CONTEXT

@@ -27,12 +27,16 @@ export const Layout = () => {
 
 	// HOOKs - GLOBAL
 	const { pathname } = useLocation();
+
 	// HOOKS - REMIX
 	const outlet = useOutlet();
+
+	// VARS
 	const routeMatch = useMatches().find(
 		(match) => match.pathname === pathname && match.id !== 'root'
 	);
-	const { animatePresence, ref } = routeMatch.handle();
+
+	const { animatePresence, ref } = routeMatch.handle;
 	const timeout = animatePresence ? 300 : 0;
 
 	return (

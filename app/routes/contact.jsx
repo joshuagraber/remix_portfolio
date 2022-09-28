@@ -16,7 +16,7 @@ export async function action({ request }) {
 	const message = submission.get('message');
 
 	try {
-		// Log is in the server, not browser
+		// Log is in the server
 		console.log({ name, email, message });
 
 		// TODO:
@@ -43,6 +43,16 @@ export async function action({ request }) {
 	}
 }
 
+export async function loader({ request }) {
+	return {
+		canonical: request.url,
+	};
+}
+
+export function dynamicLinks({ data }) {
+	return [{ rel: 'canonical', href: data.canonical }];
+}
+
 export function links() {
 	return [...contactFormLinks(), ...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 }
@@ -54,9 +64,7 @@ export function meta() {
 	};
 }
 
-export function handle() {
-	return { animatePresence: true, ref: React.createRef() };
-}
+export const handle = { animatePresence: true, dynamicLinks, ref: React.createRef() };
 
 export default function Contact() {
 	// HOOKS - NAV

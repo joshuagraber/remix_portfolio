@@ -1,5 +1,6 @@
 // GLOBALS
 import { Links, LiveReload, Meta, Scripts, ScrollRestoration } from '@remix-run/react';
+import { DynamicLinks } from 'remix-utils';
 
 import globalStyles from './styles/global.css';
 import themes from './styles/themes.css';
@@ -36,6 +37,7 @@ export default function App() {
 					<head>
 						<Meta />
 
+						<DynamicLinks />
 						<Links />
 					</head>
 

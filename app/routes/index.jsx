@@ -1,6 +1,6 @@
 // GLOBALS
 import React from 'react';
-import { Link } from '@remix-run/react';
+import { Link, useLocation } from '@remix-run/react';
 import styles from '../styles/index.css';
 
 // COMPONENTS
@@ -16,13 +16,25 @@ import headshot from '../assets/headshot-mock.png';
 import clsx from 'clsx';
 
 // EXPORTS
+export async function loader({ request }) {
+	return {
+		canonical: request.url,
+	};
+}
+
+export function dynamicLinks({ data }) {
+	return [{ rel: 'canonical', href: data.canonical }];
+}
+
 export function links() {
 	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 }
 
-export function handle() {
-	return { animatePresence: false, ref: React.createRef() };
-}
+export const handle = {
+	animatePresence: false,
+	dynamicLinks,
+	ref: React.createRef(),
+};
 
 export default function Index() {
 	// HOOKS - STATE
