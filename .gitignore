@@ -1,16 +1,18 @@
+# Dev/Build
 node_modules
-
 /.cache
 /build
 /public/build
-.env
+.env.*
 
-# TODO Remove this once favicon added
-*favicon*
 
-# sass
+# Sass
 *.css.map
 *.css
 
 # To-dos
 PROJECT_TO_DO.md
+
+# Favicon
+# TODO Remove this once actual favicon added
+*favicon*
