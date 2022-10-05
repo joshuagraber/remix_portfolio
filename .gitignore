@@ -1,10 +1,9 @@
 # Dev/Build
+.cache
+build
+public/build
 node_modules
-/.cache
-/build
-/public/build
 .env.*
-
 
 # Sass
 *.css.map
@@ -16,3 +15,6 @@ PROJECT_TO_DO.md
 # Favicon
 # TODO Remove this once actual favicon added
 *favicon*
+
+# Local schema playground
+schemas.js

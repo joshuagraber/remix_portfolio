@@ -3,6 +3,9 @@ import { json } from '@remix-run/node';
 import { useActionData, useNavigate } from '@remix-run/react';
 import styles from '../styles/index.css';
 
+// SERVICES
+import { sendMail } from '~/services/mailer';
+
 // COMPONENTS
 import { ContactForm, links as contactFormLinks } from '~/components/ContactForm';
 import { ContainerCenter, links as containerCenterLinks } from '~/components/ContainerCenter';
@@ -16,11 +19,15 @@ export async function action({ request }) {
 	const message = submission.get('message');
 
 	try {
-		// Log is in the server
-		console.log({ name, email, message });
+		await sendMail({
+			from: process.env.SMTP_EMAIL_FROM,
+			to: process.env.SMTP_SEND_TO,
+			replyTo: email,
+			subject: 'Message from contact form',
+			// TODO: Create template and render to html string
+			text: message,
+		});
 
-		// TODO:
-		// Set up nodemailer async func, import and use here
 		return json(
 			{
 				success: {
