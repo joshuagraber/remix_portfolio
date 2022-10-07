@@ -10,7 +10,6 @@ import { sendMail } from '~/services/mailer';
 import { ContactForm, links as contactFormLinks } from '~/components/ContactForm';
 import { ContainerCenter, links as containerCenterLinks } from '~/components/ContainerCenter';
 
-// EXPORTS
 export async function action({ request }) {
 	const submission = await request.formData();
 
@@ -74,7 +73,7 @@ export function meta() {
 export const handle = { animatePresence: true, dynamicLinks, ref: React.createRef() };
 
 export default function Contact() {
-	// HOOKS - NAV
+	// HOOKS - GLOBAL
 	const navigate = useNavigate();
 
 	// HOOKS - REMIX

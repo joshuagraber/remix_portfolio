@@ -1,6 +1,6 @@
 // GLOBALS
 import React from 'react';
-import { Link, useLocation } from '@remix-run/react';
+import { Link } from '@remix-run/react';
 import styles from '../styles/index.css';
 
 // COMPONENTS

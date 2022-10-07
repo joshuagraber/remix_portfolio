@@ -70,6 +70,7 @@ export default function Work() {
 
 			<div className='jdg-work-work-container'>
 				<h2 className='jdg-work-heading'>My Work</h2>
+				{/* TODO: Update accordions so that window scrolls to them when they open */}
 				<Accordion heading='Writing'>
 					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita molestiae cum eius
 					eaque quisquam nulla quis sunt delectus, repellendus cumque fugiat dolorum voluptates
