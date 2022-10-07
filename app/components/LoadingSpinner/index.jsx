@@ -13,9 +13,9 @@ export function links() {
 
 export const LoadingSpinner = ({
 	color = 'currentColor',
-	height = '120px',
+	height = '100px',
 	isDisplayed = false,
-	width = '120px',
+	width = '100px',
 	text = null,
 }) => {
 	// HOOKS - REF
