@@ -6,9 +6,15 @@ import { func } from 'prop-types';
 // COMPONENTS
 import { ContactFormFieldset } from '../Fieldset';
 import { ContactFormResponseMessage } from '../ResponseMessage';
+import { LoadingSpinner, links as loadingSpinnerLinks } from '~/components/LoadingSpinner';
+
+// EXPORTS
+export function links() {
+	return [...loadingSpinnerLinks()];
+}
 
 export const ContactFormModal = ({ hide }) => {
-	// HOOKS - REMIX
+	// HOOKS - GLOBAL
 	const fetcher = useFetcher();
 
 	// HOOKS - REF
@@ -54,12 +60,21 @@ export const ContactFormModal = ({ hide }) => {
 	return (
 		<div className='jdg-contact-form-container'>
 			<fetcher.Form action='/contact' className='jdg-contact-form' method='post'>
-				<ContactFormFieldset />
-				<button type='submit'>Send your message now</button>
+				{fetcher.state === 'idle' && !hasResponseMessageFinishedDisplaying && (
+					<>
+						<ContactFormFieldset />
+						<button type='submit'>Send your message now</button>
+					</>
+				)}
 			</fetcher.Form>
+			<LoadingSpinner
+				isDisplayed={fetcher.state === 'submitting'}
+				text='Your message is sending...'
+			/>
 
 			<ContactFormResponseMessage
 				data={fetcher.data}
+				isDisplayed={fetcher.data && fetcher.state === 'idle'}
 				isResponseFinished={hasResponseMessageFinishedDisplaying}
 			/>
 		</div>

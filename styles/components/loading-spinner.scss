@@ -1,9 +1,38 @@
 .jdg-loading-spinner {
 	align-items: center;
-	display: flex;
+	background-color: var(--color-background);
+	color: var(--color-text-primary);
+	display: none;
 	flex-direction: column;
 	gap: 16px;
-	height: auto;
+	height: 100%;
 	justify-content: center;
 	width: 100%;
+	z-index: 100; // Same as modal
+
+	&-entering {
+		display: flex;
+		opacity: 0;
+	}
+
+	&-entered {
+		display: flex;
+		opacity: 1;
+		transition: opacity 0.3s ease;
+	}
+
+	&-exiting {
+		display: flex;
+		opacity: 1;
+	}
+
+	&-exited {
+		display: flex;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+
+	&-exit-active-done {
+		display: none;
+	}
 }

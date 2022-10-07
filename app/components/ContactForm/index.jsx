@@ -3,12 +3,16 @@
 import styles from '../../styles/contact-form.css';
 
 // COMPONENTS
-import { ContactFormPage } from './FormPage';
-import { ContactFormModal } from './FormModal';
+import { ContactFormPage, links as contactFormPageLinks } from './Page';
+import { ContactFormModal, links as ContactFormModalLinks } from './Modal';
 
 // EXPORTS
 export function links() {
-	return [{ rel: 'stylesheet', href: styles }];
+	return [
+		...contactFormPageLinks(),
+		...ContactFormModalLinks(),
+		{ rel: 'stylesheet', href: styles },
+	];
 }
 
 export const ContactForm = ({ type = 'page', ...rest }) => {

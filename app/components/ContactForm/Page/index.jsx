@@ -1,13 +1,21 @@
 // GLOBALS
 import React from 'react';
-import { Form } from '@remix-run/react';
-import { shape, string, bool, oneOf, undefined } from 'prop-types';
+import { Form, useTransition } from '@remix-run/react';
+import { shape, string, bool, oneOfType } from 'prop-types';
 
 // COMPONENTS
 import { ContactFormFieldset } from '../Fieldset';
 import { ContactFormResponseMessage } from '../ResponseMessage';
+import { LoadingSpinner, links as loadingSpinnerLinks } from '~/components/LoadingSpinner';
+
+export function links() {
+	return [...loadingSpinnerLinks()];
+}
 
 export const ContactFormPage = ({ data, isResponseFinished }) => {
+	// HOOKS - GLOBAL
+	const transition = useTransition();
+
 	// HOOKS - REF
 	const ref = React.useRef();
 
@@ -26,20 +34,31 @@ export const ContactFormPage = ({ data, isResponseFinished }) => {
 	return (
 		<div className='jdg-contact-form-container'>
 			<Form className='jdg-contact-form' method='post' ref={ref}>
-				<ContactFormFieldset />
-				<button type='submit'>Send your message now</button>
+				{transition.state === 'idle' && !isResponseFinished && (
+					<>
+						<ContactFormFieldset />
+						<button type='submit'>Send your message now</button>
+					</>
+				)}
 			</Form>
+			<LoadingSpinner
+				isDisplayed={transition.state === 'submitting'}
+				text='Your message is sending...'
+			/>
 
-			<ContactFormResponseMessage data={data} isResponseFinished={isResponseFinished} />
+			<ContactFormResponseMessage
+				data={data}
+				isDisplayed={data && transition.state === 'idle'}
+				isResponseFinished={isResponseFinished}
+			/>
 		</div>
 	);
 };
 
 ContactFormPage.propTypes = {
-	data: oneOf([
+	data: oneOfType([
 		shape({ current: shape({ headline: string, body: string }) }),
 		shape({ error: shape({ headline: string, body: string }) }),
-		undefined,
 	]),
 	isResponseFinished: bool.isRequired,
 };
