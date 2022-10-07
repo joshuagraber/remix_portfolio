@@ -87,16 +87,51 @@
 
 	&-response {
 		align-items: center;
-		border: 2px solid var(--color-text-primary);
 		border-radius: 24px;
 		background-color: var(--color-background);
 		bottom: 0;
 		display: flex;
-		justify-content: center;
+		flex-direction: column;
+		height: 100%;
+		gap: 16px;
+		justify-content: flex-start;
 		left: 0;
+		padding-top: 150px;
 		position: absolute;
 		right: 0;
 		top: 0;
+		width: 100%;
 		z-index: 2;
+
+		h5 {
+			font: $font-heading-tertiary-emphasis;
+		}
+
+		p {
+			font: $font-paragraph-secondary;
+		}
+
+		// TODO: this is reused code, shared between this and the loading spinner. Create a mixin.
+		&-entering {
+			display: flex;
+			opacity: 0;
+		}
+
+		&-entered {
+			display: flex;
+			opacity: 1;
+			transition: opacity 0.3s ease;
+		}
+
+		&-exiting {
+			display: flex;
+			opacity: 1;
+		}
+
+		&-exited {
+			display: flex;
+			opacity: 0;
+			transition: opacity 0.3s ease;
+		}
 	}
 }
