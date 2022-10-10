@@ -10,6 +10,14 @@
 	width: 100%;
 	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 
+	// Removes sitewide default button state styles
+	&-button:focus,
+	&-button:hover,
+	&-button:active {
+		border: unset;
+		box-shadow: unset;
+	}
+
 	&:hover,
 	&:has(.jdg-accordion-button:focus) {
 		border-color: var(--color-accent-primary);

@@ -42,49 +42,6 @@
 		align-self: flex-end;
 	}
 
-	input,
-	textarea {
-		background-color: var(--color-neutral-2);
-		border: 1px solid var(--color-text-primary);
-		border-radius: 8px;
-		color: inherit;
-
-		&:focus {
-			border-color: var(--color-theme-primary-1);
-		}
-
-		:root[data-theme='jdg-light-mode'] & {
-			background-color: var(--color-neutral-8);
-
-			&:focus {
-				border-color: var(--color-theme-primary-4);
-			}
-		}
-	}
-
-	textarea {
-		min-height: 150px;
-		padding: 8px;
-		width: 100%;
-	}
-
-	input[type='text'] {
-		height: 36px;
-		padding: 0 8px;
-	}
-
-	button {
-		background-color: transparent;
-		border: 2px solid var(--color-text-primary);
-		border-radius: 16px;
-		color: var(--color-text-primary);
-		cursor: pointer;
-		font: 'Catamaran';
-		font-size: 18px;
-		letter-spacing: 1.4px;
-		padding: 12px 16px;
-	}
-
 	&-response {
 		align-items: center;
 		border-radius: 24px;

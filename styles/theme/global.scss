@@ -28,10 +28,17 @@ body,
 	}
 }
 
+// height of main should fill screen between header & footer
+.jdg-main {
+	height: calc(100% - $footer-height-desktop);
+	overflow: scroll;
+	width: 100%;
+}
+
 // Remove default outline and border for inputs and links
-input:focus,
+input:focus-visible,
 select:focus,
-textarea:focus,
+// textarea:focus,
 a:focus,
 button:focus,
 *[role='button']:focus {
@@ -48,11 +55,77 @@ button:focus,
 		-webkit-text-fill-color 600000000s 0s;
 }
 
-// height of main should fill screen between header & footer
-.jdg-main {
-	height: calc(100% - $footer-height-desktop);
-	overflow: scroll;
+// Site-wide form styles
+input,
+textarea {
+	background-color: var(--color-neutral-2);
+	border: 1px solid var(--color-text-primary);
+	border-radius: 8px;
+	color: inherit;
+	font: inherit;
+
+	&:focus,
+	&:focus-visible,
+	&:hover {
+		border-color: var(--color-accent-primary);
+		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	&:focus-visible {
+		outline: 1px solid var(--color-accent-primary);
+	}
+
+	&:active {
+		border-color: var(--color-accent-primary);
+		box-shadow: 1px 1px 3px var(--color-theme-primary-3-opacity_50);
+		transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	:root[data-theme='jdg-light-mode'] & {
+		background-color: var(--color-neutral-8);
+
+		// &:focus {
+		// 	border-color: var(--color-theme-primary-4);
+		// }
+	}
+}
+
+textarea {
+	min-height: 150px;
+	padding: 8px;
 	width: 100%;
+}
+
+input[type='text'] {
+	height: 36px;
+	padding: 0 8px;
+}
+
+button {
+	background-color: transparent;
+	border: 2px solid var(--color-text-primary);
+	border-radius: 16px;
+	color: var(--color-text-primary);
+	cursor: pointer;
+	font: 'Catamaran';
+	font-size: 18px;
+	letter-spacing: 1.4px;
+	padding: 12px 16px;
+
+	&:focus,
+	&:hover {
+		border: 2px solid var(--color-accent-primary);
+		box-shadow: inset 3px -2px 3px var(--color-theme-primary-3-opacity_50),
+			inset -1px 2px 3px var(--color-theme-primary-3-opacity_50);
+		transition: box-shadow 0.2s ease;
+	}
+
+	&:active {
+		border: 2px solid var(--color-accent-primary);
+		box-shadow: inset 3px -2px 3px var(--color-accent-primary),
+			inset -1px 2px 3px var(--color-accent-primary);
+		transition: box-shadow 0.2s ease;
+	}
 }
 
 // Anchors
