@@ -1,6 +1,6 @@
 import { oneOf, string } from 'prop-types';
 
-export const SocialIcon = ({ color = 'white', type }) => {
+export const SocialIcon = ({ color = 'currentColor', type }) => {
 	switch (type) {
 		case 'email':
 			return (

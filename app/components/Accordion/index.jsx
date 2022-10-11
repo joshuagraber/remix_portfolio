@@ -9,9 +9,6 @@ import clsx from 'clsx';
 // COMPONENTS
 import { Chevron } from '../SVG/Chevron';
 
-// HOOKS
-import { useTheme } from '~/theme';
-
 // UTIL
 import { handleKeyDownLikeClick } from '~/utils/utils';
 
@@ -24,17 +21,12 @@ export const Accordion = ({ children, isDisabled = false, isOpen = false, headin
 	// HOOKS - STATE
 	const [isAccordionOpen, setIsAccordionOpen] = React.useState(isOpen);
 
-	// HOOKS - CUSTOM
-	const { theme } = useTheme();
-
 	// HOOKS - EFFECTS
 	React.useEffect(() => {
 		setIsAccordionOpen(isOpen);
 	}, [isOpen]);
 
 	// VARS
-	const chevronDirection = isAccordionOpen ? 'up' : 'down';
-	const chevronStroke = theme === 'jdg-light-mode' ? 'black' : 'white';
 	const classes = clsx('jdg-accordion', {
 		'jdg-accordion-disabled': isDisabled,
 		'jdg-accordion-active': isAccordionOpen,
@@ -67,7 +59,7 @@ export const Accordion = ({ children, isDisabled = false, isOpen = false, headin
 				>
 					<div className='jdg-accordion-heading-text'>{heading}</div>
 					<div className='jdg-accordion-icon'>
-						<Chevron direction={chevronDirection} stroke={chevronStroke} />
+						<Chevron direction='down' />
 					</div>
 				</button>
 			</div>

@@ -1,6 +1,6 @@
 import { string, oneOf } from 'prop-types';
 
-export const Chevron = ({ direction, height = '24px', stroke = 'white', width = '24px' }) => {
+export const Chevron = ({ direction, height = '24px', color = 'currentColor', width = '24px' }) => {
 	switch (direction) {
 		case 'down':
 			return (
@@ -13,7 +13,7 @@ export const Chevron = ({ direction, height = '24px', stroke = 'white', width = 
 				>
 					<path
 						d='M4 9L12 17L20 9'
-						stroke={stroke}
+						stroke={color}
 						strokeWidth='2'
 						strokeLinecap='round'
 						strokeLinejoin='round'
@@ -31,7 +31,7 @@ export const Chevron = ({ direction, height = '24px', stroke = 'white', width = 
 				>
 					<path
 						d='M15 4L7 12L15 20'
-						stroke={stroke}
+						stroke={color}
 						strokeWidth='2'
 						strokeLinecap='round'
 						strokeLinejoin='round'
@@ -49,7 +49,7 @@ export const Chevron = ({ direction, height = '24px', stroke = 'white', width = 
 				>
 					<path
 						d='M8 4L16 12L8 20'
-						stroke={stroke}
+						stroke={color}
 						strokeWidth='2'
 						strokeLinecap='round'
 						strokeLinejoin='round'
@@ -67,7 +67,7 @@ export const Chevron = ({ direction, height = '24px', stroke = 'white', width = 
 				>
 					<path
 						d='M4 15L12 7L20 15'
-						stroke={stroke}
+						stroke={color}
 						strokeWidth='2'
 						strokeLinecap='round'
 						strokeLinejoin='round'

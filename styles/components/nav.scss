@@ -23,6 +23,11 @@
 				background-color: var(--color-neutral-8);
 			}
 		}
+
+		svg {
+			rotate: 0deg;
+			transition: rotate 0.3s 0.2s ease;
+		}
 	}
 
 	&-menu {
@@ -68,10 +73,16 @@
 			transition: all 0.5s;
 		}
 
-		&-open-button[aria-expanded='true'] ~ &-menu {
-			margin-top: 16px;
-			max-height: 500px;
-			transform: rotateX(0);
+		&-open-button[aria-expanded='true'] {
+			~ .jdg-nav-menu {
+				margin-top: 16px;
+				max-height: 500px;
+				transform: rotateX(0);
+			}
+
+			svg {
+				rotate: 180deg;
+			}
 		}
 
 		&-open-button {

@@ -9,7 +9,6 @@ import { ContainerCenter, links as containerCenterLinks } from '~/components/Con
 
 // HOOKS
 import { useIsFirstTimeVisitor } from '~/hooks/useIsFirstTimeVisitor';
-import { useTheme } from '~/theme';
 
 // ASSETS
 import headshot from '../assets/headshot-mock.png';
@@ -42,7 +41,6 @@ export default function Index() {
 	const [imageIsHidden, setimageIsHidden] = React.useState(true);
 
 	// HOOKS - CUSTOM
-	const { theme } = useTheme();
 	const { isFirstTimeVisitor } = useIsFirstTimeVisitor();
 
 	// HOOKS - EFFECTS
@@ -71,7 +69,6 @@ export default function Index() {
 	}, [isFirstTimeVisitor]);
 
 	// VARS
-	const arrowStroke = theme === 'jdg-light-mode' ? 'black' : 'white';
 	const firstTimeVisitorUnset = typeof isFirstTimeVisitor === 'undefined';
 
 	// CLASSES
@@ -99,7 +96,7 @@ export default function Index() {
 						<h2>JavaScript development</h2>
 
 						<Link prefetch='intent' to='work'>
-							Learn more <Arrow stroke={arrowStroke} direction='right' />
+							Learn more <Arrow direction='right' />
 						</Link>
 					</div>
 				</>

@@ -8,9 +8,6 @@ import { Portal } from '../Portal';
 import { CSSTransition } from 'react-transition-group';
 import { X } from '../SVG/X';
 
-// HOOKS
-import { useTheme } from '~/theme';
-
 // EXTERNAL LIBS
 import clsx from 'clsx';
 import FocusTrap from 'focus-trap-react';
@@ -28,9 +25,6 @@ export const Modal = ({ className = '', children, hide, isVisible = false }) => 
 	// GLOBALS
 	const document = getDocument();
 	const ref = React.useRef();
-
-	// CONTEXT
-	const { theme } = useTheme();
 
 	// HOOKS - EFFECTS
 	// Lock scroll
@@ -73,8 +67,6 @@ export const Modal = ({ className = '', children, hide, isVisible = false }) => 
 		timeout: 400,
 	};
 
-	const closeModalStroke = theme === 'jdg-light-mode' ? 'black' : 'white';
-
 	// Render
 	return (
 		<CSSTransition {...transitionProps}>
@@ -115,7 +107,7 @@ export const Modal = ({ className = '', children, hide, isVisible = false }) => 
 										role='button'
 										tabIndex={0}
 									>
-										<X stroke={closeModalStroke} />
+										<X />
 									</div>
 
 									<div className='jdg-modal-content'>{children}</div>

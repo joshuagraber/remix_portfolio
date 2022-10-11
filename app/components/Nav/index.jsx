@@ -10,7 +10,6 @@ import { useLink } from 'react-aria';
 
 // HOOKS
 import { useEffectDidUpdate } from '~/hooks/useEffectDidUpdate';
-import { useTheme } from '~/theme';
 
 // COMPONENTS
 import { Chevron } from '../SVG/Chevron';
@@ -35,9 +34,6 @@ export const Nav = ({ isMobile }) => {
 
 	// HOOKS - STATE
 	const [isExpanded, setIsExpanded] = React.useState(false);
-
-	// HOOKS - CUSTOM
-	const { theme } = useTheme();
 
 	// HOOKS - EFFECTS
 	// Always force expanded state on desk
@@ -80,10 +76,6 @@ export const Nav = ({ isMobile }) => {
 			handleKeyDownLikeClick(clearingClick, event);
 		}
 	}, [isExpanded, isMobile]);
-
-	// VARS
-	const chevronDirection = isExpanded ? 'up' : 'down';
-	const chevronStroke = theme === 'jdg-light-mode' ? 'black' : 'white';
 
 	// HANDLER
 	const onClick = () => {
@@ -136,11 +128,7 @@ export const Nav = ({ isMobile }) => {
 				tabIndex='0'
 				type='button'
 			>
-				<Chevron
-					className='jdg-nav-open-button-icon'
-					direction={chevronDirection}
-					stroke={chevronStroke}
-				/>
+				<Chevron className='jdg-nav-open-button-icon' direction='down' />
 			</button>
 			<menu aria-hidden={!isExpanded} className='jdg-nav-menu' id='jdg-nav-menu'>
 				{NAV_ROUTES.map((route) => {

@@ -1,7 +1,7 @@
 // GLOBALS
 import { oneOf, string } from 'prop-types';
 
-export const X = ({ height = '24px', stroke = 'white', width = '24px' }) => (
+export const X = ({ height = '24px', color = 'currentColor', width = '24px' }) => (
 	<svg
 		width={width}
 		height={height}
@@ -11,7 +11,7 @@ export const X = ({ height = '24px', stroke = 'white', width = '24px' }) => (
 	>
 		<path
 			d='M20 20L4 4.00003M20 4L4.00002 20'
-			stroke={stroke}
+			stroke={color}
 			strokeWidth='2'
 			strokeLinecap='round'
 		/>

@@ -1,9 +1,6 @@
 // GLOBALS
 import styles from '../../styles/footer.css';
 
-// HOOKS
-import { useTheme } from '~/theme';
-
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from '../ContainerCenter';
 import { SocialIcon } from '../SVG/Social';
@@ -23,10 +20,6 @@ export function links() {
 export const Footer = () => {
 	// CONTEXT
 	const { setIsContactModalDisplayed } = useIsContactModalDisplayed();
-	const { theme } = useTheme();
-
-	// VARS
-	const iconColor = theme === 'jdg-light-mode' ? 'black' : 'white';
 
 	// HANDLER
 	const onClick = () => {
@@ -57,7 +50,7 @@ export const Footer = () => {
 									role='button'
 									tabIndex='0'
 								>
-									<SocialIcon color={iconColor} type={type} />
+									<SocialIcon type={type} />
 								</div>
 							);
 						}
@@ -70,7 +63,7 @@ export const Footer = () => {
 								target='blank'
 							>
 								{' '}
-								<SocialIcon color={iconColor} type={type} />{' '}
+								<SocialIcon type={type} />{' '}
 							</a>
 						);
 					})}
