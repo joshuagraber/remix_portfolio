@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLoaderData, useTransition } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 
 // EXT LIBS
 import ReactMarkdown from 'react-markdown';
@@ -44,6 +44,7 @@ export default function Post() {
 	}
 
 	const {
+		// Do this destructuring in the server instead
 		post: { author, content, time_posted },
 		post_previous: { slug: previousSlug, tagline: previousTagline, title: previousTitle },
 		post_next: { slug: nextSlug, tagline: nextTagline, title: nextTitle },
