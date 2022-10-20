@@ -15,3 +15,7 @@ Run the app locally in production mode with HMR:
 ```sh
 npm start
 ```
+
+Notes to make nicer later:
+
+- react-markdown went ESM only, makes it difficult for Remix to handle. Until rmx figures it out, DO NOT UPDATE

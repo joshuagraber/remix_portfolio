@@ -14,7 +14,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"baseUrl": ".",
 		"paths": {
-			"~/*": ["./app/*"]
+			"~/*": ["./app/*"] // TODO: edit to simply use "*", change imports
 		},
 		"noEmit": true
 	}
