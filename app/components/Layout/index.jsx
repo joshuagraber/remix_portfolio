@@ -36,8 +36,8 @@ export const Layout = () => {
 		(match) => match.pathname === pathname && match.id !== 'root'
 	);
 
-	const { animatePresence, ref } = routeMatch.handle;
-	const timeout = animatePresence ? 300 : 0;
+	const handle = routeMatch?.handle;
+	const timeout = handle?.animatePresence ? 300 : 0;
 
 	return (
 		<>
@@ -46,13 +46,13 @@ export const Layout = () => {
 				<CSSTransition
 					classNames='jdg-main'
 					key={pathname}
-					nodeRef={ref}
+					nodeRef={handle?.ref}
 					timeout={timeout}
 					unmountOnExit
 				>
 					{() => {
 						return (
-							<main className='jdg-main' ref={ref}>
+							<main className='jdg-main' ref={handle?.ref}>
 								{outlet}
 							</main>
 						);

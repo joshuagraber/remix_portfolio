@@ -41,6 +41,7 @@ export const Modal = ({ className = '', children, hide, isVisible = false }) => 
 		return () => {
 			rootDataSet.lockscroll = 'false';
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isVisible]);
 
 	// Handlers

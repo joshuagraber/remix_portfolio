@@ -1,6 +1,6 @@
 // Globals
 import React from 'react';
-import styles from '../../styles/index.css';
+import styles from '~/styles/index.css';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from '~/components/ContainerCenter';

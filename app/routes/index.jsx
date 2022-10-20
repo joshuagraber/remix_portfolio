@@ -11,7 +11,7 @@ import { ContainerCenter, links as containerCenterLinks } from '~/components/Con
 import { useIsFirstTimeVisitor } from '~/hooks/useIsFirstTimeVisitor';
 
 // ASSETS
-import headshot from '../assets/headshot-mock.png';
+import headshot from '../assets/images/headshot-mock.png';
 import clsx from 'clsx';
 
 // EXPORTS

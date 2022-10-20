@@ -1,5 +1,7 @@
-// Utils
+import fs from 'fs';
+import path from 'path';
 
+// Utils
 // Check if we're in the client
 export const canUseDOM = !!(
 	typeof window !== 'undefined' &&
@@ -22,4 +24,9 @@ export function handleKeyDownLikeClick(handler, event) {
 	}
 
 	return;
+}
+
+// Markdown files to string
+export function resolveMarkdownFileToString(slug) {
+	return fs.readFileSync(path.resolve(__dirname, `../app/assets/markdown/${slug}.md`)).toString();
 }
