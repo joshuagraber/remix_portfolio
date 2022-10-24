@@ -55,52 +55,6 @@ button:focus,
 		-webkit-text-fill-color 600000000s 0s;
 }
 
-// Site-wide form styles
-input,
-textarea {
-	background-color: var(--color-neutral-2);
-	border: 1px solid var(--color-text-primary);
-	border-radius: 8px;
-	color: inherit;
-	font: inherit;
-
-	&:focus,
-	&:focus-visible,
-	&:hover {
-		border-color: var(--color-accent-primary);
-		transition: border-color 0.2s ease, box-shadow 0.2s ease;
-	}
-
-	&:focus-visible {
-		outline: 1px solid var(--color-accent-primary);
-	}
-
-	&:active {
-		border-color: var(--color-accent-primary);
-		box-shadow: 1px 1px 3px var(--color-theme-primary-3-opacity_50);
-		transition: border-color 0.2s ease, box-shadow 0.2s ease;
-	}
-
-	:root[data-theme='jdg-light-mode'] & {
-		background-color: var(--color-neutral-8);
-
-		// &:focus {
-		// 	border-color: var(--color-theme-primary-4);
-		// }
-	}
-}
-
-textarea {
-	min-height: 150px;
-	padding: 8px;
-	width: 100%;
-}
-
-input[type='text'] {
-	height: 36px;
-	padding: 0 8px;
-}
-
 button {
 	background-color: transparent;
 	border: 2px solid var(--color-text-primary);
