@@ -1,20 +1,24 @@
 // GLOBALS
 import styles from 'styles/inputs.css';
-import { LinksFunction } from '@remix-run/node';
+import React from 'react';
 
 // EXT LIBS
 import clsx, { ClassValue } from 'clsx';
 
 // TYPES
 type InputTypes = 'checkbox' | 'text' | 'textarea'; // Add as needed
+import { LinksFunction } from '@remix-run/node';
 
 interface Props {
-	className: ClassValue;
+	className?: ClassValue;
 	error?: string | undefined;
 	isDisabled?: boolean;
 	label: string | React.ReactElement;
 	name: string;
+	// onFocus?: (e: React.FocusEvent) => void;
+	placeholder?: string;
 	type: InputTypes;
+	defaultValue: string | undefined;
 }
 
 // EXPORTS
@@ -28,26 +32,51 @@ export const Input: React.FC<Props> = ({
 	isDisabled = false,
 	label,
 	name,
+	// onFocus,
+	placeholder,
 	type,
+	defaultValue,
 	...rest
 }) => {
+	// HOOKS - STATE
+	const [errorMessage, setErrorMessage] = React.useState(error);
+
+	// HOOKS - EFFECT
+	React.useEffect(() => {
+		setErrorMessage(error);
+	}, [error]);
+
+	// HANDLER
+	const onFocus = () => {
+		if (typeof errorMessage === 'string') {
+			setErrorMessage(undefined);
+		}
+	};
+
 	// VARS
 	const classes: ClassValue = clsx('jdg-input', `jdg-input-${type}`, className, {
-		'jdg-input-error': error,
+		'jdg-input-error': errorMessage,
 		'jdg-input-disabled': isDisabled,
 	});
 
-	const nonInputProps = {
+	const sharedProps = {
+		defaultValue,
 		name,
+		onFocus,
+		placeholder,
 		...rest,
 	};
 
-	const inputProps = {
-		type,
-		...nonInputProps,
+	const nonInputProps = {
+		...sharedProps,
 	};
 
-	// Get appropriate html if textarea etc... Keep building this out as need be.
+	const inputProps = {
+		...sharedProps,
+		type,
+	};
+
+	// Render
 	const Component = () => {
 		switch (type) {
 			case 'textarea':
@@ -61,7 +90,7 @@ export const Input: React.FC<Props> = ({
 		<div className={classes}>
 			<label htmlFor={name}>{label}</label>
 			<Component />
-			{error && <div className='jdg-input-error-message'>{error}</div>}
+			{errorMessage && <div className='jdg-input-error-message'>{errorMessage}</div>}
 		</div>
 	);
 };
