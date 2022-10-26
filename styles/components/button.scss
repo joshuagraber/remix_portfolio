@@ -1,0 +1,26 @@
+.jdg-button {
+	background-color: transparent;
+	border: 2px solid var(--color-text-primary);
+	border-radius: 16px;
+	color: var(--color-text-primary);
+	cursor: pointer;
+	font: 'Catamaran';
+	font-size: 18px;
+	letter-spacing: 1.4px;
+	padding: 12px 16px;
+
+	&:focus,
+	&:hover {
+		border: 2px solid var(--color-accent-primary);
+		box-shadow: inset 3px -2px 3px var(--color-theme-primary-3-opacity_50),
+			inset -1px 2px 3px var(--color-theme-primary-3-opacity_50);
+		transition: box-shadow 0.2s ease;
+	}
+
+	&:active {
+		border: 2px solid var(--color-accent-primary);
+		box-shadow: inset 3px -2px 3px var(--color-accent-primary),
+			inset -1px 2px 3px var(--color-accent-primary);
+		transition: box-shadow 0.2s ease;
+	}
+}

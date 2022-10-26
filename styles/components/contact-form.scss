@@ -9,7 +9,7 @@
 .jdg-contact-form {
 	display: flex;
 	flex-direction: column;
-	padding: 12px;
+	padding: 42px;
 	position: relative;
 	gap: 36px;
 
@@ -23,7 +23,28 @@
 		padding: 18px;
 		width: 100%;
 
+		label {
+			font-size: 16px;
+		}
+
+		fieldset {
+			border: none;
+			display: flex;
+			gap: 8px;
+			padding: unset;
+			width: 100%;
+
+			.jdg-input {
+				flex: 1 1 40%;
+			}
+
+			.jdg-input-name_middle {
+				width: 20%;
+			}
+		}
+
 		legend {
+			// TODO: apply this to heading instead
 			background-color: var(--color-theme-primary-1);
 			font-size: 36px;
 			font: $font-heading-secondary;
@@ -35,60 +56,6 @@
 				background-color: var(--color-theme-primary-4);
 				color: var(--color-neutral-10);
 			}
-		}
-	}
-
-	label {
-		align-self: flex-end;
-	}
-
-	&-response {
-		align-items: center;
-		border-radius: 24px;
-		background-color: var(--color-background);
-		bottom: 0;
-		display: flex;
-		flex-direction: column;
-		height: 100%;
-		gap: 16px;
-		justify-content: flex-start;
-		left: 0;
-		padding-top: 150px;
-		position: absolute;
-		right: 0;
-		top: 0;
-		width: 100%;
-		z-index: 2;
-
-		h5 {
-			font: $font-heading-tertiary-emphasis;
-		}
-
-		p {
-			font: $font-paragraph-secondary;
-		}
-
-		// TODO: this is reused code, shared between this and the loading spinner. Create a mixin.
-		&-entering {
-			display: flex;
-			opacity: 0;
-		}
-
-		&-entered {
-			display: flex;
-			opacity: 1;
-			transition: opacity 0.3s ease;
-		}
-
-		&-exiting {
-			display: flex;
-			opacity: 1;
-		}
-
-		&-exited {
-			display: flex;
-			opacity: 0;
-			transition: opacity 0.3s ease;
 		}
 	}
 }
