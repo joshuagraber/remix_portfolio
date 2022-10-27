@@ -1,14 +1,14 @@
 // GLOBALS
 import React from 'react';
 import { json } from '@remix-run/node';
-import styles from '../styles/index.css';
+import styles from 'styles/index.css';
 
 // COMPONENTS
 import { Accordion, links as accordionLinks } from 'components/Accordion';
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 
 // CONTEXT
-import { useIsContactModalDisplayed } from '../context/app';
+import { useAppContext } from '../context/app';
 
 // TYPES
 import type { DynamicLinksFunction } from 'remix-utils';
@@ -46,7 +46,7 @@ export const handle: Handle = {
 
 export default function Work(): React.ReactElement {
 	// HOOKS - CONTEXT
-	const { setIsContactModalDisplayed } = useIsContactModalDisplayed();
+	const { setIsContactModalDisplayed } = useAppContext()!;
 
 	// SUB-COMPONENT
 	const EmailLink = () => {

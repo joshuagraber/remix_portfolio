@@ -18,7 +18,7 @@ export function links() {
 
 // TYPES
 interface Props {
-	children: React.ReactElement;
+	children: React.ReactElement | string;
 	isDisabled?: boolean;
 	isOpen?: boolean;
 	heading: string;

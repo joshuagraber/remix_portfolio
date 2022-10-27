@@ -10,7 +10,7 @@ import { handleKeyDownLikeClick } from 'utils/utils.client';
 
 // CONSTANTS
 import { SOCIAL_LINKS } from 'utils/constants';
-import { useIsContactModalDisplayed } from 'context/app';
+import { useAppContext } from 'context/app';
 import React from 'react';
 
 // TYPES
@@ -23,7 +23,7 @@ export const links: LinksFunction = () => {
 
 export const Footer: React.FC = () => {
 	// CONTEXT
-	const { setIsContactModalDisplayed } = useIsContactModalDisplayed();
+	const { setIsContactModalDisplayed } = useAppContext()!;
 
 	// HANDLER
 	const onClick = () => {

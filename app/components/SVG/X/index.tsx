@@ -4,7 +4,7 @@ interface Props {
 	color?: string;
 	width?: string;
 }
-export const X = ({ height = '24px', color = 'currentColor', width = '24px' }) => (
+export const X: React.FC<Props> = ({ height = '24px', color = 'currentColor', width = '24px' }) => (
 	<svg
 		width={width}
 		height={height}

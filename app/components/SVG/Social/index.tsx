@@ -1,6 +1,6 @@
 interface Props {
 	color?: string;
-	type: 'email' | 'github' | 'linkedin' | 'twitter';
+	type: string;
 }
 
 export const SocialIcon: React.FC<Props> = ({ color = 'currentColor', type }) => {
