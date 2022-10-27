@@ -4,58 +4,80 @@
 	height: 100%;
 	position: relative;
 	width: 100%;
-}
 
-.jdg-contact-form {
-	display: flex;
-	flex-direction: column;
-	padding: 42px;
-	position: relative;
-	gap: 36px;
-
-	&-input-fields {
+	.jdg-contact-form {
 		border: 2px solid var(--color-text-primary);
-		border-radius: 16px;
+		border-radius: 10px;
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
-		max-width: 600px;
-		padding: 18px;
-		width: 100%;
+		padding: 24px;
+		position: relative;
+		gap: 36px;
 
-		label {
-			font-size: 16px;
-		}
+		&-input-fields {
+			&,
+			fieldset {
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+			}
 
-		fieldset {
-			border: none;
-			display: flex;
-			gap: 8px;
-			padding: unset;
+			max-width: 600px;
+			padding: 18px;
 			width: 100%;
 
-			.jdg-input {
-				flex: 1 1 40%;
+			label {
+				font-size: 16px;
 			}
 
-			.jdg-input-name_middle {
-				width: 20%;
+			fieldset {
+				border: unset;
+				padding: unset;
 			}
 		}
+	}
 
-		legend {
-			// TODO: apply this to heading instead
-			background-color: var(--color-theme-primary-1);
-			font-size: 36px;
-			font: $font-heading-secondary;
-			border-radius: 12px;
-			padding: 12px;
+	h3 {
+		// TODO: apply this to heading instead
+		background-color: var(--color-theme-primary-1);
+		font-size: 36px;
+		font: $font-heading-secondary;
+		border-radius: 10px;
+		box-shadow: -1px -2px 0 1px var(--color-accent-primary),
+			1px 2px 0 1px var(--color-accent-primary);
+		padding: 12px;
+		position: relative;
+		width: max-content;
+		rotate: -40deg;
+		top: 32px;
+		left: -75px;
+		z-index: 1;
+
+		:root[data-theme='jdg-light-mode'] & {
+			background-color: var(--color-theme-primary-4);
+			color: var(--color-neutral-10);
+		}
+	}
+
+	&.modal h3 {
+		rotate: 0deg;
+		top: 8px;
+		left: 16px;
+		transform: skewX(5deg);
+	}
+
+	@media (max-width: $mobile) {
+		width: 90%;
+
+		h3 {
+			rotate: 0deg;
+			top: 8px;
+			left: 16px;
 			transform: skewX(5deg);
-
-			:root[data-theme='jdg-light-mode'] & {
-				background-color: var(--color-theme-primary-4);
-				color: var(--color-neutral-10);
-			}
 		}
+	}
+
+	@media (max-width: 500px) {
+		margin: 0 auto;
 	}
 }

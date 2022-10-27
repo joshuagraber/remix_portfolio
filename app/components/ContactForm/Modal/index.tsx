@@ -1,50 +1,65 @@
 // GLOBALS
+import styles from 'styles/contact-form.css';
 import React from 'react';
 import { useFetcher } from '@remix-run/react';
 
 // COMPONENTS
-import { ContactFormFieldset } from '../Fieldset';
-import { LoadingSpinner, links as loadingSpinnerLinks } from 'components/LoadingSpinner';
+import { ContactFormFields, links as contactFormFieldsLinks } from '../Fields';
+import { Button, links as buttonLinks } from 'components/Button';
 
-// TYPES
-interface Props {
-	hide: () => void;
-}
+// TYPEs
+import { ContactFormModalProps } from '../types';
+import { useAppContext } from 'context/app';
 
 // EXPORTS
 export function links() {
-	return [...loadingSpinnerLinks()];
+	return [...buttonLinks(), ...contactFormFieldsLinks(), { rel: 'stylesheet', href: styles }];
 }
 
-export const ContactFormModal: React.FC<Props> = ({ hide }) => {
+export const ContactFormModal: React.FC<ContactFormModalProps> = ({ hide }) => {
 	// HOOKS - GLOBAL
-	const fetcher = useFetcher();
+	const fetchContactAction = useFetcher();
+	const { setContactFormSubmitter } = useAppContext()!;
 
 	// HOOKS - REF
 	const ref = React.useRef<HTMLFormElement>(null);
 
 	// HOOKS - EFFECTS
 	React.useEffect(() => {
-		// Do nothing if form not submitted.
-		if (fetcher.type === 'init') {
-			return;
+		if (isLoading && !fetchContactAction.data.errors) {
+			hide();
 		}
-		// Use this to handle errors, etc.
-	}, [fetcher]);
+	}, [fetchContactAction]);
 
 	React.useEffect(() => {
-		// Only reset if ref is applied to el and action returns success
-		if (ref?.current && fetcher?.type === 'done') {
-			ref.current.reset();
+		const data = fetchContactAction?.submission?.formData;
+		const name = data?.get('name_first');
+
+		if (typeof name === 'string' && isLoading) {
+			setContactFormSubmitter(name);
 		}
-	}, [fetcher, ref]);
+	}, [fetchContactAction]);
+
+	// Constants
+	const isLoading = fetchContactAction.state === 'loading';
 
 	return (
-		<div className='jdg-contact-form-container'>
-			<fetcher.Form action='/contact' className='jdg-contact-form' method='post' ref={ref}>
-				<ContactFormFieldset />
-				<button type='submit'>Send your message now</button>
-			</fetcher.Form>
+		<div className='jdg-contact-form-container modal'>
+			<h3>Say hello</h3>
+			<fetchContactAction.Form
+				action='/contact'
+				className='jdg-contact-form'
+				method='post'
+				ref={ref}
+			>
+				<ContactFormFields
+					errors={fetchContactAction?.data?.errors}
+					fields={fetchContactAction?.data?.fields}
+				/>
+				<Button isLoading={fetchContactAction.state === 'submitting'} type='submit'>
+					Send now
+				</Button>
+			</fetchContactAction.Form>
 		</div>
 	);
 };

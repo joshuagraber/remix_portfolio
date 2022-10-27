@@ -32,24 +32,54 @@ export const Input: React.FC<Props> = ({
 	isDisabled = false,
 	label,
 	name,
-	// onFocus,
 	placeholder,
 	type,
-	defaultValue,
+	defaultValue = '',
 	...rest
 }) => {
 	// HOOKS - STATE
+	// Derived state because error prop is passed from server only once per submmission,
+	// and we need to clear errors as user focuses inputs
 	const [errorMessage, setErrorMessage] = React.useState(error);
 
+	// HOOKS - REF
+	const inputRef = React.useRef<HTMLInputElement>(null);
+	const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
+
 	// HOOKS - EFFECT
+	// Set error when passed val changes
 	React.useEffect(() => {
 		setErrorMessage(error);
 	}, [error]);
 
+	// Keep input focused afer state change
+	React.useEffect(() => {
+		const errorIsCleared = typeof errorMessage === 'undefined' && error;
+
+		// Inputs
+		if (inputRef.current && errorIsCleared) {
+			inputRef.current.focus();
+		}
+
+		// Textareas
+		if (textAreaRef.current && errorIsCleared) {
+			textAreaRef.current.focus();
+		}
+	}, [errorMessage, inputRef]);
+
 	// HANDLER
+	// Update error state when input focused
 	const onFocus = () => {
 		if (typeof errorMessage === 'string') {
 			setErrorMessage(undefined);
+		}
+	};
+
+	// Update error state when input un-focused
+	const onBlur = () => {
+		const value = textAreaRef?.current?.value ?? inputRef?.current?.value;
+		if (!value) {
+			setErrorMessage(error);
 		}
 	};
 
@@ -61,18 +91,22 @@ export const Input: React.FC<Props> = ({
 
 	const sharedProps = {
 		defaultValue,
+		disabled: isDisabled,
 		name,
+		onBlur,
 		onFocus,
 		placeholder,
 		...rest,
 	};
 
-	const nonInputProps = {
+	const textAreaProps = {
 		...sharedProps,
+		ref: textAreaRef,
 	};
 
 	const inputProps = {
 		...sharedProps,
+		ref: inputRef,
 		type,
 	};
 
@@ -80,7 +114,7 @@ export const Input: React.FC<Props> = ({
 	const Component = () => {
 		switch (type) {
 			case 'textarea':
-				return <textarea {...nonInputProps} />;
+				return <textarea {...textAreaProps} />;
 			default:
 				return <input {...inputProps} />;
 		}
@@ -90,6 +124,7 @@ export const Input: React.FC<Props> = ({
 		<div className={classes}>
 			<label htmlFor={name}>{label}</label>
 			<Component />
+			{/* TODO: add icon and animate errormessage in/out */}
 			{errorMessage && <div className='jdg-input-error-message'>{errorMessage}</div>}
 		</div>
 	);

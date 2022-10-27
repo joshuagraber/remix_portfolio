@@ -1,5 +1,5 @@
 // COMPONENTS
-import { ContactForm, links as contactFormLinks } from 'components/ContactForm';
+import { ContactFormModal, links as contactFormModalLinks } from 'components/ContactForm/Modal';
 import { Modal, links as modalLinks } from 'components/Modal';
 
 // TYPES
@@ -11,13 +11,13 @@ interface Props {
 
 // EXPORTS
 export const links: LinksFunction = () => {
-	return [...contactFormLinks(), ...modalLinks()];
+	return [...contactFormModalLinks(), ...modalLinks()];
 };
 
 export const ModalContactForm: React.FC<Props> = ({ hide, isVisible }) => {
 	return (
 		<Modal hide={hide} isVisible={isVisible}>
-			<ContactForm hide={hide} type='modal' />
+			<ContactFormModal hide={hide} />
 		</Modal>
 	);
 };

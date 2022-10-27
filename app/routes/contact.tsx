@@ -1,42 +1,81 @@
-import { json } from '@remix-run/node';
-import React from 'react';
+import { json, LoaderFunction, redirect } from '@remix-run/node';
 import styles from '../styles/index.css';
-import { useActionData, useNavigate } from '@remix-run/react';
+import React from 'react';
+import { useActionData } from '@remix-run/react';
+
+// EXT LIBS
+import { startCase as _startCase, toLower as _toLower } from 'lodash';
+
+// COMPONENTS
+import { ContactForm, links as contactFormLinks } from 'components/ContactForm';
+import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 
 // SERVICES
 import { sendMail } from 'services/mailer.server';
 
-// COMPONENTS
-import { ContactForm, links as contactFormLinks } from '../components/ContactForm';
-import { ContainerCenter, links as containerCenterLinks } from '../components/ContainerCenter';
+// UTILS
+import { stripParamsAndHash, isValidEmail, isValidInputLength } from 'utils/utils.server';
 
 // TYPES
+type ContactErrors = Record<string, string | undefined>;
 import type { ActionFunction, LinksFunction, MetaFunction } from '@remix-run/node';
 import type { DynamicLinksFunction } from 'remix-utils';
 import type { Handle } from 'types/types.client';
 
+// EXPORTS
 export const action: ActionFunction = async ({ request }) => {
+	let errorCount: number = 0;
+	const errors: ContactErrors = {};
+
 	const submission: FormData = await request.formData();
+	const fields = Object.fromEntries(submission);
 
-	const name: string = submission.get('name')?.toString() ?? '';
-	const email: string = submission.get('email')?.toString() ?? '';
-	const message: string = submission.get('message')?.toString() ?? '';
+	if (typeof submission === 'undefined') {
+		errors.form = 'No submission found';
+		return json({ errors, fields }, 404);
+	}
 
-	// TODO: verify each field, throw errors if they are not correct.
+	// Form fields
+	const { name_first, name_last, email, message } = fields;
+	const name = `${name_first} ${name_last}`;
+
+	for (let input in fields) {
+		if (!isValidInputLength(fields[input], 1)) {
+			const fieldNameForDisplay = input.includes('name') ? 'Name' : _startCase(_toLower(input));
+			errors[input] = `Your ${fieldNameForDisplay} is required.`;
+			errorCount++;
+		}
+	}
+
+	if (!isValidEmail(email)) {
+		errors.email = 'Please provide a valid email address.';
+		errorCount++;
+	}
+
+	if (errorCount > 0) {
+		return json({ errors, fields }, 422);
+	}
 
 	try {
 		const response = await sendMail({
 			from: `${name} <${process.env.SMTP_EMAIL_FROM}>`,
 			to: process.env.SMTP_SEND_TO,
-			replyTo: email,
+			replyTo: email.toString(),
 			subject: 'Message from contact form',
 			// TODO: Create template and render to html string
-			text: message,
+			text: message.toString(),
 		});
 
-		return json(response, { status: 200 });
-	} catch (error) {
-		return json(error, { status: 400 });
+		if (response.accepted.length >= 1) {
+			return new Response(JSON.stringify({ name_first }), {
+				status: 302,
+				headers: {
+					Location: '/contact/success',
+				},
+			});
+		}
+	} catch (error: any) {
+		throw new Error(error?.message ?? 'There was an error trying to send email');
 	}
 };
 
@@ -48,6 +87,12 @@ export const links: LinksFunction = () => {
 	return [...contactFormLinks(), ...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 };
 
+export const handle: Handle = { animatePresence: true, dynamicLinks, ref: React.createRef() };
+
+export const loader: LoaderFunction = ({ request }) => {
+	return { canonical: stripParamsAndHash(request.url) };
+};
+
 export const meta: MetaFunction = () => {
 	return {
 		description: 'Send an email to Joshua D. Graber',
@@ -55,12 +100,7 @@ export const meta: MetaFunction = () => {
 	};
 };
 
-export const handle: Handle = { animatePresence: true, dynamicLinks, ref: React.createRef() };
-
 export default function Contact(): React.ReactElement {
-	// HOOKS - GLOBAL
-	const navigate = useNavigate();
-
 	// HOOKS - REMIX
 	const formData = useActionData();
 
@@ -75,7 +115,7 @@ export default function Contact(): React.ReactElement {
 
 	return (
 		<ContainerCenter className='jdg-contact-container-center'>
-			<ContactForm data={formData} type='page' />
+			<ContactForm data={formData} />
 		</ContainerCenter>
 	);
 }
