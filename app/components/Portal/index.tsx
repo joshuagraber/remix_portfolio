@@ -13,7 +13,7 @@ interface Props {
 	tabIndex?: number;
 }
 
-export const Portal: React.FC<Props> = ({ className = '', children, id = '', tabIndex }) => {
+export const Portal: React.FC<Props> = ({ className = '', children, id = '', tabIndex = 0 }) => {
 	// HOOKS - STATE
 	const [root, setRoot] = React.useState<Element | null>(null);
 	const [portal, setPortal] = React.useState<Element | null>(null);
@@ -23,33 +23,36 @@ export const Portal: React.FC<Props> = ({ className = '', children, id = '', tab
 		if (!canUseDOM) {
 			return;
 		}
+
 		if (!root) {
 			setRoot(document.querySelector('#app'));
 		}
+
 		if (!portal) {
 			setPortal(document.createElement('div'));
 		}
 
-		if (!root || !portal) {
-			throw new Error('Portal failed');
+		if (portal) {
+			root?.appendChild(portal);
 		}
 
-		root?.appendChild(portal);
-
 		return () => {
-			root?.removeChild(portal);
+			if (portal) {
+				root?.removeChild(portal);
+			}
 		};
 	}, [portal, root]);
 
-	if (!portal || !root) {
-		return null;
+	// Vars
+	if (portal) {
+		portal.setAttribute('key', className);
+		portal.className += className;
+		portal.id = id;
 	}
 
-	// Vars
-
-	portal.setAttribute('key', className);
-	portal.className += className;
-	portal.id = id;
+	if (!root || !portal) {
+		return null;
+	}
 
 	return createPortal(children, portal);
 };
