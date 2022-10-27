@@ -10,7 +10,7 @@ import { Footer, links as footerLinks } from 'components/Footer';
 import { ModalContactForm, links as modalContactFormLinks } from 'components/ModalContactForm';
 
 // CONTEXT
-import { useIsContactModalDisplayed } from 'context/app';
+import { useAppContext } from 'context/app';
 import type { LinksFunction } from '@remix-run/node';
 
 export const links: LinksFunction = () => {
@@ -24,7 +24,8 @@ export const links: LinksFunction = () => {
 
 export const Layout: React.FC = () => {
 	// HOOKS - CONTEXT
-	const { isContactModalDisplayed, setIsContactModalDisplayed } = useIsContactModalDisplayed();
+	// TODO: find a "Remixy" route way. Params? Splat?
+	const { isContactModalDisplayed, setIsContactModalDisplayed } = useAppContext()!;
 
 	// HOOKs - GLOBAL
 	const { pathname } = useLocation();

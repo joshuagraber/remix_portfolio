@@ -10,9 +10,8 @@ import clsx from 'clsx';
 import type { LinksFunction } from '@remix-run/node';
 interface Props {
 	color?: string;
-	height?: string;
 	isDisplayed?: boolean;
-	width?: string;
+	size?: string;
 	text?: string | null;
 }
 
@@ -23,9 +22,8 @@ export const links: LinksFunction = () => {
 
 export const LoadingSpinner: React.FC<Props> = ({
 	color = 'currentColor',
-	height = '100px',
 	isDisplayed = false,
-	width = '100px',
+	size = 'auto',
 	text = null,
 }) => {
 	// HOOKS - REF
@@ -55,8 +53,8 @@ export const LoadingSpinner: React.FC<Props> = ({
 				return (
 					<div className={classes} ref={ref}>
 						<svg
-							width={width}
-							height={height}
+							width={size}
+							height={size}
 							viewBox='0 0 38 38'
 							xmlns='http://www.w3.org/2000/svg'
 							stroke={color}
