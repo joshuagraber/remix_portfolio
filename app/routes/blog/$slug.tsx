@@ -52,15 +52,13 @@ export const handle: Handle = {
 export default function Post(): React.ReactElement {
 	const data = useLoaderData();
 
-	console.log({ data });
-
 	// TODO: handle this more elegantly
 	if (typeof data === 'undefined') {
-		return <LoadingSpinner isDisplayed />;
+		return <LoadingSpinner isDisplayed size='80px' />;
 	}
 
 	const {
-		// Do this destructuring in the server instead
+		// Do this destructuring in the server instead?
 		post: { author, content, time_posted },
 		post_previous: { slug: previousSlug, tagline: previousTagline, title: previousTitle },
 		post_next: { slug: nextSlug, tagline: nextTagline, title: nextTitle },

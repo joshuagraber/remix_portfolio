@@ -5,41 +5,37 @@ import { resolveMarkdownFileToString } from 'utils/utils.server';
 // Doing this for testing purposes until DB connected, etc.
 const blog_test = resolveMarkdownFileToString('blog-test');
 
-interface Post {
-	author: string;
-	content: string;
-	id: string;
-	slug: string;
-	tagline: string;
-	time_posted: string;
-	title: string;
-}
+// TYPES
+import { Posts } from 'types/types.server';
 
-export const posts: Post[] = [
+export const posts: Posts = [
 	{
-		author: 'Joshua D. Graber',
+		_id: '14KL84361', // Will eventually be Mongo ObjectID
+		author: { name_first: 'Joshua', name_middle: 'D.', name_last: 'Graber' },
+		comments: [],
 		content: blog_test,
-		id: '14KL84361',
 		slug: 'blog-test-2',
-		tagline: 'Lorem ipsum blah blah blah',
+		tagline: 'Lorem ipsum blah blah second post',
 		time_posted: '2022-10-21T14:30:00-5:00',
 		title: 'Test Post 2',
 	},
 	{
-		author: 'Joshua D. Graber',
+		_id: '93AF84675',
+		author: { name_first: 'Joshua', name_middle: 'D.', name_last: 'Graber' },
+		comments: [],
 		content: blog_test,
-		id: '93AF84675',
 		slug: 'blog-test',
-		tagline: 'Lorem ipsum blah blah blah',
+		tagline: 'Lorem ipsum blah blah test post',
 		time_posted: '2022-10-22T11:30:00-5:00',
 		title: 'Test Post',
 	},
 	{
-		author: 'Joshua D. Graber',
+		_id: '93KS90147',
+		author: { name_first: 'Joshua', name_middle: 'D.', name_last: 'Graber' },
+		comments: [],
 		content: blog_test,
-		id: '93KS90147',
 		slug: 'blog-test-3',
-		tagline: 'Lorem ipsum blah blah blah',
+		tagline: 'Lorem ipsum blah blah blah third post',
 		time_posted: '2022-10-30T08:30:00-5:00',
 		title: 'Test Post 3',
 	},
