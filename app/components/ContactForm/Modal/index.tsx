@@ -26,7 +26,7 @@ export const ContactFormModal: React.FC<ContactFormModalProps> = ({ hide }) => {
 
 	// HOOKS - EFFECTS
 	React.useEffect(() => {
-		if (isLoading && !fetchContactAction.data.errors) {
+		if (isLoading && !fetchContactAction?.data?.errors) {
 			hide();
 		}
 	}, [fetchContactAction]);
@@ -34,6 +34,8 @@ export const ContactFormModal: React.FC<ContactFormModalProps> = ({ hide }) => {
 	React.useEffect(() => {
 		const data = fetchContactAction?.submission?.formData;
 		const name = data?.get('name_first');
+
+		console.log({ data, name });
 
 		if (typeof name === 'string' && isLoading) {
 			setContactFormSubmitter(name);

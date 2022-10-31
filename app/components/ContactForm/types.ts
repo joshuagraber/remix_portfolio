@@ -12,6 +12,7 @@ export interface ContactFormProps {
 	data?: {
 		errors?: ContactFormValues;
 		fields?: ContactFormValues;
+		name_first?: FormValue;
 	};
 }
 

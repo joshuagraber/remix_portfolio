@@ -67,7 +67,7 @@ export const action: ActionFunction = async ({ request }) => {
 		});
 
 		if (response.accepted.length >= 1) {
-			return new Response(JSON.stringify({ name_first }), {
+			return new Response(JSON.stringify({ fields }), {
 				status: 302,
 				headers: {
 					Location: '/contact/success',
@@ -103,15 +103,6 @@ export const meta: MetaFunction = () => {
 export default function Contact(): React.ReactElement {
 	// HOOKS - REMIX
 	const formData = useActionData();
-
-	// HOOKS - EFFECTS
-	React.useEffect(() => {
-		if (typeof formData === 'undefined') {
-			return;
-		}
-
-		// Refactor when new form component built
-	}, [formData]);
 
 	return (
 		<ContainerCenter className='jdg-contact-container-center'>

@@ -215,9 +215,32 @@ $home-text-container-width: 620px;
 	}
 }
 
+// Blog
 .jdg-main {
 	.jdg-blog-container-center {
 		padding: 80px 24px;
+	}
+}
+
+.jdg-main {
+	.jdg-contact-success-container-center {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		padding: 48px;
+
+		h3 {
+			font: $font-heading-secondary;
+		}
+
+		p {
+			font: $font-paragraph-primary;
+		}
+
+		a {
+			font-size: 18px;
+		}
 	}
 }
 

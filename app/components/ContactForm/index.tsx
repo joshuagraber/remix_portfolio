@@ -37,9 +37,10 @@ export const ContactForm: React.FC<ContactFormProps> = ({ data }) => {
 	}, [data]);
 
 	React.useEffect(() => {
-		const isLoading = transition.state === 'loading';
-		const data = transition?.submission?.formData;
-		const name = data?.get('first_name');
+		const data = transition.submission?.formData;
+		const name = data?.get('name_first');
+
+		console.log({ data, name });
 
 		if (typeof name === 'string' && isLoading) {
 			setContactFormSubmitter(name);
@@ -47,6 +48,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ data }) => {
 	}, [transition]);
 
 	// VARS
+	const isLoading = transition.state === 'loading';
 	const isSubmitting = transition.state === 'submitting';
 
 	return (
@@ -54,7 +56,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ data }) => {
 			<h3>Say hello</h3>
 			<Form className='jdg-contact-form' method='post'>
 				<ContactFormFields errors={errorState} fields={fieldsState} />
-				<Button isLoading={isSubmitting} type='submit'>
+				<Button isLoading={isSubmitting ?? isLoading} type='submit'>
 					Send Now
 				</Button>
 			</Form>
