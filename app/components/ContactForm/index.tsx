@@ -40,8 +40,6 @@ export const ContactForm: React.FC<ContactFormProps> = ({ data }) => {
 		const data = transition.submission?.formData;
 		const name = data?.get('name_first');
 
-		console.log({ data, name });
-
 		if (typeof name === 'string' && isLoading) {
 			setContactFormSubmitter(name);
 		}

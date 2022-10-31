@@ -35,8 +35,6 @@ export const ContactFormModal: React.FC<ContactFormModalProps> = ({ hide }) => {
 		const data = fetchContactAction?.submission?.formData;
 		const name = data?.get('name_first');
 
-		console.log({ data, name });
-
 		if (typeof name === 'string' && isLoading) {
 			setContactFormSubmitter(name);
 		}
