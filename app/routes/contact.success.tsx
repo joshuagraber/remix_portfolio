@@ -1,6 +1,7 @@
 // GLOBALS
 import { Link } from '@remix-run/react';
 import styles from 'styles/index.css';
+import React from 'react';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
@@ -9,15 +10,23 @@ import { ContainerCenter, links as containerCenterLinks } from 'components/Conta
 import { useAppContext } from 'context/app';
 
 // TYPES
-import { LinksFunction } from '@remix-run/node';
+import { LinksFunction, MetaFunction } from '@remix-run/node';
 
 // EXPORTS
 export const handle = {
 	animatePresence: true,
+	ref: React.createRef(),
 };
 
 export const links: LinksFunction = () => {
 	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
+};
+
+export const meta: MetaFunction = () => {
+	return {
+		content: 'noindex',
+		name: 'robots',
+	};
 };
 
 export default function ContactFormSuccess() {
