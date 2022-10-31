@@ -1,11 +1,10 @@
 // GLOBALS
-import React, { EventHandler } from 'react';
+import React from 'react';
 import { NavLink } from '@remix-run/react';
 import styles from 'styles/nav.css';
 
 // EXTERNAL LIBS
 import { getWindow } from 'ssr-window';
-import { useLink } from 'react-aria';
 
 // HOOKS
 import { useEffectDidUpdate } from 'hooks/useEffectDidUpdate';
@@ -21,10 +20,6 @@ import type { LinksFunction } from '@remix-run/node';
 interface Props {
 	isMobile: boolean;
 }
-interface NavLinkProps {
-	route: string;
-}
-
 // CONSTANTS
 import { NAV_ROUTES } from 'utils/constants';
 const ACTIVE_CLASS_NAME = 'jdg-nav-link-active';
@@ -104,36 +99,6 @@ export const Nav: React.FC<Props> = ({ isMobile }) => {
 		}
 	};
 
-	// SUBCOMPONENT
-	const AriaNavLink: React.FC<NavLinkProps> = ({ route }) => {
-		const navLinkRef = React.useRef<HTMLAnchorElement>(null);
-		const ariaProps = {
-			elementType: 'a',
-		};
-
-		const { linkProps } = useLink(ariaProps, navLinkRef);
-
-		const routeTitleCased = route[0].toUpperCase() + route.slice(1);
-
-		return (
-			<NavLink
-				{...linkProps}
-				aria-hidden={!isExpanded}
-				className={({ isActive }) =>
-					isActive ? `${CLASS_NAME} ${ACTIVE_CLASS_NAME}` : `${CLASS_NAME}`
-				}
-				onClick={onLinkClick}
-				prefetch='intent'
-				ref={navLinkRef}
-				role='menuitem'
-				tabIndex={isExpanded ? 0 : -1}
-				to={`/${route}`}
-			>
-				{routeTitleCased}
-			</NavLink>
-		);
-	};
-
 	return (
 		<nav className='jdg-nav' ref={navRef}>
 			<button
@@ -148,7 +113,22 @@ export const Nav: React.FC<Props> = ({ isMobile }) => {
 			</button>
 			<menu aria-hidden={!isExpanded} className='jdg-nav-menu' id='jdg-nav-menu'>
 				{NAV_ROUTES.map((route) => {
-					return <AriaNavLink key={route} route={route} />;
+					const routeTitleCased = route[0].toUpperCase() + route.slice(1);
+					return (
+						<NavLink
+							aria-hidden={!isExpanded}
+							className={({ isActive }) =>
+								isActive ? `${CLASS_NAME} ${ACTIVE_CLASS_NAME}` : `${CLASS_NAME}`
+							}
+							onClick={onLinkClick}
+							prefetch='intent'
+							role='menuitem'
+							tabIndex={isExpanded ? 0 : -1}
+							to={`/${route}`}
+						>
+							{routeTitleCased}
+						</NavLink>
+					);
 				})}
 			</menu>
 		</nav>
