@@ -1,10 +1,9 @@
 // GLOBALS
-import { useLocation, useMatches, useOutlet } from '@remix-run/react';
-import styles from '../../styles/layout.css';
-
-import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import { Outlet, useLocation, useMatches, useOutlet } from '@remix-run/react';
+import styles from 'styles/layout.css';
 
 // COMPONENTS
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import { Header, links as headerLinks } from 'components/Header';
 import { Footer, links as footerLinks } from 'components/Footer';
 import { ModalContactForm, links as modalContactFormLinks } from 'components/ModalContactForm';
@@ -22,7 +21,7 @@ export const links: LinksFunction = () => {
 	];
 };
 
-export const Layout: React.FC = () => {
+export default function Layout(): JSX.Element {
 	// HOOKS - CONTEXT
 	// TODO: find a "Remixy" route way. Params? Splat?
 	const { isContactModalDisplayed, setIsContactModalDisplayed } = useAppContext()!;
@@ -55,7 +54,7 @@ export const Layout: React.FC = () => {
 					{() => {
 						return (
 							<main className='jdg-main' ref={handle?.ref}>
-								{outlet}
+								<Outlet />
 							</main>
 						);
 					}}
@@ -68,4 +67,4 @@ export const Layout: React.FC = () => {
 			/>
 		</>
 	);
-};
+}

@@ -1,11 +1,8 @@
 // GLOBALS
-import { Links, LiveReload, Meta, Scripts, ScrollRestoration } from '@remix-run/react';
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import { DynamicLinks } from 'remix-utils';
 import globalStyles from 'styles/global.css';
 import themes from 'styles/themes.css';
-
-// COMPONENTS
-import { Layout, links as layoutLinks } from 'components/Layout';
 
 // CONTEXT
 import { AppProvider as Context } from 'context/app';
@@ -15,7 +12,6 @@ export const links: LinksFunction = () => {
 	return [
 		{ rel: 'stylesheet', href: themes },
 		{ rel: 'stylesheet', href: globalStyles },
-		...layoutLinks(),
 	];
 };
 
@@ -41,7 +37,7 @@ export default function App() {
 
 				<body>
 					<div id='app'>
-						<Layout />
+						<Outlet />
 
 						<ScrollRestoration />
 

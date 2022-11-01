@@ -8,7 +8,7 @@ import { Accordion, links as accordionLinks } from 'components/Accordion';
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 
 // CONTEXT
-import { useAppContext } from '../context/app';
+import { useAppContext } from 'context/app';
 
 // TYPES
 import type { DynamicLinksFunction } from 'remix-utils';

@@ -19,6 +19,7 @@ import type { LoaderFunction } from '@remix-run/node';
 
 // EXPORTS
 export const loader: LoaderFunction = ({ params, request }) => {
+	// Add test posts to DB and refactor.
 	const postsSorted = posts.sort(
 		(a, b) => new Date(a.time_posted).getTime() - new Date(b.time_posted).getTime()
 	);
