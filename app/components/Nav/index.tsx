@@ -120,6 +120,7 @@ export const Nav: React.FC<Props> = ({ isMobile }) => {
 							className={({ isActive }) =>
 								isActive ? `${CLASS_NAME} ${ACTIVE_CLASS_NAME}` : `${CLASS_NAME}`
 							}
+							key={route}
 							onClick={onLinkClick}
 							prefetch='intent'
 							role='menuitem'
