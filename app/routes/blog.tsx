@@ -38,17 +38,15 @@ export const handle: Handle = { animatePresence: true, dynamicLinks, ref: React.
 export default function Blog(): React.ReactElement {
 	return (
 		<ContainerCenter className='jdg-blog-container-center'>
-			<h2 className='jdg-blog-heading'>Blog stuff</h2>
-			<p>
-				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloremque minima tempore ipsum at
-				nisi magnam error blanditiis, inventore architecto dolore ratione quidem? Dignissimos,
-				necessitatibus labore. Impedit molestiae distinctio dolorum velit. Rerum sit soluta minima
-				molestiae numquam magnam optio rem, sapiente dolorum. Maxime ipsam, in velit expedita
-				asperiores, facere odio fugiat voluptatem reiciendis alias nesciunt commodi quas dolores
-				nisi labore culpa! Id sint consectetur non rem a, reiciendis ab aliquam, deleniti maiores
-				perspiciatis quaerat expedita velit totam, ullam recusandae incidunt fuga minima sed?
-				Aliquid beatae eligendi quis laborum dignissimos harum aliquam!
-			</p>
+			<header>
+				<h1 className='jdg-blog-heading'>Occasional Fragments</h1>
+				<p className='jdg-blog-subheading'>
+					Writing on old tech like books, new tech like generative machine learning algorithms, and
+					whatever else dull or shiny catches my eye.
+				</p>
+			</header>
+
+			<div className='jdg-blog-posts-container'>Cards with post data will go here.</div>
 		</ContainerCenter>
 	);
 }

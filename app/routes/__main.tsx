@@ -28,6 +28,7 @@ export default function Layout(): JSX.Element {
 	return (
 		<>
 			<Header />
+			{/* Route outlet via AnimatePresence component */}
 			<AnimatePresence />
 			<Footer />
 			<ModalContactForm
