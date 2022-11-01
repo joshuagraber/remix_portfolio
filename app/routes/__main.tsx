@@ -1,9 +1,8 @@
 // GLOBALS
-import { Outlet, useLocation, useMatches, useOutlet } from '@remix-run/react';
 import styles from 'styles/layout.css';
 
 // COMPONENTS
-import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import { AnimatePresence } from 'components/AnimatePresence';
 import { Header, links as headerLinks } from 'components/Header';
 import { Footer, links as footerLinks } from 'components/Footer';
 import { ModalContactForm, links as modalContactFormLinks } from 'components/ModalContactForm';
@@ -26,40 +25,10 @@ export default function Layout(): JSX.Element {
 	// TODO: find a "Remixy" route way. Params? Splat?
 	const { isContactModalDisplayed, setIsContactModalDisplayed } = useAppContext()!;
 
-	// HOOKs - GLOBAL
-	const { pathname } = useLocation();
-
-	// HOOKS - REMIX
-	const outlet = useOutlet();
-
-	// VARS
-	const routeMatch = useMatches().find(
-		(match) => match.pathname === pathname && match.id !== 'root'
-	);
-
-	const handle = routeMatch?.handle;
-	const timeout = handle?.animatePresence ? 300 : 0;
-
 	return (
 		<>
 			<Header />
-			<SwitchTransition>
-				<CSSTransition
-					classNames='jdg-main'
-					key={pathname}
-					nodeRef={handle?.ref}
-					timeout={timeout}
-					unmountOnExit
-				>
-					{() => {
-						return (
-							<main className='jdg-main' ref={handle?.ref}>
-								<Outlet />
-							</main>
-						);
-					}}
-				</CSSTransition>
-			</SwitchTransition>
+			<AnimatePresence />
 			<Footer />
 			<ModalContactForm
 				hide={() => setIsContactModalDisplayed(false)}
