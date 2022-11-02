@@ -12,7 +12,7 @@ export const links: LinksFunction = () => {
 // TODO: Refactor to use react-aria,
 export const ThemeToggle: React.FC = () => {
 	// HOOKS - CUSTOM
-	const { theme, toggleTheme } = useTheme();
+	const { theme, toggleTheme } = useTheme()!;
 
 	// VARS
 	const isDarkMode = theme === 'jdg-dark-mode';
@@ -33,7 +33,14 @@ export const ThemeToggle: React.FC = () => {
 				onChange={handleChange}
 				type='checkbox'
 			/>
-			<label htmlFor='jdg-theme-toggle' className='jdg-theme-toggle-label' />
+			<label htmlFor='jdg-theme-toggle' className='jdg-theme-toggle-label'>
+				<span hidden>
+					{`toggle theme: Light Mode or Dark Mode. currently set to: ${
+						isDarkMode ? 'Dark Mode' : 'Light Mode'
+					}
+					`}
+				</span>
+			</label>
 		</div>
 	);
 };
