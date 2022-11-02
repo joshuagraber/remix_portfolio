@@ -9,10 +9,8 @@ import { ContactFormFields, links as contactFormFieldsLinks } from './Fields';
 
 // TYPES
 import { LinksFunction } from '@remix-run/node';
-
-// TYPES
 import { ContactFormProps } from './types';
-import { useAppContext } from 'context/app';
+import { useContactFormSubmitter } from 'hooks/useContactFormSubmitter';
 
 // EXPORTS
 export const links: LinksFunction = () => {
@@ -22,7 +20,7 @@ export const links: LinksFunction = () => {
 export const ContactForm: React.FC<ContactFormProps> = ({ data }) => {
 	// HOOKS - GLOBAL
 	const transition = useTransition();
-	const { setContactFormSubmitter } = useAppContext()!;
+	const { setContactFormSubmitter } = useContactFormSubmitter();
 
 	// // HOOKS - STATE
 	// Deriving state because data only returns when submission made,

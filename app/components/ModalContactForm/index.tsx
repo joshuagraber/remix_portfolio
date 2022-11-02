@@ -2,10 +2,12 @@
 import { ContactFormModal, links as contactFormModalLinks } from 'components/ContactForm/Modal';
 import { Modal, links as modalLinks } from 'components/Modal';
 
+// HOOKS
+import { useContactModalClose } from 'hooks/useModalPath';
+
 // TYPES
 import type { LinksFunction } from '@remix-run/node';
 interface Props {
-	hide: () => void;
 	isVisible: boolean;
 }
 
@@ -14,10 +16,12 @@ export const links: LinksFunction = () => {
 	return [...contactFormModalLinks(), ...modalLinks()];
 };
 
-export const ModalContactForm: React.FC<Props> = ({ hide, isVisible }) => {
+export const ModalContactForm: React.FC<Props> = ({ isVisible }) => {
+	const path = useContactModalClose();
+
 	return (
-		<Modal hide={hide} isVisible={isVisible}>
-			<ContactFormModal hide={hide} />
+		<Modal isVisible={isVisible} pathToClose={path}>
+			<ContactFormModal />
 		</Modal>
 	);
 };

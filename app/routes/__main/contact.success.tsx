@@ -6,11 +6,9 @@ import React from 'react';
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 
-// CONTEXT
-import { useAppContext } from 'context/app';
-
 // TYPES
 import { LinksFunction, MetaFunction } from '@remix-run/node';
+import { useContactFormSubmitter } from 'hooks/useContactFormSubmitter';
 
 // EXPORTS
 export const handle = {
@@ -31,7 +29,7 @@ export const meta: MetaFunction = () => {
 
 export default function ContactFormSuccess() {
 	// HOOKS - CONTEXT
-	const { contactFormSubmitter } = useAppContext()!;
+	const { contactFormSubmitter } = useContactFormSubmitter();
 
 	return (
 		<ContainerCenter className='jdg-contact-success-container-center'>
