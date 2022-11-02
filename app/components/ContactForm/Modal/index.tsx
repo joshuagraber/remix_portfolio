@@ -7,19 +7,18 @@ import { useFetcher } from '@remix-run/react';
 import { ContactFormFields, links as contactFormFieldsLinks } from '../Fields';
 import { Button, links as buttonLinks } from 'components/Button';
 
-// TYPEs
-import { ContactFormModalProps } from '../types';
-import { useAppContext } from 'context/app';
+// TYPES
+import { useContactFormSubmitter } from 'hooks/useContactFormSubmitter';
 
 // EXPORTS
 export function links() {
 	return [...buttonLinks(), ...contactFormFieldsLinks(), { rel: 'stylesheet', href: styles }];
 }
 
-export const ContactFormModal: React.FC<ContactFormModalProps> = ({ hide }) => {
+export const ContactFormModal: React.FC = () => {
 	// HOOKS - GLOBAL
 	const fetchContactAction = useFetcher();
-	const { setContactFormSubmitter } = useAppContext()!;
+	const { setContactFormSubmitter } = useContactFormSubmitter()!;
 
 	// HOOKS - REF
 	const ref = React.useRef<HTMLFormElement>(null);
@@ -27,7 +26,7 @@ export const ContactFormModal: React.FC<ContactFormModalProps> = ({ hide }) => {
 	// HOOKS - EFFECTS
 	React.useEffect(() => {
 		if (isLoading && !fetchContactAction?.data?.errors) {
-			hide();
+			// hide();
 		}
 	}, [fetchContactAction]);
 

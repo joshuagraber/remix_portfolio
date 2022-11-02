@@ -1,17 +1,29 @@
 // GLOBALS
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import { LinksFunction, MetaFunction } from '@remix-run/node';
+import {
+	Links,
+	LiveReload,
+	Meta,
+	Outlet,
+	Scripts,
+	ScrollRestoration,
+	useSearchParams,
+} from '@remix-run/react';
 import { DynamicLinks } from 'remix-utils';
 import globalStyles from 'styles/global.css';
 import themes from 'styles/themes.css';
 
+// COMPONENTS
+import { ModalContactForm, links as modalContactFormLinks } from 'components/ModalContactForm';
+
 // CONTEXT
-import { AppProvider as Context } from 'context/app';
-import { LinksFunction, MetaFunction } from '@remix-run/node';
+import { ThemeProvider } from 'context/theme';
 
 export const links: LinksFunction = () => {
 	return [
 		{ rel: 'stylesheet', href: themes },
 		{ rel: 'stylesheet', href: globalStyles },
+		...modalContactFormLinks(),
 	];
 };
 
@@ -25,8 +37,12 @@ export const meta: MetaFunction = () => {
 };
 
 export default function App() {
+	const [searchParams] = useSearchParams();
+
+	const isContactModalOpen = searchParams.get('contact') === 'open';
+
 	return (
-		<Context>
+		<ThemeProvider>
 			<html lang='en'>
 				<head>
 					<Meta />
@@ -39,6 +55,8 @@ export default function App() {
 					<div id='app'>
 						<Outlet />
 
+						{isContactModalOpen && <ModalContactForm isVisible={isContactModalOpen} />}
+
 						<ScrollRestoration />
 
 						<Scripts />
@@ -47,6 +65,6 @@ export default function App() {
 					</div>
 				</body>
 			</html>
-		</Context>
+		</ThemeProvider>
 	);
 }

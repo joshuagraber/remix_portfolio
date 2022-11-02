@@ -15,7 +15,3 @@ export interface ContactFormProps {
 		name_first?: FormValue;
 	};
 }
-
-export interface ContactFormModalProps {
-	hide: () => void;
-}

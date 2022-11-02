@@ -1,28 +1,24 @@
 // GLOBALS
-import { CSSTransition } from 'react-transition-group';
+import clsx from 'clsx';
+import { getDocument } from 'ssr-window';
+import { Link } from '@remix-run/react';
 import styles from 'styles/modal.css';
 import React from 'react';
 
 // COMPONENTS
+import { CSSTransition } from 'react-transition-group';
+import FocusTrap from 'focus-trap-react';
 import { Portal } from 'components/Portal';
 import { X } from 'components/SVG/X';
 
-// EXTERNAL LIBS
-import type { ClassValue } from 'clsx';
-import clsx from 'clsx';
-import FocusTrap from 'focus-trap-react';
-import { getDocument } from 'ssr-window';
-
-// UTILS
-import { handleKeyDownLikeClick } from 'utils/utils.client';
-
 // TYPES
+import type { ClassValue } from 'clsx';
 import type { LinksFunction } from '@remix-run/node';
 interface Props {
 	className?: ClassValue;
 	children: React.ReactElement | React.ReactNode;
-	hide: () => void;
 	isVisible: boolean;
+	pathToClose: string;
 }
 
 // EXPORTS
@@ -30,7 +26,12 @@ export const links: LinksFunction = () => {
 	return [{ rel: 'stylesheet', href: styles }];
 };
 
-export const Modal: React.FC<Props> = ({ className = '', children, hide, isVisible = false }) => {
+export const Modal: React.FC<Props> = ({
+	className = '',
+	pathToClose,
+	children,
+	isVisible = false,
+}) => {
 	// GLOBALS
 	const document = getDocument();
 	const ref = React.useRef<HTMLDivElement>(null);
@@ -55,19 +56,8 @@ export const Modal: React.FC<Props> = ({ className = '', children, hide, isVisib
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isVisible]);
 
-	// Handlers
-	const handleCloseModalKeyDown = (event: React.KeyboardEvent) => {
-		event.stopPropagation();
-		handleKeyDownLikeClick(closeModal, event);
-	};
-
 	const stopPropagation = (event: React.KeyboardEvent | React.MouseEvent) => {
 		event.stopPropagation();
-	};
-
-	const closeModal = (event: React.MouseEvent | React.KeyboardEvent) => {
-		event.stopPropagation();
-		hide();
 	};
 
 	// VARS
@@ -112,16 +102,13 @@ export const Modal: React.FC<Props> = ({ className = '', children, hide, isVisib
 								}}
 							>
 								<div className='jdg-modal-container' ref={ref}>
-									<div
+									<Link
 										aria-label='Close modal'
 										className='jdg-modal-icon-container'
-										onClick={closeModal}
-										onKeyDown={handleCloseModalKeyDown}
-										role='button'
-										tabIndex={0}
+										to={pathToClose}
 									>
 										<X />
-									</div>
+									</Link>
 
 									<div className='jdg-modal-content'>{children}</div>
 								</div>
