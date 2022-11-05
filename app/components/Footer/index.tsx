@@ -28,6 +28,7 @@ export const Footer: React.FC = () => {
 				</div>
 				<div className='jdg-footer-contact'>
 					{SOCIAL_LINKS.map((link) => {
+						// TODO: useRouteMatches to check if on /contact. If so, don't render email link b/c redundant
 						const [type, url] = link;
 
 						if (type === 'email') {
@@ -56,3 +57,5 @@ export const Footer: React.FC = () => {
 		</div>
 	);
 };
+
+export { ErrorBoundary } from 'components/ErrorBoundary';

@@ -9,7 +9,7 @@ import { ContainerCenter, links as containerCenterLinks } from 'components/Conta
 // TYPES
 import type { LoaderFunction, LinksFunction, MetaFunction } from '@remix-run/node';
 import type { DynamicLinksFunction } from 'remix-utils';
-import type { Handle } from 'types/types.client';
+import type { Handle } from 'types/types';
 
 // EXPORTS
 export const loader: LoaderFunction = ({ request }) => {
@@ -50,3 +50,5 @@ export default function Blog(): React.ReactElement {
 		</ContainerCenter>
 	);
 }
+
+export { ErrorBoundary } from 'components/ErrorBoundary';

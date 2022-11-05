@@ -9,7 +9,7 @@ import { ContactFormFields, links as contactFormFieldsLinks } from './Fields';
 
 // TYPES
 import { LinksFunction } from '@remix-run/node';
-import { ContactFormProps } from './types';
+import { RouteActionDataSelf } from 'types/types.server';
 import { useContactFormSubmitter } from 'hooks/useContactFormSubmitter';
 
 // EXPORTS
@@ -17,7 +17,7 @@ export const links: LinksFunction = () => {
 	return [...buttonLinks(), ...contactFormFieldsLinks(), { rel: 'stylesheet', href: styles }];
 };
 
-export const ContactForm: React.FC<ContactFormProps> = ({ data }) => {
+export const ContactForm: React.FC<RouteActionDataSelf> = ({ data }) => {
 	// HOOKS - GLOBAL
 	const transition = useTransition();
 	const { setContactFormSubmitter } = useContactFormSubmitter();
@@ -51,7 +51,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ data }) => {
 		<div className='jdg-contact-form-container'>
 			<h3>Say hello</h3>
 			<Form className='jdg-contact-form' method='post'>
-				<ContactFormFields errors={errorState} fields={fieldsState} />
+				<ContactFormFields data={{ errors: errorState, fields: fieldsState }} />
 				<Button isLoading={isSubmitting ?? isLoading} type='submit'>
 					Send Now
 				</Button>
@@ -59,3 +59,5 @@ export const ContactForm: React.FC<ContactFormProps> = ({ data }) => {
 		</div>
 	);
 };
+
+export { ErrorBoundary } from 'components/ErrorBoundary';

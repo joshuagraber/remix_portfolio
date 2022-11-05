@@ -14,7 +14,7 @@ import { posts } from 'assets/markdown/posts';
 
 // TYPES
 import type { DynamicLinksFunction } from 'remix-utils';
-import type { Handle } from 'types/types.client';
+import type { Handle } from 'types/types';
 import type { LoaderFunction } from '@remix-run/node';
 
 // EXPORTS
@@ -78,3 +78,5 @@ export default function Post(): React.ReactElement {
 	});
 	return <ReactMarkdown children={content}></ReactMarkdown>;
 }
+
+export { ErrorBoundary } from 'components/ErrorBoundary';

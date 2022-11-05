@@ -20,7 +20,7 @@ import { stripParamsAndHash, isValidEmail, isValidInputLength } from 'utils/util
 type ContactErrors = Record<string, string | undefined>;
 import type { ActionFunction, LinksFunction, MetaFunction } from '@remix-run/node';
 import type { DynamicLinksFunction } from 'remix-utils';
-import type { Handle } from 'types/types.client';
+import type { Handle } from 'types/types';
 
 // EXPORTS
 export const action: ActionFunction = async ({ request }) => {
@@ -67,12 +67,15 @@ export const action: ActionFunction = async ({ request }) => {
 		});
 
 		if (response.accepted.length >= 1) {
-			return new Response(JSON.stringify({ fields }), {
-				status: 302,
-				headers: {
-					Location: '/contact/success',
-				},
-			});
+			return json(
+				{ fields },
+				{
+					status: 302,
+					headers: {
+						Location: '/contact/success',
+					},
+				}
+			);
 		}
 	} catch (error: any) {
 		throw new Error(error?.message ?? 'There was an error trying to send email');
@@ -110,3 +113,5 @@ export default function Contact(): React.ReactElement {
 		</ContainerCenter>
 	);
 }
+
+export { ErrorBoundary } from 'components/ErrorBoundary';

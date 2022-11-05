@@ -7,12 +7,9 @@ import styles from 'styles/index.css';
 import { Accordion, links as accordionLinks } from 'components/Accordion';
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 
-// CONTEXT
-import { useAppContext } from 'context/app';
-
 // TYPES
 import type { DynamicLinksFunction } from 'remix-utils';
-import type { Handle } from 'types/types.client';
+import type { Handle } from 'types/types';
 import type { LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node';
 
 // EXPORTS
@@ -45,20 +42,6 @@ export const handle: Handle = {
 };
 
 export default function Work(): React.ReactElement {
-	// HOOKS - CONTEXT
-	const { setIsContactModalDisplayed } = useAppContext()!;
-
-	// SUB-COMPONENT
-	const EmailLink = () => {
-		// TODO: set up useLink, etc., use throughout page where email modal is opened.
-		// Maybe also elsewhere (footer, etc.) where modal triggered?
-		return (
-			<div onClick={() => setIsContactModalDisplayed(true)} role='button'>
-				Open email modal
-			</div>
-		);
-	};
-
 	return (
 		<ContainerCenter className='jdg-work-container-center'>
 			<div className='jdg-work-about-container'>

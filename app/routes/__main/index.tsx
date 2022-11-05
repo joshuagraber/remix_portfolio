@@ -19,7 +19,7 @@ import clsx from 'clsx';
 import type { ClassValue } from 'clsx';
 import type { DynamicLinksFunction } from 'remix-utils';
 import type { LoaderFunction, LinksFunction } from '@remix-run/node';
-import type { Handle } from 'types/types.client';
+import type { Handle } from 'types/types';
 
 // EXPORTS
 export const loader: LoaderFunction = ({ request }) => {

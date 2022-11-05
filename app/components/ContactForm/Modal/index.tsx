@@ -51,10 +51,7 @@ export const ContactFormModal: React.FC = () => {
 				method='post'
 				ref={ref}
 			>
-				<ContactFormFields
-					errors={fetchContactAction?.data?.errors}
-					fields={fetchContactAction?.data?.fields}
-				/>
+				<ContactFormFields data={fetchContactAction.data} />
 				<Button isLoading={fetchContactAction.state === 'submitting'} type='submit'>
 					Send now
 				</Button>
@@ -62,3 +59,5 @@ export const ContactFormModal: React.FC = () => {
 		</div>
 	);
 };
+
+export { ErrorBoundary } from 'components/ErrorBoundary';
