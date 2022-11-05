@@ -11,7 +11,7 @@ import React from 'react';
 
 // TYPES
 import type { LinksFunction } from '@remix-run/node';
-import { useContactModalOpen } from 'hooks/useModalPath';
+import { useToggleContactModal } from 'hooks/useModalPath';
 import { Link } from '@remix-run/react';
 
 // EXPORTS
@@ -20,6 +20,8 @@ export const links: LinksFunction = () => {
 };
 
 export const Footer: React.FC = () => {
+	const { open } = useToggleContactModal();
+
 	return (
 		<div className='jdg-footer'>
 			<ContainerCenter>
@@ -33,7 +35,7 @@ export const Footer: React.FC = () => {
 
 						if (type === 'email') {
 							return (
-								<Link className='jdg-footer-contact-link' to={useContactModalOpen()} key={type}>
+								<Link className='jdg-footer-contact-link' to={open} key={type}>
 									{' '}
 									<SocialIcon type={type} />{' '}
 								</Link>
