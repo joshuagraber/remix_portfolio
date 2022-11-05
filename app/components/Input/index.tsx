@@ -6,7 +6,7 @@ import React from 'react';
 import clsx, { ClassValue } from 'clsx';
 
 // TYPES
-type InputTypes = 'checkbox' | 'text' | 'textarea'; // Add as needed
+type InputTypes = 'checkbox' | 'password' | 'text' | 'textarea'; // Add as needed
 import { LinksFunction } from '@remix-run/node';
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
 	// onFocus?: (e: React.FocusEvent) => void;
 	placeholder?: string;
 	type: InputTypes;
-	defaultValue: string | undefined;
+	defaultValue?: string | undefined;
 }
 
 // EXPORTS
@@ -124,7 +124,7 @@ export const Input: React.FC<Props> = ({
 		<div className={classes}>
 			<label htmlFor={name}>{label}</label>
 			<Component />
-			{/* TODO: add icon and animate errormessage in/out */}
+			{/* TODO: Create subcomponent, add icon, make nice with animations */}
 			{errorMessage && <div className='jdg-input-error-message'>{errorMessage}</div>}
 		</div>
 	);

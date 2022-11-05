@@ -43,7 +43,8 @@
 		width: 100%;
 	}
 
-	&-text {
+	&-text,
+	&-password {
 		input {
 			height: 36px;
 			padding: 0 8px;

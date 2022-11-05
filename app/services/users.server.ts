@@ -1,11 +1,14 @@
 // GLOBALS
+// DB
 import { prisma } from 'services/prisma.server';
+
+// MISC
 import bcrypt from 'bcrypt';
 
 // TYPES
-import { RegisterForm } from 'types/types.server';
+import { RegisterFormValues } from 'types/types.server';
 
-export const createNewUser = async (formValues: RegisterForm) => {
+export const createNewUser = async (formValues: RegisterFormValues) => {
 	const hashedPassword = await bcrypt.hash(formValues.password, 10);
 	const { email, name_first, name_middle, name_last } = formValues;
 

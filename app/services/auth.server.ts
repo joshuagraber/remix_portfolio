@@ -1,10 +1,12 @@
 // GLOBALS
 import bcrypt from 'bcrypt';
 import { createCookieSessionStorage, json, redirect } from '@remix-run/node';
+
+// DB
 import { prisma } from './prisma.server';
 
 // TYPES
-import type { LoginForm, RegisterForm } from 'types/types.server';
+import type { LoginFormValues, RegisterFormValues } from 'types/types.server';
 
 // SERVICES
 import { createNewUser } from './users.server';
@@ -13,8 +15,9 @@ import { createNewUser } from './users.server';
 const secret = process.env.SESSION_SECRET;
 
 if (!secret) {
-	throw new Error('SESSION_SECRET is null');
+	throw new Error('SESSION_SECRET is not defined');
 }
+
 const storage = createCookieSessionStorage({
 	cookie: {
 		name: 'jdg-session',
@@ -27,54 +30,51 @@ const storage = createCookieSessionStorage({
 	},
 });
 
-export const signup = async (formValues: RegisterForm) => {
-	const doesUserExist = await prisma.user.count({ where: { email: formValues.email } });
+export const signup = async (formValues: RegisterFormValues, redirectTo: string = '/') => {
+	const usersWithEmail = await prisma.user.count({ where: { email: formValues.email } });
 
-	if (doesUserExist)
-		return json(
-			{
-				errors: { form: 'A user already exists with that email' },
-			},
-			{ status: 400 }
-		);
+	if (usersWithEmail > 0) return json('A user already exists with that email.', { status: 400 });
 
 	const newUser = await createNewUser(formValues);
 
 	if (!newUser) {
-		return json(
-			{
-				errors: { form: 'Something went wrong when trying to create a new user' },
-				fields: { ...formValues },
-			},
-			{ status: 400 }
-		);
+		return json('Something went wrong when trying to create a new user. \n Please try again.', {
+			status: 400,
+		});
 	}
 
-	// TODO: create session and redirect
-	return createSession(newUser.id, '/');
+	return createSession(newUser.id, redirectTo);
 };
 
-export const signin = async (formValues: LoginForm) => {
+export const signin = async (formValues: LoginFormValues, redirectTo: string = '/') => {
 	const user = await prisma.user.findUnique({
 		where: { email: formValues.email },
 	});
 
 	if (!user || !(await bcrypt.compare(formValues.password, user?.password)))
-		return json(
-			{
-				errors: { form: 'Incorrect login' },
-			},
-			{ status: 400 }
-		);
+		return json({
+			error: { form: 'Incorrect login' },
+			status: 400,
+		});
 
 	// TODO: session and redirect
-	return createSession(user.id, '/');
+	return createSession(user.id, redirectTo);
 };
 
 export const createSession = async (userID: string, redirectTo: string = '/') => {
+	// Create session
+	console.debug('creating user session');
 	const session = await storage.getSession();
+	console.debug('user session created');
+
+	// Set user to session
 	session.set('userID', userID);
-	redirect(redirectTo, {
+	console.debug('user assigned to session');
+
+	console.debug('redirecting');
+
+	// Redirect
+	return redirect(redirectTo, {
 		headers: {
 			'Set-Cookie': await storage.commitSession(session),
 		},
