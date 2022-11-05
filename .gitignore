@@ -3,7 +3,7 @@
 build
 public/build
 node_modules
-.env.*
+.env*
 
 # Sass
 *.css.map
