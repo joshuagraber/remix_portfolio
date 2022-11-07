@@ -17,7 +17,7 @@ import { ContainerCenter, links as containerCenterLinks } from 'components/Conta
 
 // TYPES
 import { LinksFunction } from '@remix-run/node';
-import { RouteActionData } from 'types/types.server';
+import type { RouteActionData } from 'types/types.server';
 import { SignInActions } from 'types/types';
 
 export const links: LinksFunction = () => {
@@ -52,13 +52,25 @@ export default function AuthForm() {
 		setErrorMessage(data?.errors?.form);
 	}, [data]);
 
+	// UTIL
+	const getHeadline = () => {
+		switch (action) {
+			case SignInActions.SIGNOUT:
+				return 'Sign Out';
+			case SignInActions.SIGNUP:
+				return 'Sign Up';
+			default:
+				return 'Sign In';
+		}
+	};
+
 	// HANDLER
 	const onChange = (event: React.FormEvent<HTMLFormElement>) => {
 		submit(event.currentTarget, { replace: true });
 	};
 
 	// VARS
-	const headline = action === SignInActions.SIGNUP ? 'Sign Up' : 'Sign In';
+	const headline = getHeadline();
 	const isSubmitting = transition.state === 'submitting';
 	const nav = action === SignInActions.SIGNUP ? SignInActions.SIGNIN : SignInActions.SIGNUP;
 	const redirect = searchParams.get('redirect');
@@ -73,19 +85,22 @@ export default function AuthForm() {
 				{/* TODO: Signup is currently only for anyone I invite to guest blog or w/e. 
 							If actually opening up to random users for whatever reason, set up
 							passwordless magic link and use that for signup flow instead */}
-				<Form action={navAction} method='get' onChange={onChange}>
-					<label>
-						<span
-							hidden
-						>{`Toggle form action: sign in or sign up. Currently set to: Sign ${action}`}</span>
-						<input
-							defaultChecked={action === SignInActions.SIGNIN}
-							type='checkbox'
-							id='jdg-signin-form-action'
-						/>
-					</label>
-				</Form>
-
+				{action !== SignInActions.SIGNOUT && (
+					<Form action={navAction} onChange={onChange} replace>
+						<label>
+							<span
+								hidden
+							>{`Toggle form action: sign in or sign up. Currently set to: Sign ${action}`}</span>
+							<input
+								defaultChecked={action === SignInActions.SIGNIN}
+								type='checkbox'
+								id='jdg-signin-form-action'
+							/>
+						</label>
+					</Form>
+				)}
+				{action === SignInActions.SIGNOUT && <p>Are you sure you want to sign out?</p>}
+				{redirect && <p>Please log in to view that page.</p>}
 				<Form action={authAction} className='jdg-signin-form' method='post'>
 					{/* If form error not related to any input */}
 					{/* TODO: Create subcomponent, add icon, make nice with animations */}

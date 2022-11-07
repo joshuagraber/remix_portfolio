@@ -32,5 +32,3 @@ export interface RegisterFormValues {
 	name_middle?: string;
 	name_last: string;
 }
-
-export type SignInFormValues = RegisterFormValues | LoginFormValues;

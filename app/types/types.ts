@@ -8,6 +8,7 @@ export interface Handle {
 }
 
 export enum SignInActions {
-	SIGNUP = 'up',
 	SIGNIN = 'in',
+	SIGNOUT = 'out',
+	SIGNUP = 'up',
 }

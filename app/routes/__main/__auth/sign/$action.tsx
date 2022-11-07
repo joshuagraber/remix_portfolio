@@ -1,13 +1,16 @@
 // GLOBALS
 import React from 'react';
-import { useActionData, useLoaderData, useParams } from '@remix-run/react';
-import { json } from '@remix-run/node';
+import { useActionData, useParams } from '@remix-run/react';
+import { json, LoaderFunction, redirect } from '@remix-run/node';
 
 // COMPONENTS
 import { Input, links as inputLinks } from 'components/Input';
 
+// HOOKS
+import { useEffectDidUpdate } from 'hooks/useEffectDidUpdate';
+
 // SERVICES
-import { signin, signup } from 'services/auth.server';
+import * as authenticator from 'services/auth.server';
 
 // UTILS
 import { isValidEmail, isValidInputLength, isValidPassword } from 'utils/utils.server';
@@ -16,9 +19,8 @@ import { isValidEmail, isValidInputLength, isValidPassword } from 'utils/utils.s
 import { startCase as _startCase, toLower as _toLower } from 'lodash';
 
 // TYPES
-import { ActionFunction, LinksFunction, LoaderFunction } from '@remix-run/node';
+import type { ActionFunction, LinksFunction } from '@remix-run/node';
 import { SignInActions } from 'types/types';
-import { useEffectDidUpdate } from 'hooks/useEffectDidUpdate';
 type LoginErrors = Record<string, string | undefined>;
 
 // EXPORTS
@@ -33,53 +35,58 @@ export const action: ActionFunction = async ({ params, request }) => {
 	// Create new fields object withouot password, so as not to pass unhashed pw back to client.
 	const fieldsToReturn = { ...fields, password: undefined };
 
-	// Check that submission is returned with data
-	if (typeof submission === 'undefined') {
-		errors.form = 'Sorry, there was an error finding that user. \n Please try again.';
-		return json({ errors, fields: fieldsToReturn }, 404);
-	}
+	// FORM VALIDATION
+	// Don't perform validation if action is signout.
+	if (params.action !== SignInActions.SIGNOUT) {
+		// Check that submission is returned with data
+		if (typeof submission === 'undefined') {
+			errors.form = 'Sorry, there was an error finding that user. \n Please try again.';
+			return json({ errors, fields: fieldsToReturn }, 404);
+		}
 
-	// Check that submission exists for required fields
-	for (let input in fields) {
-		if (input === 'name_middle') continue; // Middle name not required
+		// Check that submission exists for required fields
+		for (let input in fields) {
+			if (input === 'name_middle') continue; // Middle name not required
 
-		if (!isValidInputLength(fields[input], 1)) {
-			const fieldNameForDisplay = input.includes('name') ? 'Name' : _startCase(_toLower(input));
-			errors[input] = `Your ${fieldNameForDisplay} is required`;
+			if (!isValidInputLength(fields[input], 1)) {
+				const fieldNameForDisplay = input.includes('name') ? 'Name' : _startCase(_toLower(input));
+				errors[input] = `Your ${fieldNameForDisplay} is required`;
+			}
+		}
+
+		// Check for valid email
+		if (!fields.email || !isValidEmail(fields.email)) {
+			errors.email = 'Please provide a valid email address.';
+		}
+
+		// And valid password
+		if (!fields.password || !isValidPassword(fields.password)) {
+			errors.password =
+				'A valid password needs 8 characters, including 1 uppercase letter, 1 lowercase, 1 number, and 1 special character.';
+		}
+
+		// Return all errors for form validation on the client,
+		if (Object.values(errors).some(Boolean)) {
+			return json({ errors, fields: fieldsToReturn }, { status: 422 });
 		}
 	}
 
-	// Check for valid email
-	if (!fields.email || !isValidEmail(fields.email)) {
-		errors.email = 'Please provide a valid email address.';
-	}
-
-	// And valid password
-	if (!fields.password || !isValidPassword(fields.password)) {
-		errors.password =
-			'A valid password needs 8 characters, including 1 uppercase letter, 1 lowercase, 1 number, and 1 special character.';
-	}
-
-	// Return all errors for form validation on the client
-	if (Object.values(errors).some(Boolean)) {
-		return json({ errors, fields: fieldsToReturn }, { status: 422 });
-	}
-
+	// Need email and password for both sign in and sign up
 	const { email, password } = fields;
 	const signInValues = { email: String(email), password: String(password) };
-	const redirectTo = `/${redirect}` ?? '/';
+	const redirectTo = redirect ?? '/';
 
 	switch (params.action) {
 		case SignInActions.SIGNIN:
 			try {
-				console.debug('Logging user in');
-				return await signin({ ...signInValues }, redirectTo);
+				return await authenticator.signin({ ...signInValues }, redirectTo);
 			} catch (error) {
 				console.error(error);
 				return json({ error });
 			}
 
 		case SignInActions.SIGNUP:
+			// Only need name fields for signup
 			const { name_first, name_middle, name_last } = fields;
 			const signUpValues = {
 				...signInValues,
@@ -89,8 +96,15 @@ export const action: ActionFunction = async ({ params, request }) => {
 			};
 
 			try {
-				console.debug('Signing up new user');
-				return await signup({ ...signUpValues }, redirectTo);
+				return await authenticator.signup({ ...signUpValues }, redirectTo);
+			} catch (error) {
+				console.error(error);
+				return json({ error });
+			}
+
+		case SignInActions.SIGNOUT:
+			try {
+				return await authenticator.signout(request);
 			} catch (error) {
 				console.error(error);
 				return json({ error });
@@ -108,10 +122,25 @@ export const links: LinksFunction = () => {
 	return [...inputLinks()];
 };
 
+export const loader: LoaderFunction = async ({ params, request }) => {
+	// Sign out
+	if (params.action === SignInActions.SIGNOUT) {
+		const userID = await authenticator.getUserID(request);
+		if (!userID) {
+			return redirect('/sign/in');
+		}
+
+		return null;
+	}
+
+	// Sign in / sign up
+	return (await authenticator.getUser(request)) ? redirect('/') : null;
+};
+
 export default function AuthFormFields() {
 	// HOOKS - GLOBAL
 	const actionData = useActionData();
-	const { action }: { action?: SignInActions.SIGNIN | SignInActions.SIGNUP } = useParams();
+	const { action }: { action?: SignInActions } = useParams();
 
 	if (typeof action !== 'undefined' && Boolean(!Object.values(SignInActions).includes(action))) {
 		throw new Error('This is not a valid authentication route');
@@ -135,41 +164,48 @@ export default function AuthFormFields() {
 
 	return (
 		<div className='jdg-signup-form-input-fields'>
-			{action === SignInActions.SIGNUP && (
-				<fieldset name='name'>
-					<Input
-						error={errors?.name_first}
-						label='First Name'
-						name='name_first'
-						type='text'
-						defaultValue={fields?.name_first}
-					/>
-					<Input
-						error={errors?.name_middle}
-						label='Middle Name'
-						name='name_middle'
-						type='text'
-						defaultValue={fields?.name_middle}
-					/>
-					<Input
-						error={errors?.name_last}
-						label='Last Name'
-						name='name_last'
-						type='text'
-						defaultValue={fields?.name_last}
-					/>
-				</fieldset>
+			{/* Return nothing if signout route */}
+			{action !== SignInActions.SIGNOUT && (
+				<>
+					{/* Only return name fields for signup */}
+					{action === SignInActions.SIGNUP && (
+						<fieldset name='name'>
+							<Input
+								error={errors?.name_first}
+								label='First Name'
+								name='name_first'
+								type='text'
+								defaultValue={fields?.name_first}
+							/>
+							<Input
+								error={errors?.name_middle}
+								label='Middle Name'
+								name='name_middle'
+								type='text'
+								defaultValue={fields?.name_middle}
+							/>
+							<Input
+								error={errors?.name_last}
+								label='Last Name'
+								name='name_last'
+								type='text'
+								defaultValue={fields?.name_last}
+							/>
+						</fieldset>
+					)}
+					{/* Return email and pw for signup and signin */}
+					<fieldset name='login-info'>
+						<Input
+							error={errors?.email}
+							label='Email'
+							name='email'
+							type='text'
+							defaultValue={fields?.email}
+						/>
+						<Input error={errors?.password} label='Password' name='password' type='password' />
+					</fieldset>
+				</>
 			)}
-			<fieldset name='login-info'>
-				<Input
-					error={errors?.email}
-					label='Email'
-					name='email'
-					type='text'
-					defaultValue={fields?.email}
-				/>
-				<Input error={errors?.password} label='Password' name='password' type='password' />
-			</fieldset>
 		</div>
 	);
 }
