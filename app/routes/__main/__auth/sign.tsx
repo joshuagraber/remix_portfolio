@@ -2,6 +2,7 @@
 import {
 	Form,
 	Outlet,
+	ShouldReloadFunction,
 	useLocation,
 	useMatches,
 	useSearchParams,
@@ -9,19 +10,18 @@ import {
 	useTransition,
 } from '@remix-run/react';
 import React from 'react';
-import { useRouteData } from 'remix-utils';
+import styles from 'styles/index.css';
 
 // COMPONENTS
 import { Button, links as buttonLinks } from 'components/Button';
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 
 // TYPES
-import { LinksFunction } from '@remix-run/node';
-import type { RouteActionData } from 'types/types.server';
+import type { LinksFunction } from '@remix-run/node';
 import { SignInActions } from 'types/types';
 
 export const links: LinksFunction = () => {
-	return [...buttonLinks(), ...containerCenterLinks()];
+	return [...buttonLinks(), ...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 };
 
 export default function AuthForm() {
@@ -41,19 +41,8 @@ export default function AuthForm() {
 		throw new Error('This link is not valid');
 	}
 
-	// HOOKS - GLOBAL
-	const data: RouteActionData | undefined = useRouteData(`routes/sign/${action}`);
-
-	// HOOKS - STATE
-	const [errorMessage, setErrorMessage] = React.useState(data?.errors?.form);
-
-	// HOOKS - EFFECTS
-	React.useEffect(() => {
-		setErrorMessage(data?.errors?.form);
-	}, [data]);
-
 	// UTIL
-	const getHeadline = () => {
+	const getButtonText = () => {
 		switch (action) {
 			case SignInActions.SIGNOUT:
 				return 'Sign Out';
@@ -70,7 +59,7 @@ export default function AuthForm() {
 	};
 
 	// VARS
-	const headline = getHeadline();
+	const buttonText = getButtonText();
 	const isSubmitting = transition.state === 'submitting';
 	const nav = action === SignInActions.SIGNUP ? SignInActions.SIGNIN : SignInActions.SIGNUP;
 	const redirect = searchParams.get('redirect');
@@ -79,37 +68,47 @@ export default function AuthForm() {
 
 	return (
 		<ContainerCenter className='jdg-signin-container-center'>
-			<h2>{headline}</h2>
+			{/* <h2>{headline}</h2> */}
+
+			{/* Context-dependent messages */}
+			{action === SignInActions.SIGNOUT && (
+				<p className='jdg-signin-form-alert'>Are you sure you want to sign out?</p>
+			)}
+			{redirect && <p className='jdg-signin-form-alert'>Please sign in to view that page.</p>}
 
 			<div className='jdg-signin-form-container'>
-				{/* TODO: Signup is currently only for anyone I invite to guest blog or w/e. 
+				{action !== SignInActions.SIGNOUT && !redirect && (
+					<div className='jdg-signin-form-switch-container'>
+						{/* TODO: Signup is currently only for anyone I invite to guest blog or w/e. 
 							If actually opening up to random users for whatever reason, set up
 							passwordless magic link and use that for signup flow instead */}
-				{action !== SignInActions.SIGNOUT && (
-					<Form action={navAction} onChange={onChange} replace>
-						<label>
-							<span
-								hidden
-							>{`Toggle form action: sign in or sign up. Currently set to: Sign ${action}`}</span>
+						<Form action={navAction} className='jdg-signin-form-switch' onChange={onChange} replace>
 							<input
 								defaultChecked={action === SignInActions.SIGNIN}
+								key={'jdg-signin-form'}
 								type='checkbox'
 								id='jdg-signin-form-action'
 							/>
-						</label>
-					</Form>
+							<label htmlFor='jdg-signin-form-action'>
+								<span
+									hidden
+								>{`Toggle form action: sign in or sign up. Currently set to: Sign ${action}`}</span>
+							</label>
+						</Form>
+					</div>
 				)}
-				{action === SignInActions.SIGNOUT && <p>Are you sure you want to sign out?</p>}
-				{redirect && <p>Please log in to view that page.</p>}
-				<Form action={authAction} className='jdg-signin-form' method='post'>
-					{/* If form error not related to any input */}
-					{/* TODO: Create subcomponent, add icon, make nice with animations */}
-					{errorMessage && <div className='jdg-signup-form-error-message'>{errorMessage}</div>}
-					<Outlet />
-					<Button isLoading={isSubmitting} type='submit'>
-						{headline}
-					</Button>
-				</Form>
+
+				<div className='jdg-signin-form-signin-container'>
+					<Form action={authAction} className='jdg-signin-form-signin' method='post'>
+						{/* If form error not related to any input */}
+						{/* TODO: Create subcomponent, add icon, make nice with animations */}
+
+						<Outlet />
+						<Button isLoading={isSubmitting} type='submit'>
+							{buttonText}
+						</Button>
+					</Form>
+				</div>
 			</div>
 		</ContainerCenter>
 	);

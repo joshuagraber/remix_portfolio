@@ -167,6 +167,7 @@ export default function AuthFormFields() {
 			{/* Return nothing if signout route */}
 			{action !== SignInActions.SIGNOUT && (
 				<>
+					{errors?.form && <div className='jdg-signup-form-error-message'>{errors?.form}</div>}
 					{/* Only return name fields for signup */}
 					{action === SignInActions.SIGNUP && (
 						<fieldset name='name'>
@@ -176,13 +177,6 @@ export default function AuthFormFields() {
 								name='name_first'
 								type='text'
 								defaultValue={fields?.name_first}
-							/>
-							<Input
-								error={errors?.name_middle}
-								label='Middle Name'
-								name='name_middle'
-								type='text'
-								defaultValue={fields?.name_middle}
 							/>
 							<Input
 								error={errors?.name_last}
