@@ -54,10 +54,7 @@ export default function Admin() {
 										<NavLink to='users/create'>Create user</NavLink>
 									</li>
 									<li className='jdg-admin-nav-secondary-link'>
-										<NavLink to='users/update'>Update user</NavLink>
-									</li>
-									<li className='jdg-admin-nav-secondary-link'>
-										<NavLink to='users/delete'>Delete user</NavLink>
+										<NavLink to='users/update'>Update or delete user</NavLink>
 									</li>
 								</ul>
 							)}
@@ -74,10 +71,7 @@ export default function Admin() {
 										<NavLink to='images/create'>Upload new image</NavLink>
 									</li>
 									<li className='jdg-admin-nav-secondary-link'>
-										<NavLink to='images/update'>Update images</NavLink>
-									</li>
-									<li className='jdg-admin-nav-secondary-link'>
-										<NavLink to='images/delete'>Delete images</NavLink>
+										<NavLink to='images/update'>Update or delete images</NavLink>
 									</li>
 								</ul>
 							)}
@@ -94,10 +88,7 @@ export default function Admin() {
 										<NavLink to='blog/create'>Create a new post</NavLink>
 									</li>
 									<li className='jdg-admin-nav-secondary-link'>
-										<NavLink to='blog/update'>Update a post</NavLink>
-									</li>
-									<li className='jdg-admin-nav-secondary-link'>
-										<NavLink to='blog/delete'>Delete post</NavLink>
+										<NavLink to='blog/update'>Update or delete a post</NavLink>
 									</li>
 								</ul>
 							)}
