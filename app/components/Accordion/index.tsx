@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import { Chevron } from 'components/SVG/Chevron';
 
 // UTIL
-import { handleKeyDownLikeClick } from 'utils/utils.client';
+import { handleKeyDownLikeClick } from 'utils/utils';
 
 // EXPORTS
 export function links() {

@@ -12,6 +12,7 @@ import { LinksFunction } from '@remix-run/node';
 interface Props {
 	className?: ClassValue;
 	error?: string | undefined;
+	id?: string;
 	isDisabled?: boolean;
 	label: string | React.ReactElement;
 	name: string;
@@ -29,6 +30,7 @@ export const links: LinksFunction = () => {
 export const Input: React.FC<Props> = ({
 	className,
 	error = undefined,
+	id,
 	isDisabled = false,
 	label,
 	name,
@@ -92,6 +94,7 @@ export const Input: React.FC<Props> = ({
 	const sharedProps = {
 		defaultValue,
 		disabled: isDisabled,
+		id,
 		name,
 		onBlur,
 		onFocus,
@@ -122,7 +125,7 @@ export const Input: React.FC<Props> = ({
 
 	return (
 		<div className={classes}>
-			<label htmlFor={name}>{label}</label>
+			<label htmlFor={id}>{label}</label>
 			<Component />
 			{/* TODO: Create subcomponent, add icon, make nice with animations */}
 			{errorMessage && <div className='jdg-input-error-message'>{errorMessage}</div>}

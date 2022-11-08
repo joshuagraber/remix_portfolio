@@ -13,7 +13,7 @@ import { useEffectDidUpdate } from 'hooks/useEffectDidUpdate';
 import { Chevron } from 'components/SVG/Chevron';
 
 // UTILS
-import { handleKeyDownLikeClick } from 'utils/utils.client';
+import { handleKeyDownLikeClick } from 'utils/utils';
 
 // TYPES
 import type { LinksFunction } from '@remix-run/node';

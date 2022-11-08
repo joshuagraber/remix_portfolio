@@ -12,3 +12,9 @@ export enum SignInActions {
 	SIGNOUT = 'out',
 	SIGNUP = 'up',
 }
+
+export enum AdminActions {
+	CREATE = 'create',
+	DELETE = 'delete',
+	UPDATE = 'update',
+}

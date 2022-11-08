@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import React from 'react';
 
 // UTILS
-import { canUseDOM } from 'utils/utils.client';
+import { canUseDOM } from 'utils/utils';
 
 // TYPES
 interface Props {

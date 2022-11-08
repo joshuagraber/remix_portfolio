@@ -6,7 +6,11 @@ import { createCookieSessionStorage, json, redirect } from '@remix-run/node';
 import { prisma } from './prisma.server';
 
 // TYPES
-import type { LoginFormValues, RegisterFormValues } from 'types/types.server';
+import type {
+	LoginFormValues,
+	UserFormValuesCreate,
+	UserFormValuesUpdate,
+} from 'types/types.server';
 
 // SERVICES
 import * as users from './users.server';
@@ -32,17 +36,25 @@ const storage = createCookieSessionStorage({
 
 // AUTH
 // New user sign up
-export const signup = async (formValues: RegisterFormValues, redirectTo: string = '/') => {
+export const signup = async (formValues: UserFormValuesCreate, redirectTo: string = '/') => {
 	const usersWithEmail = await prisma.user.count({ where: { email: formValues.email } });
 
-	if (usersWithEmail > 0) return json('A user already exists with that email.', { status: 400 });
+	if (usersWithEmail > 0)
+		return json({ errors: { form: 'A user already exists with that email.' } }, { status: 400 });
 
 	const newUser = await users.createNewUser(formValues);
 
 	if (!newUser) {
-		return json('Something went wrong when trying to create a new user. \n Please try again.', {
-			status: 400,
-		});
+		return json(
+			{
+				errors: {
+					form: 'Something went wrong when trying to create a new user. \n Please try again.',
+				},
+			},
+			{
+				status: 400,
+			}
+		);
 	}
 
 	return createSession(newUser.id, redirectTo);
@@ -58,7 +70,7 @@ export const signin = async (formValues: LoginFormValues, redirectTo: string = '
 
 	if (!user || !isPasswordMatch)
 		return json({
-			error: { form: 'Incorrect login' },
+			errors: { form: 'Incorrect login' },
 			status: 400,
 		});
 
@@ -72,7 +84,7 @@ export const signout = async (request: Request) => {
 
 	if (!session) {
 		return json({
-			error: { form: 'Error getting user session.' },
+			errors: { form: 'Error getting user session.' },
 			status: 404,
 		});
 	}

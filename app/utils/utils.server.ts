@@ -12,7 +12,7 @@ export function resolveMarkdownFileToString(slug: string): string {
 }
 
 // Validate basic text fiels
-export function isValidInputLength(input: FormDataEntryValue, length: number) {
+export function isValidInputLength(input: FormDataEntryValue | undefined, length: number) {
 	return Boolean(typeof input === 'string' && input.length >= length);
 }
 

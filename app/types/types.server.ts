@@ -1,15 +1,15 @@
-export type ActionDataValuesReturned = string | undefined;
+import { Role } from '@prisma/client';
 
-export type ActionDataKeysReturned =
-	| 'form'
-	| 'name_first'
-	| 'name_middle'
-	| 'name_last'
-	| 'email'
-	| 'message'
-	| 'password';
+interface FormValues {
+	[k: string]: string | Role | File | undefined;
+}
 
-export type ReturnedActionData = Record<ActionDataKeysReturned, ActionDataValuesReturned>;
+// Contact route ( TODO: Fix this, it smells of over-typing)
+type ActionDataValuesReturned = string | undefined;
+
+type ActionDataKeysReturned = 'email' | 'form' | 'name_first' | 'name_last' | 'message';
+
+type ReturnedActionData = Record<ActionDataKeysReturned, ActionDataValuesReturned>;
 
 export interface RouteActionData {
 	errors?: ReturnedActionData;
@@ -20,15 +20,30 @@ export interface RouteActionDataSelf {
 	data?: RouteActionData;
 }
 
-export interface LoginFormValues {
+// Auth
+export interface LoginFormValues extends FormValues {
 	email: string;
 	password: string;
 }
 
-export interface RegisterFormValues {
+// Users
+export interface UserFormValuesCreate extends FormValues {
 	email: string;
 	password: string;
 	name_first: string;
 	name_middle?: string;
 	name_last: string;
+	role?: Role;
+}
+export interface UserFormValuesUpdate extends FormValues {
+	email?: string;
+	password?: string;
+	name_first?: string;
+	name_middle?: string;
+	name_last?: string;
+	role?: Role;
+}
+
+export interface UserFormValuesAllFormSubmission extends UserFormValuesUpdate {
+	select_user?: string;
 }
