@@ -10,6 +10,7 @@ datasource db {
 // Users
 enum Role {
   ADMIN
+  COLLABORATOR
   USER
 }
 
@@ -35,22 +36,23 @@ model Comment {
   author_email   String
   author_website String
   content        String
-  post           Post   @relation(fields: [postId], references: [id])
-  postId         String @db.ObjectId
+  post           Post   @relation(fields: [post_id], references: [id])
+  post_id        String @db.ObjectId
 }
 
 model Post {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  author      User      @relation(fields: [author_id], references: [id])
-  author_id   String    @db.ObjectId
-  comments    Comment[]
-  content     String
-  images      String[]
-  slug        String
-  tagline     String
-  tags        String[]
-  title       String
-  publishedAt DateTime
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  author         User      @relation(fields: [author_id], references: [id])
+  author_id      String    @db.ObjectId
+  comments       Comment[]
+  content        String
+  images         String[]
+  image_featured String
+  slug           String
+  tagline        String
+  tags           String[]
+  title          String
+  publishedAt    DateTime
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }
