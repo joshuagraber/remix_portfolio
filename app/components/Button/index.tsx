@@ -13,9 +13,9 @@ import { LoadingSpinner, links as loadingSpinnerLinks } from 'components/Loading
 interface Props {
 	className?: ClassValue;
 	children: React.ReactNode;
+	formAction?: string;
 	isDisabled?: boolean | undefined;
 	isLoading?: boolean | undefined;
-	onClick?: () => void;
 	type?: 'submit' | 'reset' | 'button';
 }
 
@@ -25,9 +25,9 @@ export const links: LinksFunction = () => {
 
 export const Button: React.FC<Props> = ({
 	children,
+	formAction,
 	isDisabled = false,
 	isLoading = false,
-	onClick,
 	type = 'button',
 }) => {
 	// VARS
@@ -46,7 +46,7 @@ export const Button: React.FC<Props> = ({
 	};
 
 	return (
-		<button className={classes} disabled={isDisabled} type={type}>
+		<button className={classes} formAction={formAction} disabled={isDisabled} type={type}>
 			{renderChildren()}
 		</button>
 	);
