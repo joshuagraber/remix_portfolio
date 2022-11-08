@@ -21,17 +21,16 @@ import { startCase as _startCase, toLower as _toLower } from 'lodash';
 // TYPES
 import type { ActionFunction, LinksFunction } from '@remix-run/node';
 import { SignInActions } from 'types/types';
-type LoginErrors = Record<string, string | undefined>;
 
 // EXPORTS
 export const action: ActionFunction = async ({ params, request }) => {
-	const errors: LoginErrors = {};
+	const submission: FormData = await request.formData();
+	const fields = Object.fromEntries(submission);
+	const errors: Record<keyof typeof fields, string | undefined> = {};
 
 	const url = new URL(request.url);
 	const redirect = url.searchParams.get('redirect');
 
-	const submission: FormData = await request.formData();
-	const fields = Object.fromEntries(submission);
 	// Create new fields object withouot password, so as not to pass unhashed pw back to client.
 	const fieldsToReturn = { ...fields, password: undefined };
 
@@ -39,6 +38,8 @@ export const action: ActionFunction = async ({ params, request }) => {
 	// Don't perform validation if action is signout.
 	if (params.action !== SignInActions.SIGNOUT) {
 		// Check that submission is returned with data
+
+		// TODO: Refactor: submission never returns undefined
 		if (typeof submission === 'undefined') {
 			errors.form = 'Sorry, there was an error finding that user. \n Please try again.';
 			return json({ errors, fields: fieldsToReturn }, 404);

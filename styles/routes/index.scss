@@ -358,6 +358,17 @@ $home-text-container-width: 620px;
 	}
 }
 
+// Admin
+.jdg-admin {
+	&-container {
+		display: flex;
+	}
+
+	&-sidebar {
+		flex: 0 0 30%;
+	}
+}
+
 // Home page animation keyframes
 @keyframes fade_in {
 	0% {

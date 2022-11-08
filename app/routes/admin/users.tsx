@@ -1,8 +1,12 @@
+// GLOBALS
+import { Outlet } from '@remix-run/react';
+
+// EXPORTS
 export default function UsersAdmin() {
 	return (
 		<div>
-			Hello
-			<span>from UsersAdmin</span>
+			<h2>Users</h2>
+			<Outlet />
 		</div>
 	);
 }

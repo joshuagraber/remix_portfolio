@@ -1,9 +1,9 @@
 import { Outlet } from '@remix-run/react';
 
-export default function BlogAdmin() {
+export default function ImagesAdmin() {
 	return (
 		<div>
-			<h2>Hello from BlogAdmin</h2>
+			<h2>Hello from ImagesAdmin</h2>
 			<Outlet />
 		</div>
 	);
