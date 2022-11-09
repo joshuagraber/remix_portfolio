@@ -94,7 +94,7 @@ export const Input: React.FC<Props> = ({
 	const sharedProps = {
 		defaultValue,
 		disabled: isDisabled,
-		id,
+		id: id ?? name,
 		name,
 		onBlur,
 		onFocus,
