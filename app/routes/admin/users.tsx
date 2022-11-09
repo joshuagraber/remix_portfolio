@@ -21,7 +21,7 @@ import { AdminActions } from 'types/types';
 // EXPORTS
 export const loader: LoaderFunction = async ({ params }) => {
 	if (!params.action) {
-		return redirect('users/update');
+		return redirect('/admin/users/update');
 	}
 
 	const allUsers = await users.getUsersAll();
@@ -88,10 +88,12 @@ export default function UsersAdmin() {
 	}
 
 	function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-		const hasDeleteAction = event.currentTarget.querySelector(
+		const deleteButton = event?.currentTarget.querySelector(
 			'button[formaction="/admin/users/delete"]'
 		);
-		if (hasDeleteAction) {
+		const nativeEvent = event.nativeEvent as unknown as SubmitEvent;
+
+		if (nativeEvent?.submitter === deleteButton) {
 			return !confirm('Are you sure?') ? event.preventDefault() : true;
 		}
 	}

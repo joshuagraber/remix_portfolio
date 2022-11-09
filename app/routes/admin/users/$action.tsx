@@ -22,7 +22,6 @@ export const action: ActionFunction = async ({ params, request }) => {
 	const submission: FormData = await request.formData();
 	const fields: UserFormValuesAllFormSubmission = Object.fromEntries(submission);
 	const fieldsNormalized = { ...fields };
-	delete fieldsNormalized.select_user;
 
 	// VALIDATION
 	const errors: Record<keyof typeof fields, string | undefined> = {};
@@ -54,6 +53,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 				return json({ errors, fields }, { status: 422 });
 			}
 			break;
+
 		// UPDATE
 		case AdminActions.UPDATE:
 			if (!fields.select_user) {
@@ -85,19 +85,21 @@ export const action: ActionFunction = async ({ params, request }) => {
 					'A valid password needs 8 characters, including 1 uppercase letter, 1 lowercase, 1 number, and 1 special character.';
 			}
 			break;
+
 		case AdminActions.DELETE:
 			if (!fields.select_user) {
 				errors.form = 'Sorry, please select a user to update.';
 				return json({ errors, fields }, 404);
 			}
 			break;
+
 		default:
 			console.log('No validation happened, the route is not found :', request.url);
 	}
 
 	// Removing empty fields to avoid updating things to '' or undefined
 	for (let input in fields) {
-		if (fields[input] === '' || !fields[input]) {
+		if (fields[input] === '' || !fields[input] || input === 'select_user') {
 			delete fieldsNormalized[input];
 		}
 	}
