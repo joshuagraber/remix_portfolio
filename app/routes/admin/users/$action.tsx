@@ -28,7 +28,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 				// TODO: Create enum with input names, to standardize and add safety
 				if (input === 'name_middle') continue; // Middle name not required
 
-				if (!isValidInputLength(fields[input], 1)) {
+				if (!isValidInputLength(fields[input] as string, 1)) {
 					// TODO: more elegant here. Use util to get "First Name," "Last Name" based on input name
 					const fieldNameForDisplay = input.includes('name') ? 'Name' : titleCase(input);
 					errors[input] = `User's ${fieldNameForDisplay} is required`;
@@ -67,7 +67,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 				if (fields[input] === '' || !fields[input]) continue;
 
 				// If input exists, validate it
-				if (fields[input] && !isValidInputLength(fields[input], 1)) {
+				if (fields[input] && !isValidInputLength(fields[input] as string, 1)) {
 					const fieldNameForDisplay = input.includes('name') ? 'Name' : titleCase(input);
 					errors[input] = `User's ${fieldNameForDisplay} is required`;
 				}
