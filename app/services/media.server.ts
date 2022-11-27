@@ -108,6 +108,5 @@ export const deleteImageTagsByImageIDs = async (tags: string[], ids: string[]) =
 
 // DELETE
 export const deleteImageByPublicID = async (id: string) => {
-	const isDeleted = await cloudinary.v2.uploader.destroy(id);
-	return isDeleted;
+	return await cloudinary.v2.uploader.destroy(id);
 };

@@ -1,6 +1,6 @@
 // GLOBALS
 import { Form, useActionData, useLoaderData } from '@remix-run/react';
-import { json } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 import React from 'react';
 
 // COMPONENTS
@@ -53,29 +53,29 @@ export const action: ActionFunction = async ({ params, request }) => {
 	}
 
 	// DO STUFF
-	switch (action) {
-		case AdminActions.UPDATE:
-			try {
-				const areTagsAdded = await media.addImageTagsByImageIDs(tagsToAdd, [public_id]);
-				const areTagsRemoved = await media.deleteImageTagsByImageIDs(tagsToDelete, [public_id]);
+	if (action === AdminActions.UPDATE) {
+		try {
+			const areTagsAdded = await media.addImageTagsByImageIDs(tagsToAdd, [public_id]);
+			const areTagsRemoved = await media.deleteImageTagsByImageIDs(tagsToDelete, [public_id]);
 
-				if (areTagsAdded && areTagsRemoved) {
-					return json({ imageUpdated: imageToUpdate }, { status: 200 });
-				}
-			} catch (error) {
-				return json(error);
+			if (areTagsAdded && areTagsRemoved) {
+				return json({ imageUpdated: imageToUpdate }, { status: 200 });
 			}
+		} catch (error) {
+			return json(error);
+		}
+	}
 
-		case AdminActions.DELETE:
-			try {
-				const isDeleted = await media.deleteImageByPublicID(public_id);
-				return json({ isDeleted }, { status: 200 });
-			} catch (error) {
-				return json(error);
+	if (action === AdminActions.DELETE) {
+		try {
+			const isDeleted = await media.deleteImageByPublicID(public_id);
+
+			if (isDeleted) {
+				return redirect('/admin/images');
 			}
-
-		default:
-			return json({ errors: { form: 'No update or delete action found' } });
+		} catch (error) {
+			return json(error);
+		}
 	}
 };
 
@@ -96,7 +96,6 @@ export default function EditImage() {
 	// HOOKS - GLOBALS
 	const actionData = useActionData();
 	const { imageToUpdate } = useLoaderData();
-	console.log({ actionData });
 
 	// HOOKS - STATE
 	const [errors, setErrors] = React.useState(actionData?.errors);
@@ -113,7 +112,7 @@ export default function EditImage() {
 		setErrors(actionData?.errors);
 		setFields(actionData?.fields);
 		setErrorMessage(actionData?.errors?.form ?? actionData?.message);
-		setImageUpdated(actionData?.imageUpdates);
+		setImageUpdated(actionData?.imageUpdated);
 	}, [actionData]);
 
 	// HANDLERS
@@ -130,6 +129,7 @@ export default function EditImage() {
 		<ContainerCenter className='jdg-admin-image-edit'>
 			<h4>Update Image</h4>
 
+			{/* Status updates */}
 			{errorMessage && <div className='jdg-admin-error-message'>{errorMessage}</div>}
 			{imageUpdated && (
 				<div className='jdg-admin-update-message'>
