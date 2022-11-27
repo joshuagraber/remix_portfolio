@@ -21,7 +21,7 @@ import type {
 export const action: ActionFunction = async ({ params, request }) => {
 	const submission: FormData = await request.formData();
 	const fields: UserFormValuesAllFormSubmission = Object.fromEntries(submission);
-	const fieldsNormalized = { ...fields };
+	const fieldsNormalizedForUpdateAction = { ...fields };
 
 	// VALIDATION
 	const errors: Record<keyof typeof fields, string | undefined> = {};
@@ -29,9 +29,11 @@ export const action: ActionFunction = async ({ params, request }) => {
 		// CREATE
 		case AdminActions.CREATE:
 			for (let input in fields) {
+				// TODO: Create enum with input names, to standardize and add safety
 				if (input === 'name_middle') continue; // Middle name not required
 
 				if (!isValidInputLength(fields[input], 1)) {
+					// TODO: more elegant here. Use util to get "First Name," "Last Name" based on input name
 					const fieldNameForDisplay = input.includes('name') ? 'Name' : titleCase(input);
 					errors[input] = `User's ${fieldNameForDisplay} is required`;
 				}
@@ -48,16 +50,17 @@ export const action: ActionFunction = async ({ params, request }) => {
 					'A valid password needs 8 characters, including 1 uppercase letter, 1 lowercase, 1 number, and 1 special character.';
 			}
 
-			// Return all errors for form validation on the client,
+			// Return all errors & field values for form validation on the client,
 			if (Object.values(errors).some(Boolean)) {
 				return json({ errors, fields }, { status: 422 });
 			}
+
 			break;
 
 		// UPDATE
 		case AdminActions.UPDATE:
 			if (!fields.select_user) {
-				errors.form = 'Sorry, please select a user to update.';
+				errors.form = 'Please select a user to update.';
 				return json({ errors, fields }, 404);
 			}
 
@@ -84,6 +87,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 				errors.password =
 					'A valid password needs 8 characters, including 1 uppercase letter, 1 lowercase, 1 number, and 1 special character.';
 			}
+
 			break;
 
 		case AdminActions.DELETE:
@@ -91,17 +95,11 @@ export const action: ActionFunction = async ({ params, request }) => {
 				errors.form = 'Sorry, please select a user to update.';
 				return json({ errors, fields }, 404);
 			}
+
 			break;
 
 		default:
-			console.log('No validation happened, the route is not found :', request.url);
-	}
-
-	// Removing empty fields to avoid updating things to '' or undefined
-	for (let input in fields) {
-		if (fields[input] === '' || !fields[input] || input === 'select_user') {
-			delete fieldsNormalized[input];
-		}
+			console.warn('No form validation happened, the action was not found :', request.url);
 	}
 
 	// ACTIONS
@@ -109,18 +107,26 @@ export const action: ActionFunction = async ({ params, request }) => {
 		case AdminActions.CREATE:
 			try {
 				const { id } = await users.createNewUser(fields as UserFormValuesCreate);
-				const updatedUser = await users.getUserByID(id);
+				const createdUser = await users.getUserByID(id);
 
-				return json(updatedUser, { status: 200 });
+				return json({ user: createdUser }, { status: 200 });
 			} catch (error) {
 				return json(error);
 			}
 
 		case AdminActions.UPDATE:
+			for (let input in fields) {
+				// Removing empty fields to avoid updating db fields to '' or undefined
+				// Removing 'select_user' because not needed in db
+				if (fields[input] === '' || !fields[input] || input === 'select_user') {
+					delete fieldsNormalizedForUpdateAction[input];
+				}
+			}
+
 			try {
 				const updatedUser = await users.updateUserByID(
 					String(fields.select_user),
-					fieldsNormalized as UserFormValuesUpdate
+					fieldsNormalizedForUpdateAction as UserFormValuesUpdate
 				);
 
 				return json({ user: updatedUser }, { status: 200 });
@@ -137,7 +143,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 			}
 
 		default:
-			throw new Error('That is not a valid admin route');
+			throw new Error('That is not a valid users admin route');
 	}
 };
 

@@ -31,7 +31,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 export default function UsersAdmin() {
 	// HOOKS - GLOBAL
 	const usersFetcher = useFetcher();
-	const deleteAction = useFormAction('delete');
+	const deleteAction = useFormAction(AdminActions.DELETE);
 	const loaderData = useLoaderData();
 	const { action } = useParams();
 
@@ -146,7 +146,6 @@ export default function UsersAdmin() {
 
 			{/* Form fields */}
 			{/* Memoize inputs to prevent re-renders on select menu changes */}
-			{/* TODO: add such memoization to Input component by default?? */}
 			{React.useMemo(() => {
 				return (
 					<>
@@ -184,7 +183,7 @@ export default function UsersAdmin() {
 				);
 			}, [action, fields, errors])}
 
-			{/* TODO: create and style select input component */}
+			{/* TODO: create and style select component */}
 			<div className='jdg-input jdg-input-select'>
 				<label htmlFor='role'>Role</label>
 				<select
