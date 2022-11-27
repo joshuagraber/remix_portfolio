@@ -51,6 +51,16 @@
 		}
 	}
 
+	&-checkbox {
+		flex-direction: row;
+		justify-content: space-between;
+
+		input {
+			min-height: 16px;
+			min-width: 16px;
+		}
+	}
+
 	&-error {
 		input {
 			border-color: var(--color-error);

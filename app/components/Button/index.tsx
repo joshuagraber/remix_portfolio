@@ -16,7 +16,9 @@ interface Props {
 	formAction?: string;
 	isDisabled?: boolean | undefined;
 	isLoading?: boolean | undefined;
+	name?: string;
 	type?: 'submit' | 'reset' | 'button';
+	value?: string;
 }
 
 export const links: LinksFunction = () => {
@@ -28,7 +30,9 @@ export const Button: React.FC<Props> = ({
 	formAction,
 	isDisabled = false,
 	isLoading = false,
+	name,
 	type = 'button',
+	value,
 }) => {
 	// VARS
 	const classes = clsx('jdg-button', {
@@ -46,7 +50,14 @@ export const Button: React.FC<Props> = ({
 	};
 
 	return (
-		<button className={classes} formAction={formAction} disabled={isDisabled} type={type}>
+		<button
+			className={classes}
+			formAction={formAction}
+			disabled={isDisabled}
+			name={name}
+			type={type}
+			value={value}
+		>
 			{renderChildren()}
 		</button>
 	);

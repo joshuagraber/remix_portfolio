@@ -39,14 +39,12 @@ body,
 }
 
 // Remove default outline and border for inputs and links
+a:focus-visible,
 input:focus-visible,
-select:focus,
-// textarea:focus,
-a:focus,
-button:focus,
-*[role='button']:focus {
+select:focus-visible,
+button:focus-visible,
+*[role='button']:focus-visible {
 	outline: none;
-	border: none;
 }
 
 // Remove default styles on autofill selected input

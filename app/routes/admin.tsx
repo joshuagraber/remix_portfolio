@@ -65,7 +65,7 @@ export default function Admin() {
 							<li className='jdg-admin-nav-primary-link'>
 								<NavLink to='images'>Edit Images</NavLink>
 							</li>
-							{activeRoute === 'images' && (
+							{/* {activeRoute === 'images' && (
 								<ul className='jdg-admin-nav-secondary-list'>
 									<li className='jdg-admin-nav-secondary-link'>
 										<NavLink to='images/create'>Upload new image</NavLink>
@@ -74,7 +74,7 @@ export default function Admin() {
 										<NavLink to='images/update'>Update or delete images</NavLink>
 									</li>
 								</ul>
-							)}
+							)} */}
 						</ul>
 
 						{/* Blog */}

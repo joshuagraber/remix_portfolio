@@ -11,6 +11,7 @@ import { LinksFunction } from '@remix-run/node';
 
 interface Props {
 	className?: ClassValue;
+	defaultChecked?: boolean;
 	error?: string | undefined;
 	id?: string;
 	isDisabled?: boolean;
@@ -29,6 +30,7 @@ export const links: LinksFunction = () => {
 
 export const Input: React.FC<Props> = ({
 	className,
+	defaultChecked,
 	error = undefined,
 	id,
 	isDisabled = false,
@@ -113,11 +115,18 @@ export const Input: React.FC<Props> = ({
 		type,
 	};
 
+	const checkBoxProps = {
+		...inputProps,
+		defaultChecked,
+	};
+
 	// Render
 	const Component = () => {
 		switch (type) {
 			case 'textarea':
 				return <textarea {...textAreaProps} />;
+			case 'checkbox':
+				return <input {...checkBoxProps} />;
 			default:
 				return <input {...inputProps} />;
 		}

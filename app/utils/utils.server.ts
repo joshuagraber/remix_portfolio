@@ -11,6 +11,14 @@ export function resolveMarkdownFileToString(slug: string): string {
 	return fs.readFileSync(path.resolve(__dirname, `../app/assets/markdown/${slug}.md`)).toString();
 }
 
+// Comma-separated string to array
+export function parseCommaSeparatedStringToArray(tags: string) {
+	if (typeof tags !== 'string') return [];
+
+	return tags.split(',').map((tag) => tag.trim());
+}
+
+// VALIDATION
 // Validate basic text fiels
 export function isValidInputLength(input: FormDataEntryValue | undefined, length: number) {
 	return Boolean(typeof input === 'string' && input.length >= length);
