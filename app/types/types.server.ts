@@ -27,7 +27,7 @@ export interface LoginFormValues extends FormValues {
 }
 
 // Users
-export interface UserFormValuesCreate extends FormValues {
+export interface UserFormValues extends FormValues {
 	email: string;
 	password: string;
 	name_first: string;
@@ -35,15 +35,8 @@ export interface UserFormValuesCreate extends FormValues {
 	name_last: string;
 	role?: Role;
 }
-export interface UserFormValuesUpdate extends FormValues {
-	email?: string;
-	password?: string;
-	name_first?: string;
-	name_middle?: string;
-	name_last?: string;
-	role?: Role;
-}
-
-export interface UserFormValuesAllFormSubmission extends UserFormValuesUpdate {
+export interface UserFormValuesAllFormSubmission extends UserFormValues {
 	select_user?: string;
 }
+
+// Blog

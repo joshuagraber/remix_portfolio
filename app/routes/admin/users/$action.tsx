@@ -11,16 +11,12 @@ import { titleCase } from 'utils/utils';
 // TYPES
 import type { ActionFunction } from '@remix-run/node';
 import { AdminActions } from 'types/types';
-import type {
-	UserFormValuesCreate,
-	UserFormValuesAllFormSubmission,
-	UserFormValuesUpdate,
-} from 'types/types.server';
+import type { UserFormValues, UserFormValuesAllFormSubmission } from 'types/types.server';
 
 // EXPORTS
 export const action: ActionFunction = async ({ params, request }) => {
 	const submission: FormData = await request.formData();
-	const fields: UserFormValuesAllFormSubmission = Object.fromEntries(submission);
+	const fields: Partial<UserFormValuesAllFormSubmission> = Object.fromEntries(submission);
 	const fieldsNormalizedForUpdateAction = { ...fields };
 
 	// VALIDATION
@@ -106,7 +102,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 	switch (params.action) {
 		case AdminActions.CREATE:
 			try {
-				const { id } = await users.createNewUser(fields as UserFormValuesCreate);
+				const { id } = await users.createNewUser(fields as UserFormValues);
 				const createdUser = await users.getUserByID(id);
 
 				return json({ user: createdUser }, { status: 200 });
@@ -126,7 +122,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 			try {
 				const updatedUser = await users.updateUserByID(
 					String(fields.select_user),
-					fieldsNormalizedForUpdateAction as UserFormValuesUpdate
+					fieldsNormalizedForUpdateAction as Partial<UserFormValues>
 				);
 
 				return json({ user: updatedUser }, { status: 200 });

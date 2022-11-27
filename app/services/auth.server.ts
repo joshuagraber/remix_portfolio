@@ -6,11 +6,7 @@ import { createCookieSessionStorage, json, redirect } from '@remix-run/node';
 import { prisma } from './prisma.server';
 
 // TYPES
-import type {
-	LoginFormValues,
-	UserFormValuesCreate,
-	UserFormValuesUpdate,
-} from 'types/types.server';
+import type { LoginFormValues, UserFormValues } from 'types/types.server';
 
 // SERVICES
 import * as users from './users.server';
@@ -36,7 +32,7 @@ const storage = createCookieSessionStorage({
 
 // AUTH
 // New user sign up
-export const signup = async (formValues: UserFormValuesCreate, redirectTo: string = '/') => {
+export const signup = async (formValues: UserFormValues, redirectTo: string = '/') => {
 	const usersWithEmail = await prisma.user.count({ where: { email: formValues.email } });
 
 	if (usersWithEmail > 0)

@@ -8,12 +8,12 @@ import { prisma } from 'services/prisma.server';
 import bcrypt from 'bcrypt';
 
 // TYPES
-import type { UserFormValuesCreate, UserFormValuesUpdate } from 'types/types.server';
+import type { UserFormValues } from 'types/types.server';
 import type { Role as UserRole } from '@prisma/client';
 
 // Create
 // TODO: Update RegisterFormValues type to include additional optional vals from admin form
-export const createNewUser = async (formValues: UserFormValuesCreate) => {
+export const createNewUser = async (formValues: UserFormValues) => {
 	const hashedPassword = await bcrypt.hash(formValues.password, 10);
 	const { email, name_first, name_middle, name_last } = formValues;
 
@@ -56,7 +56,7 @@ export const getUserByID = async (id: string) => {
 };
 
 // Update
-export const updateUserByID = async (id: string, formValues: UserFormValuesUpdate) => {
+export const updateUserByID = async (id: string, formValues: Partial<UserFormValues>) => {
 	const data = { ...formValues };
 
 	if (data?.password) {
