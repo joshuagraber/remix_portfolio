@@ -1,10 +1,10 @@
-import { Role } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 
 interface FormValues {
-	[k: string]: string | Role | File | undefined;
+	[k: string]: string | string[] | Role | File | undefined | User;
 }
 
-// Contact route ( TODO: Fix this, it smells of over-typing)
+// CONTACT ( TODO: Fix this, it smells of over-typing)
 type ActionDataValuesReturned = string | undefined;
 
 type ActionDataKeysReturned = 'email' | 'form' | 'name_first' | 'name_last' | 'message';
@@ -20,13 +20,13 @@ export interface RouteActionDataSelf {
 	data?: RouteActionData;
 }
 
-// Auth
+// AUTH
 export interface LoginFormValues extends FormValues {
 	email: string;
 	password: string;
 }
 
-// Users
+// USERS
 export interface UserFormValues extends FormValues {
 	email: string;
 	password: string;
@@ -39,4 +39,15 @@ export interface UserFormValuesAllFormSubmission extends UserFormValues {
 	select_user?: string;
 }
 
-// Blog
+// BLOG
+export interface BlogFormValues extends FormValues {
+	author_id: string;
+	content: string;
+	images: string[];
+	image_featured: string;
+	slug: string;
+	tagline: string;
+	tags: string[];
+	title: string;
+	published_at: string;
+}
