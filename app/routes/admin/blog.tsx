@@ -201,6 +201,7 @@ export default function BlogAdmin() {
 
 						{/* Select Author */}
 						{/* WHAT THE FUCK??? Form isn't accepting default value for this? */}
+						{/* Might have to go with controlled component here */}
 						<div className='jdg-input jdg-input-select'>
 							<label htmlFor='author_id'>Select author of this post</label>
 							<select
