@@ -3,12 +3,11 @@
 .jdg-footer {
 	background: linear-gradient(to top, var(--color-neutral-0), var(--color-background));
 	font-family: 'Catamaran', sans-serif;
-	position: fixed;
-	bottom: 0;
-	height: $footer-height-desktop;
-	left: 0;
-	margin-top: -$footer-height-desktop;
-	right: 0;
+	// position: absolute;
+	// bottom: 0;
+	// left: 0;
+	// right: 0;
+	margin-top: auto;
 	transition: 0.2s ease background-image, 0.2s ease background-color;
 	z-index: 10; // Thus ensuring it is on top of everything except modal stuff
 
@@ -63,9 +62,6 @@
 	}
 
 	@media (max-width: $mobile) {
-		height: $footer-height-mobile;
-		margin-top: -$footer-height-mobile;
-
 		.jdg-container-center {
 			align-items: center;
 			justify-content: flex-start;

@@ -1,8 +1,9 @@
 // GLOBALS
 import styles from 'styles/layout.css';
+import { Outlet } from '@remix-run/react';
 
 // COMPONENTS
-import { AnimatePresence } from 'components/AnimatePresence';
+// import { AnimatePresence } from 'components/AnimatePresence';
 import { Header, links as headerLinks } from 'components/Header';
 import { Footer, links as footerLinks } from 'components/Footer';
 
@@ -15,11 +16,10 @@ export const links: LinksFunction = () => {
 
 export default function Layout(): JSX.Element {
 	return (
-		<>
+		<div className='jdg-page'>
 			<Header />
-			{/* Route outlet via AnimatePresence component */}
-			<AnimatePresence />
+			<Outlet />
 			<Footer />
-		</>
+		</div>
 	);
 }

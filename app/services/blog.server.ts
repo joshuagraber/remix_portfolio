@@ -48,7 +48,7 @@ export const getPostByID = async (id: string) => {
 // UPDATE
 export const updatePostByID = async (id: string, formValues: Partial<BlogFormValues>) => {
 	try {
-		const updatedPost = await prisma.user.update({
+		const updatedPost = await prisma.post.update({
 			where: { id: id },
 			data: formValues,
 		});

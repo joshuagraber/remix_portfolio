@@ -10,9 +10,9 @@ import clsx from 'clsx';
 import { useWindowDimensions } from 'hooks/useWindowDimensions';
 
 // COMPONENTS
-import { ContainerCenter, links as containerCenterLinks } from '../ContainerCenter';
-import { Nav, links as navLinks } from '../Nav';
-import { ThemeToggle, links as themeToggleLinks } from '../ThemeToggle';
+import { ContainerCenter, links as containerCenterLinks } from './ContainerCenter';
+import { Nav, links as navLinks } from './Nav';
+import { ThemeToggle, links as themeToggleLinks } from './ThemeToggle';
 
 // TYPES
 import type { LinksFunction } from '@remix-run/node';

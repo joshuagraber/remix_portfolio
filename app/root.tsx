@@ -14,7 +14,7 @@ import globalStyles from 'styles/global.css';
 import themes from 'styles/themes.css';
 
 // COMPONENTS
-import { ModalContactForm, links as modalContactFormLinks } from 'components/ModalContactForm';
+import { ModalContactForm, links as modalContactFormLinks } from 'components/ModalContact';
 
 // CONTEXT
 import { ThemeProvider } from 'context/theme';

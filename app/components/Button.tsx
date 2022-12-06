@@ -7,7 +7,7 @@ import clsx, { ClassValue } from 'clsx';
 import { LinksFunction } from '@remix-run/node';
 
 // COMPONENTS
-import { LoadingSpinner, links as loadingSpinnerLinks } from 'components/LoadingSpinner';
+import { LoadingSpinner, links as loadingSpinnerLinks } from 'components/Spinner';
 
 // TYPES
 interface Props {

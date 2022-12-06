@@ -1,181 +1,99 @@
 @import '../theme/variables.scss';
 
-// Vars
-$home-text-container-width: 620px;
+.jdg-page {
+	display: flex;
+	flex-direction: column;
+	// Home
+	.jdg-home-container-center {
+		display: flex;
+		flex-direction: column;
+		gap: 48px;
+		max-width: 600px;
+		padding: 48px;
 
-// Main animation cases
-.jdg-main {
-	&-enter {
-		opacity: 0;
-		transform: scale(1.2);
-	}
+		.jdg-home-posts-container,
+		.jdg-home-shouts-container {
+			h2 {
+				font: $font-heading-secondary;
+				margin-bottom: 32px;
+			}
 
-	&-enter-active {
-		opacity: 1;
-		transform: scale(1);
-		transition: opacity 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.82, 1.2);
-	}
-
-	&-exit {
-		opacity: 0;
-		transform: scale(1);
-	}
-
-	&-exit-active {
-		opacity: 0;
-		transform: scale(0.8);
-		transition: opacity 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-	}
-}
-
-// Home page
-.jdg-main {
-	.jdg-home-image {
-		border-radius: 50%;
-		display: block;
-		flex: 1 0;
-		max-width: 400px;
-		min-width: 250px;
-		overflow: hidden;
-		position: relative;
-
-		img {
-			border: 2px solid var(--color-accent-primary);
-			border-radius: 50%;
-			box-shadow: -3px -1px 5px 5px var(--color-neutral-white-opacity_40);
-			width: 100%;
-
-			:root[data-theme='jdg-light-mode'] & {
-				box-shadow: -3px -1px 5px 5px var(--color-neutral-black-opacity_40);
+			&-inner {
+				max-height: 400px;
+				overflow-y: scroll;
+				display: flex;
+				flex: 1;
+				flex-direction: column;
 			}
 		}
 
-		figcaption {
-			background-color: var(--color-theme-primary-3-opacity_50);
-			bottom: 10%;
-			opacity: 0;
-			padding: 12px;
-			position: absolute;
-			left: 0;
-			right: 0;
-			text-align: center;
-			transition: opacity 0.5s ease;
+		.jdg-home-post-link,
+		.jdg-home-shout-link {
+			color: var(--color-neutral-0);
+			display: flex;
+			gap: 16px;
+			padding: 16px;
+			width: 100%;
 
-			:root[data-theme='jdg-dark-mode'] & {
+			&:visited {
 				color: var(--color-neutral-0);
 			}
 		}
 
-		&:hover figcaption,
-		&:focus figcaption {
-			opacity: 1;
-		}
-	}
+		.jdg-home-post-link {
+			&:nth-of-type(4n + 1) {
+				background-color: var(--color-accent-peach);
+			}
 
-	.jdg-home-text-container {
-		display: flex;
-		flex: 1 1;
-		flex-direction: column;
-		gap: 16px;
-		max-width: $home-text-container-width;
+			&:nth-of-type(4n + 2) {
+				background-color: var(--color-accent-lime);
+			}
 
-		h2 {
-			font: $font-heading-primary;
-			font-size: 64px;
-			line-height: 115%;
-		}
+			&:nth-of-type(4n + 3) {
+				background-color: var(--color-accent-orange);
+			}
 
-		a {
-			align-items: center;
-			display: flex;
-			gap: 14px;
-			font-size: 24px;
-			line-height: 24px;
-			margin-top: 24px;
-		}
-	}
+			&:nth-of-type(4n + 4) {
+				background-color: var(--color-accent-yellow);
+			}
 
-	.jdg-home-container-center {
-		align-items: center;
-		display: flex;
-		gap: 48px;
-		justify-content: center;
-		padding: 100px 24px;
+			&-image {
+				object-fit: cover;
+				height: 80px;
+				width: 80px;
+			}
 
-		// Handle animation cases
-		&-hide-text {
-			.jdg-home-text-container {
-				max-width: 0;
-				opacity: 0;
+			&-text {
+				// text-align: right;
+				display: flex;
+				flex-direction: column;
+				gap: 12px;
+				width: 100%;
 			}
 		}
 
-		&-hide-image {
-			.jdg-home-image-container {
-				opacity: 0;
-			}
-		}
-
-		&-no-animation {
-			.jdg-home-image-container {
-				animation: fade_in 2s ease;
-			}
-			.jdg-home-text-container {
-				animation: fade_in 2s ease;
-				max-width: $home-text-container-width;
-			}
-		}
-
-		&-show-animation {
-			.jdg-home-image-container {
-				animation: fade_in linear 2.5s;
-			}
-			.jdg-home-text-container {
-				animation: fade_in_text cubic-bezier(0.34, 1.56, 0.41, 1) 2.5s 1s;
-			}
-		}
-	}
-
-	@media (max-width: 1100px) {
-		.jdg-home-text-container {
-			flex: 0 1;
-		}
-	}
-
-	@media (max-width: $tablet) {
-		.jdg-home-text-container {
-			h2 {
-				font-size: 48px;
-			}
-		}
-	}
-
-	@media (max-width: $mobile) {
-		.jdg-container-center {
+		.jdg-home-shout-link {
 			flex-direction: column;
-			padding: 48px 24px;
-		}
 
-		.jdg-home-image-container {
-			position: sticky;
-		}
+			&:nth-of-type(4n + 1) {
+				background-color: var(--color-accent-lavender);
+			}
 
-		.jdg-home-text-container {
-			animation-delay: 0s;
-			flex-direction: row;
-			flex-wrap: wrap;
-			gap: 24px;
-			justify-content: center;
+			&:nth-of-type(4n + 2) {
+				background-color: var(--color-accent-plum);
+			}
 
-			h2 {
-				text-align: center;
+			&:nth-of-type(4n + 3) {
+				background-color: var(--color-accent-cherry);
+			}
+
+			&:nth-of-type(4n + 4) {
+				background-color: var(--color-accent-mauve);
 			}
 		}
 	}
-}
 
-// Contact page
-.jdg-main {
+	// Contact
 	.jdg-contact-container-center {
 		align-items: center;
 		display: flex;
@@ -185,9 +103,7 @@ $home-text-container-width: 620px;
 		max-width: 600px;
 		padding: 24px 0;
 	}
-}
 
-.jdg-main {
 	.jdg-contact-success-container-center {
 		align-items: center;
 		display: flex;
@@ -207,38 +123,8 @@ $home-text-container-width: 620px;
 			font-size: 18px;
 		}
 	}
-}
 
-// Work page
-.jdg-main {
-	.jdg-work-container-center {
-		display: flex;
-		flex-direction: column;
-		gap: 42px;
-		max-width: 800px;
-		padding: 48px 24px;
-	}
-
-	.jdg-work-heading {
-		text-align: center;
-		font: $font-heading-secondary;
-		margin-bottom: 16px;
-	}
-
-	.jdg-work-about-container {
-		margin: 0 auto;
-		width: 100%;
-	}
-
-	.jdg-work-work-container {
-		display: flex;
-		flex-direction: column;
-		gap: 16px;
-	}
-}
-
-// Login
-.jdg-main {
+	// Login
 	.jdg-signin-container-center {
 		display: flex;
 		flex-direction: column;
@@ -351,13 +237,6 @@ $home-text-container-width: 620px;
 	}
 }
 
-// Blog
-.jdg-main {
-	.jdg-blog-container-center {
-		padding: 80px 24px;
-	}
-}
-
 // Admin
 .jdg-admin {
 	&-container {
@@ -411,17 +290,17 @@ $home-text-container-width: 620px;
 	}
 }
 
-@keyframes fade_in_text {
-	0% {
-		max-width: 0;
-		opacity: 0;
-	}
-	50% {
-		opacity: 0;
-		max-width: $home-text-container-width;
-	}
-	100% {
-		opacity: 1;
-		max-width: $home-text-container-width;
-	}
-}
+// @keyframes fade_in_text {
+// 	0% {
+// 		max-width: 0;
+// 		opacity: 0;
+// 	}
+// 	50% {
+// 		opacity: 0;
+// 		max-width: $home-text-container-width;
+// 	}
+// 	100% {
+// 		opacity: 1;
+// 		max-width: $home-text-container-width;
+// 	}
+// }

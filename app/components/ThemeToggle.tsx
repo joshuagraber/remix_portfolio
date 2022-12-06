@@ -3,7 +3,7 @@ import { LinksFunction } from '@remix-run/node';
 import styles from 'styles/toggle.css';
 
 // UTIL
-import { useTheme } from '../../context/theme';
+import { useTheme } from '../context/theme';
 
 export const links: LinksFunction = () => {
 	return [{ rel: 'stylesheet', href: styles }];

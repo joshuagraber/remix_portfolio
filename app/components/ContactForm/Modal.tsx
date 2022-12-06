@@ -4,7 +4,7 @@ import React from 'react';
 import { useFetcher } from '@remix-run/react';
 
 // COMPONENTS
-import { ContactFormFields, links as contactFormFieldsLinks } from '../Fields';
+import { ContactFormFields, links as contactFormFieldsLinks } from './Fields';
 import { Button, links as buttonLinks } from 'components/Button';
 
 // TYPES

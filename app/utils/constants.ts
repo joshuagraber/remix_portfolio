@@ -1,6 +1,6 @@
 export const DEFAULT_THEME: string = 'jdg-dark-mode';
 
-export const NAV_ROUTES: string[] = ['work', 'experiments', 'blog', 'contact'];
+export const NAV_ROUTES: string[] = [/*'work', 'experiments', 'blog',*/ 'contact'];
 
 export const SOCIAL_LINKS: string[][] = [
 	['email', ''],

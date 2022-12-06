@@ -80,7 +80,6 @@ export const action: ActionFunction = async ({ params, request }) => {
 	switch (params.action) {
 		// Mutations - Create
 		case AdminActions.CREATE:
-			console.log('hello from admin/blog/action create');
 			try {
 				// Casting okay because fields object will be validated first
 				const postUpdated = await blog.createNewPost(fields as BlogFormValues);
@@ -91,6 +90,8 @@ export const action: ActionFunction = async ({ params, request }) => {
 
 		// Mutations - Update
 		case AdminActions.UPDATE:
+			const { select_post: postID } = fields;
+
 			for (let input in fields) {
 				// Removing empty fields to avoid updating db fields to '' or undefined
 				// Removing 'select_user' because not expected in db
@@ -100,7 +101,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 			}
 
 			try {
-				const postUpdated = await blog.updatePostByID(String(fields.select_post), fields);
+				const postUpdated = await blog.updatePostByID(String(postID), fields);
 
 				return json({ postUpdated }, { status: 200 });
 			} catch (error) {

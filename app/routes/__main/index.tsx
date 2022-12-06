@@ -1,6 +1,6 @@
 // GLOBALS
 import { json } from '@remix-run/node';
-import { Link } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 import React from 'react';
 import styles from 'styles/index.css';
 
@@ -8,11 +8,10 @@ import styles from 'styles/index.css';
 import { Arrow } from 'components/SVG/Arrow';
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 
-// HOOKS
-import { useIsFirstTimeVisitor } from 'hooks/useIsFirstTimeVisitor';
+// SERVICES
+import * as blog from 'services/blog.server';
 
-// ASSETS
-import headshot from 'assets/images/headshot-mock.png';
+// MISC
 import clsx from 'clsx';
 
 // TYPES
@@ -20,11 +19,28 @@ import type { ClassValue } from 'clsx';
 import type { DynamicLinksFunction } from 'remix-utils';
 import type { LoaderFunction, LinksFunction } from '@remix-run/node';
 import type { Handle } from 'types/types';
+import type { Post } from '@prisma/client';
+
+const shoutsData = [
+	{
+		tagline: 'Where your Instagram feed wants to go',
+		title: '/death/null',
+		url: 'http://www.deathnull.org/',
+	},
+	{
+		tagline: 'An essay from Hito Steyerl on E-flux on the images spamming the universe',
+		title: 'The Spam of the Earth: Withdrawal from Representation',
+		url: 'https://www.e-flux.com/journal/32/68260/the-spam-of-the-earth-withdrawal-from-representation//',
+	},
+];
 
 // EXPORTS
-export const loader: LoaderFunction = ({ request }) => {
+export const loader: LoaderFunction = async ({ request }) => {
+	const posts = await blog.getPostsAll();
+
 	return json({
 		canonical: request.url,
+		posts,
 	});
 };
 
@@ -43,71 +59,120 @@ export const handle: Handle = {
 };
 
 export default function Index(): React.ReactElement {
-	// HOOKS - STATE
-	const [textIsHidden, setTextIsHidden] = React.useState(true);
-	const [imageIsHidden, setimageIsHidden] = React.useState(true);
-
-	// HOOKS - CUSTOM
-	const { isFirstTimeVisitor } = useIsFirstTimeVisitor();
-
-	// HOOKS - EFFECTS
-	React.useEffect(() => {
-		if (typeof isFirstTimeVisitor === 'undefined') {
-			return;
-		}
-
-		let timeout: NodeJS.Timeout | undefined = undefined;
-
-		if (isFirstTimeVisitor) {
-			timeout = setTimeout(() => {
-				setimageIsHidden(false);
-				setTextIsHidden(false);
-			}, 1100); // Timeout should match CSS animation delay
-		}
-
-		if (!isFirstTimeVisitor) {
-			setimageIsHidden(false);
-			setTextIsHidden(false);
-		}
-
-		if (timeout) {
-			return () => clearTimeout(timeout);
-		}
-	}, [isFirstTimeVisitor]);
-
-	// VARS
-	const firstTimeVisitorUnset = typeof isFirstTimeVisitor === 'undefined';
-
-	// CLASSES
-	// TODO: use CSSTransition in combination with this
-	const classes: ClassValue = clsx('jdg-home-container-center', {
-		'jdg-home-container-center-hide-text': textIsHidden,
-		'jdg-home-container-center-hide-image': imageIsHidden,
-		'jdg-home-container-center-no-animation': isFirstTimeVisitor === false,
-		'jdg-home-container-center-show-animation': isFirstTimeVisitor,
-	});
+	const { posts } = useLoaderData();
 
 	return (
-		<ContainerCenter className={classes}>
-			{!firstTimeVisitorUnset && (
-				<>
-					<div className='jdg-home-image-container'>
-						<figure className='jdg-home-image'>
-							<img src={headshot} alt='Joshua D. Graber close-up headshot' />
-							<figcaption>Photo by Jasmine!</figcaption>
-						</figure>
-					</div>
-					<div className='jdg-home-text-container'>
-						<h2>Writing</h2>
-						<h2>Editing</h2>
-						<h2>JavaScript development</h2>
-
-						<Link prefetch='intent' to='work'>
-							Learn more <Arrow direction='right' />
-						</Link>
-					</div>
-				</>
-			)}
+		<ContainerCenter className='jdg-home-container-center'>
+			<div className='jdg-home-posts-container'>
+				<h2>Posts</h2>
+				<div className='jdg-home-posts-container-inner'>
+					{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
+						const published = new Date(published_at).toLocaleDateString();
+						return (
+							<Link className='jdg-home-post-link' key={slug} to={`posts/${slug}`}>
+								<div className='jdg-home-post-link-text'>
+									<h3>{title}</h3>
+									<p>{tagline}</p>
+									<p>{published}</p>
+								</div>
+								<img
+									className='jdg-home-post-link-image'
+									src={image_featured}
+									alt={`Featured image for ${title}`}
+								/>
+							</Link>
+						);
+					})}
+					{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
+						const published = new Date(published_at).toLocaleDateString();
+						return (
+							<Link className='jdg-home-post-link' key={slug} to={`posts/${slug}`}>
+								<div className='jdg-home-post-link-text'>
+									<h3>{title}</h3>
+									<p>{tagline}</p>
+									<p>{published}</p>
+								</div>
+								<img
+									className='jdg-home-post-link-image'
+									src={image_featured}
+									alt={`Featured image for ${title}`}
+								/>
+							</Link>
+						);
+					})}
+					{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
+						const published = new Date(published_at).toLocaleDateString();
+						return (
+							<Link className='jdg-home-post-link' key={slug} to={`posts/${slug}`}>
+								<div className='jdg-home-post-link-text'>
+									<h3>{title}</h3>
+									<p>{tagline}</p>
+									<p>{published}</p>
+								</div>
+								<img
+									className='jdg-home-post-link-image'
+									src={image_featured}
+									alt={`Featured image for ${title}`}
+								/>
+							</Link>
+						);
+					})}
+					{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
+						const published = new Date(published_at).toLocaleDateString();
+						return (
+							<Link className='jdg-home-post-link' key={slug} to={`posts/${slug}`}>
+								<div className='jdg-home-post-link-text'>
+									<h3>{title}</h3>
+									<p>{tagline}</p>
+									<p>{published}</p>
+								</div>
+								<img
+									className='jdg-home-post-link-image'
+									src={image_featured}
+									alt={`Featured image for ${title}`}
+								/>
+							</Link>
+						);
+					})}
+				</div>
+			</div>
+			<div className='jdg-home-shouts-container'>
+				<h2>Shouts</h2>
+				<div className='jdg-home-shouts-container-inner'>
+					{shoutsData.map((shout) => {
+						return (
+							<a className='jdg-home-shout-link' href={shout.url} key={shout.url} target='blank'>
+								<h3>{shout.title}</h3>
+								<p>{shout.tagline}</p>
+							</a>
+						);
+					})}
+					{shoutsData.map((shout) => {
+						return (
+							<a className='jdg-home-shout-link' href={shout.url} key={shout.url} target='blank'>
+								<h3>{shout.title}</h3>
+								<p>{shout.tagline}</p>
+							</a>
+						);
+					})}
+					{shoutsData.map((shout) => {
+						return (
+							<a className='jdg-home-shout-link' href={shout.url} key={shout.url} target='blank'>
+								<h3>{shout.title}</h3>
+								<p>{shout.tagline}</p>
+							</a>
+						);
+					})}
+					{shoutsData.map((shout) => {
+						return (
+							<a className='jdg-home-shout-link' href={shout.url} key={shout.url} target='blank'>
+								<h3>{shout.title}</h3>
+								<p>{shout.tagline}</p>
+							</a>
+						);
+					})}
+				</div>
+			</div>
 		</ContainerCenter>
 	);
 }

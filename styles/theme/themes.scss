@@ -17,10 +17,15 @@
 	--color-theme-primary-3: #c64d153e;
 	--color-theme-primary-4: #d7581c;
 
-	--color-accent-yellow: #cebc81;
+	--color-accent-yellow: #ffe89d;
+	--color-accent-peach: #fcc5bb;
+	--color-accent-lime: #dbe9a1;
+	--color-accent-orange: #f6b871;
+
 	--color-accent-mauve: #cbaead;
-	--color-accent-peach: #ed8e88;
-	--color-accent-plum: #8c5d70;
+	--color-accent-cherry: #eb9fd7;
+	--color-accent-plum: #b78acd;
+	--color-accent-lavender: #b989af;
 
 	--color-success: #479761;
 	--color-error: #d62d1d;
@@ -46,6 +51,7 @@
 	--color-text-primary: var(--color-neutral-7);
 	--color-text-secondary: var(--color-neutral-6);
 	--color-text-tertiary: var(--color-neutral-5);
+	--color-text-inverted: var(--color-neutral-0);
 }
 
 :root[data-theme='jdg-light-mode'] {
@@ -55,6 +61,7 @@
 	--color-text-primary: var(--color-neutral-0);
 	--color-text-secondary: var(--color-neutral-1);
 	--color-text-tertiary: var(--color-neutral-2);
+	--color-text-inverted: var(--color-neutral-9);
 }
 
 :root[data-theme='jdg-dark-mode'] {
@@ -64,6 +71,7 @@
 	--color-text-primary: var(--color-neutral-7);
 	--color-text-secondary: var(--color-neutral-6);
 	--color-text-tertiary: var(--color-neutral-5);
+	--color-text-inverted: var(--color-neutral-1);
 }
 
 // Until theme is set, display nothing

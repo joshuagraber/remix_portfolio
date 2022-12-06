@@ -4,13 +4,10 @@ import React from 'react';
 import { useLoaderData } from '@remix-run/react';
 
 // COMPONENTS
-import { LoadingSpinner } from 'components/LoadingSpinner';
+import { LoadingSpinner } from 'components/Spinner';
 
 // EXT LIBS
 import ReactMarkdown from 'react-markdown';
-
-// DATA
-import { posts } from 'assets/markdown/posts';
 
 // TYPES
 import type { DynamicLinksFunction } from 'remix-utils';

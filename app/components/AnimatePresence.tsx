@@ -1,5 +1,5 @@
 // GLOBALS
-import { Outlet, useLocation, useMatches, useOutlet } from '@remix-run/react';
+import { Outlet, useLocation, useMatches } from '@remix-run/react';
 
 // COMPONENTS
 import { CSSTransition, SwitchTransition } from 'react-transition-group';

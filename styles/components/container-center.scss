@@ -1,7 +1,6 @@
 @import '../../styles/theme/variables.scss';
 
 .jdg-container-center {
-	min-height: calc(100% - $footer-height-desktop);
 	margin: 0 auto;
 	max-width: $max-width;
 	position: relative;

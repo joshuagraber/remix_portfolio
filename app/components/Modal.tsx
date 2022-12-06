@@ -9,7 +9,7 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import FocusTrap from 'focus-trap-react';
 import { Portal } from 'components/Portal';
-import { X } from 'components/SVG/X';
+import { X } from 'components/SVG/Close';
 
 // TYPES
 import type { ClassValue } from 'clsx';
