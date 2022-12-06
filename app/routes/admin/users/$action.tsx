@@ -28,7 +28,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 				// TODO: Create enum with input names, to standardize and add safety
 				if (input === 'name_middle') continue; // Middle name not required
 
-				if (!isValidInputLength(fields[input] as string, 1)) {
+				if (!isValidInputLength(fields[input], 1)) {
 					// TODO: more elegant here. Use util to get "First Name," "Last Name" based on input name
 					const fieldNameForDisplay = input.includes('name') ? 'Name' : titleCase(input);
 					errors[input] = `User's ${fieldNameForDisplay} is required`;
@@ -44,11 +44,6 @@ export const action: ActionFunction = async ({ params, request }) => {
 			if (!fields.password || !isValidPassword(fields.password)) {
 				errors.password =
 					'A valid password needs 8 characters, including 1 uppercase letter, 1 lowercase, 1 number, and 1 special character.';
-			}
-
-			// Return all errors & field values for form validation on the client,
-			if (Object.values(errors).some(Boolean)) {
-				return json({ errors, fields }, { status: 422 });
 			}
 
 			break;
@@ -98,6 +93,11 @@ export const action: ActionFunction = async ({ params, request }) => {
 			console.warn('No form validation happened, the action was not found :', request.url);
 	}
 
+	// Return all errors & field values for form validation on the client,
+	if (Object.values(errors).some(Boolean)) {
+		return json({ errors, fields }, { status: 422 });
+	}
+
 	// ACTIONS
 	switch (params.action) {
 		case AdminActions.CREATE:
@@ -115,15 +115,12 @@ export const action: ActionFunction = async ({ params, request }) => {
 				// Removing empty fields to avoid updating db fields to '' or undefined
 				// Removing 'select_user' because not needed in db
 				if (fields[input] === '' || !fields[input] || input === 'select_user') {
-					delete fieldsNormalizedForUpdateAction[input];
+					delete fields[input];
 				}
 			}
 
 			try {
-				const updatedUser = await users.updateUserByID(
-					String(fields.select_user),
-					fieldsNormalizedForUpdateAction as Partial<UserFormValues>
-				);
+				const updatedUser = await users.updateUserByID(String(fields.select_user), fields);
 
 				return json({ user: updatedUser }, { status: 200 });
 			} catch (error) {
@@ -143,7 +140,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 	}
 };
 
-// To allow UI to persist when action param present
-export default function () {
+// Default export to keep UI from changing on fetcher call
+export default function noop() {
 	return null;
 }

@@ -151,20 +151,22 @@ export default function ImagesAdmin() {
 					<h4>Select Image to update</h4>
 					{/* TODO: create component to display preview and url of images uploaded, paginate,
 						loader will be called on every update from action. */}
-					{images &&
-						images.map(({ asset_id, secure_url }: Partial<UploadApiResponse>) => {
-							return (
-								<NavLink
-									className={({ isActive }) =>
-										isActive ? `${CLASS_NAME} ${ACTIVE_CLASS_NAME}` : `${CLASS_NAME}`
-									}
-									key={asset_id}
-									to={asset_id as string}
-								>
-									<img src={secure_url} alt={secure_url} />
-								</NavLink>
-							);
-						})}
+					<div className='admin-images-images-to-update'>
+						{images &&
+							images.map(({ asset_id, secure_url }: Partial<UploadApiResponse>) => {
+								return (
+									<NavLink
+										className={({ isActive }) =>
+											isActive ? `${CLASS_NAME} ${ACTIVE_CLASS_NAME}` : `${CLASS_NAME}`
+										}
+										key={asset_id}
+										to={asset_id as string}
+									>
+										<img src={secure_url} alt={secure_url} />
+									</NavLink>
+								);
+							})}
+					</div>
 
 					<div>
 						<Outlet />

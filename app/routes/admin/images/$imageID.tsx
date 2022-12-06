@@ -1,3 +1,5 @@
+// TODO: didn't realize Cloudinary had a widget. Just fucking use that.
+
 // GLOBALS
 import { Form, useActionData, useLoaderData } from '@remix-run/react';
 import { json, redirect } from '@remix-run/node';
@@ -108,7 +110,6 @@ export default function EditImage() {
 	// HOOKS - EFFECTS
 	// On action data change
 	React.useEffect(() => {
-		console.log('useEffect running');
 		setErrors(actionData?.errors);
 		setFields(actionData?.fields);
 		setErrorMessage(actionData?.errors?.form ?? actionData?.message);
@@ -128,6 +129,17 @@ export default function EditImage() {
 	return (
 		<ContainerCenter className='jdg-admin-image-edit'>
 			<h4>Update Image</h4>
+
+			<ul>
+				Image details
+				<ul>
+					tags:{' '}
+					{imageToUpdate.tags.map((tag: string) => (
+						<li key={tag}>{tag}</li>
+					))}
+				</ul>
+				<li>url: {imageToUpdate.secure_url}</li>
+			</ul>
 
 			{/* Status updates */}
 			{errorMessage && <div className='jdg-admin-error-message'>{errorMessage}</div>}

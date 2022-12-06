@@ -1,14 +1,14 @@
 import { Role, User } from '@prisma/client';
 
+export type FormValue = string | string[] | Role | File | undefined | User | Date;
+
 interface FormValues {
-	[k: string]: string | string[] | Role | File | undefined | User;
+	[k: string]: FormValue;
 }
 
-// CONTACT ( TODO: Fix this, it smells of over-typing)
+// CONTACT ( TODO: Fix this, it reeks of over-typing)
 type ActionDataValuesReturned = string | undefined;
-
 type ActionDataKeysReturned = 'email' | 'form' | 'name_first' | 'name_last' | 'message';
-
 type ReturnedActionData = Record<ActionDataKeysReturned, ActionDataValuesReturned>;
 
 export interface RouteActionData {
@@ -49,5 +49,5 @@ export interface BlogFormValues extends FormValues {
 	tagline: string;
 	tags: string[];
 	title: string;
-	published_at: string;
+	published_at: Date;
 }

@@ -1,5 +1,5 @@
 // GLOBALS
-import { json } from 'remix-utils';
+import { json } from '@remix-run/node';
 
 // DB
 import { prisma } from 'services/prisma.server';
@@ -9,9 +9,10 @@ import bcrypt from 'bcrypt';
 
 // TYPES
 import type { UserFormValues } from 'types/types.server';
-import type { Role as UserRole } from '@prisma/client';
+import { Role as UserRole, User } from '@prisma/client';
 
-// Create
+///////////////////// API
+// CREATE
 // TODO: Update RegisterFormValues type to include additional optional vals from admin form
 export const createNewUser = async (formValues: UserFormValues) => {
 	const hashedPassword = await bcrypt.hash(formValues.password, 10);
@@ -30,12 +31,12 @@ export const createNewUser = async (formValues: UserFormValues) => {
 	return { id: newUser.id, email: newUser.email };
 };
 
-// Read
+// READ
 export const getUsersAll = async () => {
 	try {
 		return await prisma.user.findMany();
 	} catch (error) {
-		return json({ error });
+		return json(error);
 	}
 };
 
@@ -43,19 +44,31 @@ export const getUsersByRole = async (role: UserRole) => {
 	try {
 		return await prisma.user.findMany({ where: { role: role } });
 	} catch (error) {
-		return json({ error });
+		return json(error);
+	}
+};
+
+export const getUsersAreBlogAuthors = async () => {
+	try {
+		return await prisma.user.findMany({
+			where: {
+				OR: [{ role: UserRole.ADMIN }, { role: UserRole.COLLABORATOR }],
+			},
+		});
+	} catch (error) {
+		return json(error);
 	}
 };
 
 export const getUserByID = async (id: string) => {
 	try {
-		return await prisma.user.findUniqueOrThrow({ where: { id: id } });
+		return await prisma.user.findUnique({ where: { id: id } });
 	} catch (error) {
-		return json({ error });
+		return json(error);
 	}
 };
 
-// Update
+// UPDATE
 export const updateUserByID = async (id: string, formValues: Partial<UserFormValues>) => {
 	const data = { ...formValues };
 
@@ -75,12 +88,12 @@ export const updateUserByID = async (id: string, formValues: Partial<UserFormVal
 	}
 };
 
-// Delete
+// DELETE
 export const deleteUserByID = async (id: string) => {
 	try {
 		const deletedUser = await prisma.user.delete({ where: { id: id } });
 		return deletedUser;
 	} catch (error) {
-		return json({ error });
+		return json(error);
 	}
 };
