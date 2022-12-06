@@ -1,6 +1,14 @@
 // GLOBALS
 import React from 'react';
-import { useFetcher, useFormAction, useLoaderData, useParams } from '@remix-run/react';
+import {
+	useFetcher,
+	useFormAction,
+	useLoaderData,
+	useLocation,
+	useParams,
+	useSearchParams,
+	useSubmit,
+} from '@remix-run/react';
 import { json, redirect } from '@remix-run/node';
 
 // COMPONENTS
@@ -44,6 +52,9 @@ export default function BlogAdmin() {
 	const loaderData = useLoaderData();
 	const { action } = useParams();
 	const deleteAction = useFormAction(AdminActions.DELETE);
+	const [searchParams, setSearchParams] = useSearchParams();
+	const submit = useSubmit();
+	const { pathname, search } = useLocation();
 
 	// HOOKS - STATE
 	const [authors, setAuthors] = React.useState<User[]>(loaderData?.authors);
@@ -72,7 +83,7 @@ export default function BlogAdmin() {
 			setErrors(undefined);
 		}
 
-		if (fields && blogFetcher?.data) {
+		if (fields) {
 			setFields(undefined);
 		}
 	}, [action]);
@@ -90,12 +101,17 @@ export default function BlogAdmin() {
 	}, [selectedPost]);
 
 	// HANDLERS
+	function handleOnFormChange(event: React.ChangeEvent<HTMLFormElement>) {
+		submit(event.currentTarget, { method: 'get', replace: true });
+	}
+
 	function handleOnSelectPost(event: React.ChangeEvent<HTMLSelectElement>) {
 		const post = posts.find((post) => post.id === event?.target?.value);
 		setSelectedPost(post);
+		submit({ author_id: String(selectedPost?.author_id) }, { method: 'get', replace: true });
 	}
 
-	function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+	function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
 		const deleteButton = event?.currentTarget.querySelector(
 			'button[formaction="/admin/blog/delete"]'
 		);
@@ -108,6 +124,17 @@ export default function BlogAdmin() {
 
 	// VARS
 	const actionDisplay = `${titleCase(action)} Post`;
+	// Normalize string for client
+	const contentDefault = fields?.content ? String(fields.content).replace(/\\n/g, '\n') : '';
+	// Get params
+	const selectedPostAuthorIDDefault = selectedPost?.author_id ?? searchParams.get('author_id');
+	const selectedPostImages = searchParams.getAll('images');
+	const selectedPostPublishedAt = searchParams.get('published_at');
+	const selectedPostPublishedAtDefaultValue = selectedPostPublishedAt
+		? selectedPostPublishedAt
+		: selectedPost?.published_at
+		? new Date(selectedPost?.published_at).toISOString()
+		: '';
 
 	// RENDER
 	return (
@@ -115,10 +142,12 @@ export default function BlogAdmin() {
 			action={action}
 			className='jdg-admin-form jdg-admin-form-blog'
 			method='put'
-			onSubmit={handleSubmit}
+			onChange={handleOnFormChange}
+			onSubmit={handleOnSubmit}
 		>
 			<h3>{actionDisplay}</h3>
 
+			{/* Status updated divs */}
 			{errorMessage && <div className='jdg-admin-error-message'>{errorMessage}</div>}
 			{postUpdated && (
 				<div className='jdg-admin-update-message'>Blog post "{postUpdated.title}" was updated.</div>
@@ -128,9 +157,14 @@ export default function BlogAdmin() {
 			{action !== AdminActions.CREATE && posts && (
 				<div className='jdg-input jdg-input-select'>
 					<label htmlFor='select_post'>Select a post to update</label>
-					<select name='select_post' id='select_post' onChange={handleOnSelectPost}>
-						<option value='select_post' disabled hidden>
-							Select a post to {action}
+					<select
+						defaultValue='select_post_instruction'
+						id='select_post'
+						name='select_post'
+						onChange={handleOnSelectPost}
+					>
+						<option value='select_post_instruction' disabled>
+							Select a post to update
 						</option>
 						{posts.map((post) => {
 							return (
@@ -143,6 +177,7 @@ export default function BlogAdmin() {
 					{errors?.select_post && <div className='jdg-error-message'>{errors.select_post}</div>}
 				</div>
 			)}
+
 			{React.useMemo(() => {
 				return (
 					<>
@@ -164,11 +199,16 @@ export default function BlogAdmin() {
 							type='text'
 						/>
 
-						{/* author_id (select, value = user.id) */}
+						{/* Select Author */}
+						{/* WHAT THE FUCK??? Form isn't accepting default value for this? */}
 						<div className='jdg-input jdg-input-select'>
 							<label htmlFor='author_id'>Select author of this post</label>
-							<select name='author_id' id='author_id'>
-								<option value='author_id' disabled hidden>
+							<select
+								name='author_id'
+								id='author_id'
+								defaultValue={selectedPostAuthorIDDefault ?? 'author_id_instruction'}
+							>
+								<option value='author_id_instruction' disabled hidden>
 									Select post author
 								</option>
 								{authors.map((author) => {
@@ -195,7 +235,9 @@ export default function BlogAdmin() {
 						<div className='jdg-input jdg-input-date'>
 							<label htmlFor='published_at'>Post publishes on this date</label>
 							<input
-								defaultValue={fields?.published_at}
+								// For whatever reason, date inputs only accept Years, Months, Days, Hours, and Minutes.
+								// Slice off the rest of it.
+								defaultValue={selectedPostPublishedAtDefaultValue.slice(0, -8)}
 								id='published_at'
 								name='published_at'
 								type='datetime-local'
@@ -207,21 +249,21 @@ export default function BlogAdmin() {
 
 						{/* content (textarea) */}
 						<Input
-							defaultValue={fields?.content}
+							defaultValue={contentDefault}
 							error={errors?.content}
 							label='Content'
 							name='content'
 							type='textarea'
 						/>
 
-						{/* images (Select menu (all images, multiple, value = image secure_url)) */}
+						{/* making controlled for now */}
 						<div className='jdg-input jdg-input-select'>
 							<label htmlFor='images'>Select images displayed in this post</label>
-							<select name='images' id='images' multiple>
+							<select defaultValue={selectedPostImages} id='images' name='images' multiple>
 								{images.map((image) => {
 									return (
 										<option key={image.secure_url} value={image.secure_url}>
-											{image.tags.join(' ')}
+											{image.tags.join(', ')}
 										</option>
 									);
 								})}
@@ -239,7 +281,7 @@ export default function BlogAdmin() {
 								{images.map((image) => {
 									return (
 										<option key={image.secure_url} value={image.secure_url}>
-											{image.tags.join(' ')}
+											{image.tags.join(', ')}
 										</option>
 									);
 								})}

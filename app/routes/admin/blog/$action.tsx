@@ -16,28 +16,34 @@ import type { BlogFormValues } from 'types/types.server';
 export const action: ActionFunction = async ({ params, request }) => {
 	// GET FORM DATA
 	const submission = await request.formData();
+	// Create fields obj
 	const fields: Partial<BlogFormValues> = Object.fromEntries(submission);
+	// Images has multiple, tags need processing, so we get those directly.
 	const images = submission.getAll('images');
-	const tags = parseCommaSeparatedStringToArray(submission.get('tags') as string);
+	console.log({ images });
+	const tags = parseCommaSeparatedStringToArray(submission.get('tags'));
+	// Update fields obj with images and tags
 	Object.assign(fields, { images, tags });
-	const fieldsNormalizedForUpdateAction = { ...fields };
 
 	// VALIDATION
 	const errors: Record<keyof typeof fields, string> = {};
+
 	switch (params.action) {
 		// Validation - Create
 		case AdminActions.CREATE:
 			for (let input in fields) {
 				// If array, check for at least one value
 				if (Array.isArray(fields[input])) {
-					if (!fields[input]) {
+					const validateArray = fields[input] as string[];
+					console.log({ validateArray });
+					if (!validateArray[0]) {
 						Object.assign(errors, { [input]: `${input} is required` });
 					}
 				}
 
 				// If string, check for at least 1 char
 				if (typeof fields[input] === 'string') {
-					if (!isValidInputLength(fields[input] as string, 1)) {
+					if (!isValidInputLength(fields[input], 1)) {
 						// TODO: use Obj.assign in other actions. Better.
 						Object.assign(errors, { [input]: `${input} is required` });
 					}
@@ -62,7 +68,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 			break;
 
 		default:
-			console.error('No validation was performed, that is not a valid route');
+			console.error('No validation was performed, this is not a valid route');
 	}
 
 	// Return all errors & field values for form validation on the client,
@@ -74,6 +80,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 	switch (params.action) {
 		// Mutations - Create
 		case AdminActions.CREATE:
+			console.log('hello from admin/blog/action create');
 			try {
 				// Casting okay because fields object will be validated first
 				const postUpdated = await blog.createNewPost(fields as BlogFormValues);
@@ -84,19 +91,16 @@ export const action: ActionFunction = async ({ params, request }) => {
 
 		// Mutations - Update
 		case AdminActions.UPDATE:
-			for (let input in fieldsNormalizedForUpdateAction) {
+			for (let input in fields) {
 				// Removing empty fields to avoid updating db fields to '' or undefined
-				// Removing 'select_user' because not needed in db
+				// Removing 'select_user' because not expected in db
 				if (fields[input] === '' || !fields[input] || input === 'select_post') {
-					delete fieldsNormalizedForUpdateAction[input];
+					delete fields[input];
 				}
 			}
 
 			try {
-				const postUpdated = await blog.updatePostByID(
-					fields.select_post as string,
-					fieldsNormalizedForUpdateAction
-				);
+				const postUpdated = await blog.updatePostByID(String(fields.select_post), fields);
 
 				return json({ postUpdated }, { status: 200 });
 			} catch (error) {
@@ -106,14 +110,14 @@ export const action: ActionFunction = async ({ params, request }) => {
 		// Mutations - Delete
 		case AdminActions.DELETE:
 			try {
-				const postUpdated = await blog.deletePostByID(fields.select_post as string);
+				const postUpdated = await blog.deletePostByID(String(fields.select_post));
 				return json({ postUpdated }, { status: 200 });
 			} catch (error) {
 				return json(error);
 			}
 
 		default:
-			throw new Error('This is not a valid blogPush route');
+			throw new Error('This is not a valid blog admin route');
 	}
 };
 

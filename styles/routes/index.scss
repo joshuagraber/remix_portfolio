@@ -368,9 +368,15 @@ $home-text-container-width: 620px;
 		flex: 0 0 30%;
 	}
 
+	&-images-images-to-update {
+		display: flex;
+		flex-wrap: wrap;
+		width: 100%;
+	}
+
 	&-image-open-link {
 		border: 2px solid transparent;
-		display: block;
+		display: inline-flex;
 		height: 200px;
 		width: 200px;
 
@@ -378,6 +384,7 @@ $home-text-container-width: 620px;
 			display: block;
 			height: 100%;
 			object-fit: cover;
+			opacity: 60%;
 			width: 100%;
 		}
 
@@ -386,6 +393,10 @@ $home-text-container-width: 620px;
 		&:hover {
 			border-color: var(--color-accent-primary);
 			box-shadow: 1px 1px 3px var(--color-accent-primary), -1px -1px 3px var(--color-accent-primary);
+
+			img {
+				opacity: 100%;
+			}
 		}
 	}
 }
