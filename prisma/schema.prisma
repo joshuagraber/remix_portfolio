@@ -48,7 +48,7 @@ model Post {
   content        String
   images         String[]
   image_featured String
-  slug           String
+  slug           String    @unique
   tagline        String
   tags           String[]
   title          String
