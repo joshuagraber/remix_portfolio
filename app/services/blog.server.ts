@@ -29,17 +29,17 @@ export const getPostsAll = async () => {
 	}
 };
 
-export const getPostsByAuthorID = async (id: string) => {
+export const getPostByID = async (id: string) => {
 	try {
-		return await prisma.post.findMany({ where: { author_id: id } });
+		return await prisma.post.findUnique({ where: { id } });
 	} catch (error) {
 		return json(error);
 	}
 };
 
-export const getPostByID = async (id: string) => {
+export const getPostBySlug = async (slug: string) => {
 	try {
-		return await prisma.post.findUnique({ where: { id: id } });
+		return await prisma.post.findUnique({ where: { slug } });
 	} catch (error) {
 		return json(error);
 	}
@@ -49,7 +49,7 @@ export const getPostByID = async (id: string) => {
 export const updatePostByID = async (id: string, formValues: Partial<BlogFormValues>) => {
 	try {
 		const updatedPost = await prisma.post.update({
-			where: { id: id },
+			where: { id },
 			data: formValues,
 		});
 		return updatedPost;
@@ -61,7 +61,7 @@ export const updatePostByID = async (id: string, formValues: Partial<BlogFormVal
 // DELETE
 export const deletePostByID = async (id: string) => {
 	try {
-		const deletedPost = await prisma.post.delete({ where: { id: id } });
+		const deletedPost = await prisma.post.delete({ where: { id } });
 		return deletedPost;
 	} catch (error) {
 		return json(error);
