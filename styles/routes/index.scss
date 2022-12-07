@@ -3,6 +3,31 @@
 .jdg-page {
 	display: flex;
 	flex-direction: column;
+
+	// Main animation cases
+	.jdg-main {
+		&-enter {
+			opacity: 0;
+			transform: scale(1.2);
+		}
+
+		&-enter-active {
+			opacity: 1;
+			transform: scale(1);
+			transition: opacity 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.82, 1.2);
+		}
+
+		&-exit {
+			opacity: 0;
+			transform: scale(1);
+		}
+
+		&-exit-active {
+			opacity: 0;
+			transform: scale(0.8);
+			transition: opacity 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		}
+	}
 	// Home
 	.jdg-home-container-center {
 		display: flex;
