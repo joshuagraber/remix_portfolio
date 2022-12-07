@@ -9,11 +9,6 @@ export function stripParamsAndHash(url: string): string {
 	return url.split(/[?#]/)[0];
 }
 
-// Markdown files to string
-export function resolveMarkdownFileToString(slug: string): string {
-	return fs.readFileSync(path.resolve(__dirname, `../app/assets/markdown/${slug}.md`)).toString();
-}
-
 // Comma-separated string to array
 export function parseCommaSeparatedStringToArray(tags: FormDataEntryValue | null) {
 	// Type predicate
