@@ -42,7 +42,7 @@ export const getUsersAll = async () => {
 
 export const getUsersByRole = async (role: UserRole) => {
 	try {
-		return await prisma.user.findMany({ where: { role: role } });
+		return await prisma.user.findMany({ where: { role } });
 	} catch (error) {
 		return json(error);
 	}
@@ -62,7 +62,7 @@ export const getUsersAreBlogAuthors = async () => {
 
 export const getUserByID = async (id: string) => {
 	try {
-		return await prisma.user.findUnique({ where: { id: id } });
+		return await prisma.user.findUnique({ where: { id } });
 	} catch (error) {
 		return json(error);
 	}
@@ -78,7 +78,7 @@ export const updateUserByID = async (id: string, formValues: Partial<UserFormVal
 
 	try {
 		const updatedUser = prisma.user.update({
-			where: { id: id },
+			where: { id },
 			data,
 		});
 
@@ -91,7 +91,7 @@ export const updateUserByID = async (id: string, formValues: Partial<UserFormVal
 // DELETE
 export const deleteUserByID = async (id: string) => {
 	try {
-		const deletedUser = await prisma.user.delete({ where: { id: id } });
+		const deletedUser = await prisma.user.delete({ where: { id } });
 		return deletedUser;
 	} catch (error) {
 		return json(error);
