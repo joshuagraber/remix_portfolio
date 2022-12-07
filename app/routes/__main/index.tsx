@@ -5,14 +5,13 @@ import React from 'react';
 import styles from 'styles/index.css';
 
 // COMPONENTS
-import { Arrow } from 'components/SVG/Arrow';
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 
 // SERVICES
 import * as blog from 'services/blog.server';
 
-// MISC
-import clsx from 'clsx';
+// UTILS
+import { stripParamsAndHash } from 'utils/utils.server';
 
 // TYPES
 import type { ClassValue } from 'clsx';
@@ -39,7 +38,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 	const posts = await blog.getPostsAll();
 
 	return json({
-		canonical: request.url,
+		canonical: stripParamsAndHash(request.url),
 		posts,
 	});
 };
@@ -53,7 +52,7 @@ export const links: LinksFunction = () => {
 };
 
 export const handle: Handle = {
-	animatePresence: false,
+	animatePresence: true,
 	dynamicLinks,
 	ref: React.createRef(),
 };
@@ -135,6 +134,7 @@ export default function Index(): React.ReactElement {
 						);
 					})}
 				</div>
+				<Link to='posts'>All Posts</Link>
 			</div>
 			<div className='jdg-home-shouts-container'>
 				<h2>Shouts</h2>

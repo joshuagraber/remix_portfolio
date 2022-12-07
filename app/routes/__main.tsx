@@ -1,9 +1,8 @@
 // GLOBALS
-import styles from 'styles/layout.css';
-import { Outlet } from '@remix-run/react';
+import styles from 'styles/index.css';
 
 // COMPONENTS
-// import { AnimatePresence } from 'components/AnimatePresence';
+import { AnimatePresence } from 'components/AnimatePresence';
 import { Header, links as headerLinks } from 'components/Header';
 import { Footer, links as footerLinks } from 'components/Footer';
 
@@ -18,7 +17,7 @@ export default function Layout(): JSX.Element {
 	return (
 		<div className='jdg-page'>
 			<Header />
-			<Outlet />
+			<AnimatePresence />
 			<Footer />
 		</div>
 	);

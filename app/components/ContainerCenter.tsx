@@ -21,5 +21,5 @@ export const ContainerCenter: React.FC<Props> = ({ children, className, disabled
 		'jdg-container-center-disabled': disabled,
 	});
 
-	return <main className={classes}>{children}</main>;
+	return <div className={classes}>{children}</div>;
 };
