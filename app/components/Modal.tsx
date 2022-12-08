@@ -105,6 +105,7 @@ export const Modal: React.FC<Props> = ({
 									<Link
 										aria-label='Close modal'
 										className='jdg-modal-icon-container'
+										replace
 										to={pathToClose}
 									>
 										<X />

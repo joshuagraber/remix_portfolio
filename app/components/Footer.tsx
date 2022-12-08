@@ -1,5 +1,6 @@
 // GLOBALS
 import styles from 'styles/footer.css';
+import { useNavigate } from '@remix-run/react';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
@@ -21,6 +22,7 @@ export const links: LinksFunction = () => {
 
 export const Footer: React.FC = () => {
 	const { open } = useToggleContactModal();
+	const navigate = useNavigate();
 
 	return (
 		<div className='jdg-footer'>
@@ -35,7 +37,7 @@ export const Footer: React.FC = () => {
 
 						if (type === 'email') {
 							return (
-								<Link className='jdg-footer-contact-link' to={open} key={type}>
+								<Link className='jdg-footer-contact-link' key={type} replace to={open}>
 									{' '}
 									<SocialIcon type={type} />{' '}
 								</Link>
