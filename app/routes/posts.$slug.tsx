@@ -84,15 +84,13 @@ export default function Post(): React.ReactElement {
 					<div className='jdg-post-header-image'>
 						<img src={image_featured} alt={`Hero image for ${title}: ${tagline}`} />
 					</div>
-					<div className='jdg-post-header-text-container'>
-						<div className='jdg-post-header-text'>
-							<h1 className='jdg-post-header-text-heading'>{title}</h1>
-							<p className='jdg-post-header-text-sub-heading'>{tagline}</p>
+					<div className='jdg-post-header-text'>
+						<h1 className='jdg-post-header-text-heading'>{title}</h1>
+						<p className='jdg-post-header-text-sub-heading'>{tagline}</p>
 
-							<div className='jdg-post-header-text-info'>
-								{authorName && <p className='jdg-post-header-text-author'>{authorName}</p>}
-								<p className='jdg-post-header-text-date'>{dateToDisplay}</p>
-							</div>
+						<div className='jdg-post-header-text-info'>
+							{authorToDisplay && <p className='jdg-post-header-text-author'>{authorToDisplay}</p>}
+							<p className='jdg-post-header-text-date'>{dateToDisplay}</p>
 						</div>
 					</div>
 				</ContainerCenter>
