@@ -1,5 +1,8 @@
 @import '../theme/variables.scss';
 
+$post-container-max-width: 650px;
+$post-container-padding: 24px;
+
 .jdg-page {
 	display: flex;
 	flex-direction: column;
@@ -58,10 +61,15 @@
 			display: flex;
 			gap: 16px;
 			padding: 16px;
+			text-decoration: none;
 			width: 100%;
 
 			&:visited {
 				color: var(--color-neutral-0);
+			}
+
+			&:hover {
+				filter: brightness(1.1);
 			}
 		}
 
@@ -92,8 +100,20 @@
 				// text-align: right;
 				display: flex;
 				flex-direction: column;
-				gap: 12px;
 				width: 100%;
+
+				&-heading {
+					font: $font-heading-tertiary;
+					margin-bottom: 16px;
+				}
+
+				&-subheading {
+					font: $font-paragraph-secondary;
+				}
+
+				&-date {
+					font-size: 12px;
+				}
 			}
 		}
 
@@ -114,6 +134,101 @@
 
 			&:nth-of-type(4n + 4) {
 				background-color: var(--color-accent-mauve);
+			}
+		}
+	}
+
+	// Posts
+	// Post
+	&-post {
+		.jdg-container-center-post-header {
+			margin-bottom: 80px;
+
+			.jdg-post-header-image {
+				img {
+					height: auto;
+					width: 100%;
+				}
+			}
+
+			.jdg-post-header-text-container {
+				margin: 0 auto;
+				max-width: $post-container-max-width;
+				position: relative;
+				width: 100%;
+			}
+
+			.jdg-post-header-text {
+				position: absolute;
+				background-color: var(--color-neutral-black-opacity_80);
+				bottom: -50px;
+				display: flex;
+				flex-direction: column;
+				left: 0;
+				padding: $post-container-padding;
+				width: max-content;
+
+				&-heading {
+					font: $font-heading-primary;
+					margin-bottom: 8px;
+				}
+
+				&-sub-heading {
+					font: $font-heading-quaternary-emphasis;
+					margin-bottom: 32px;
+				}
+
+				&-info {
+					display: flex;
+					gap: 18px;
+					justify-content: space-between;
+				}
+			}
+		}
+
+		.jdg-container-center-post-main {
+			display: flex;
+			flex-direction: column;
+			max-width: $post-container-max-width;
+			padding-bottom: 100px;
+
+			img {
+				height: auto;
+				width: 100%;
+			}
+		}
+
+		// MEDIA QUERY - POST
+		@media (max-width: $mobile) {
+			.jdg-container-center-post-header {
+				.jdg-post-header-text {
+					left: 50%;
+					transform: translateX(-50%);
+				}
+			}
+
+			.jdg-container-center-post-main {
+				padding: 0 24px;
+			}
+		}
+
+		@media (max-width: 500px) {
+			.jdg-container-center-post-header {
+				.jdg-post-header-text {
+					&-heading {
+						font: $font-heading-tertiary;
+					}
+
+					&-sub-heading,
+					&-info {
+						font-size: 16px;
+						font-size: 16px;
+					}
+
+					&-date {
+						font-size: 12px;
+					}
+				}
 			}
 		}
 	}

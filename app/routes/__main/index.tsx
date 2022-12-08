@@ -71,9 +71,9 @@ export default function Index(): React.ReactElement {
 						return (
 							<Link className='jdg-home-post-link' key={slug} to={`posts/${slug}`}>
 								<div className='jdg-home-post-link-text'>
-									<h3>{title}</h3>
-									<p>{tagline}</p>
-									<p>{published}</p>
+									<h3 className='jdg-home-post-link-text-heading'>{title}</h3>
+									<p className='jdg-home-post-link-text-subheading'>{tagline}</p>
+									<p className='jdg-home-post-link-text-date'>{published}</p>
 								</div>
 								<img
 									className='jdg-home-post-link-image'
@@ -88,9 +88,9 @@ export default function Index(): React.ReactElement {
 						return (
 							<Link className='jdg-home-post-link' key={slug} to={`posts/${slug}`}>
 								<div className='jdg-home-post-link-text'>
-									<h3>{title}</h3>
-									<p>{tagline}</p>
-									<p>{published}</p>
+									<h3 className='jdg-home-post-link-text-heading'>{title}</h3>
+									<p className='jdg-home-post-link-text-subheading'>{tagline}</p>
+									<p className='jdg-home-post-link-text-date'>{published}</p>
 								</div>
 								<img
 									className='jdg-home-post-link-image'
@@ -105,9 +105,9 @@ export default function Index(): React.ReactElement {
 						return (
 							<Link className='jdg-home-post-link' key={slug} to={`posts/${slug}`}>
 								<div className='jdg-home-post-link-text'>
-									<h3>{title}</h3>
-									<p>{tagline}</p>
-									<p>{published}</p>
+									<h3 className='jdg-home-post-link-text-heading'>{title}</h3>
+									<p className='jdg-home-post-link-text-subheading'>{tagline}</p>
+									<p className='jdg-home-post-link-text-date'>{published}</p>
 								</div>
 								<img
 									className='jdg-home-post-link-image'
@@ -122,9 +122,9 @@ export default function Index(): React.ReactElement {
 						return (
 							<Link className='jdg-home-post-link' key={slug} to={`posts/${slug}`}>
 								<div className='jdg-home-post-link-text'>
-									<h3>{title}</h3>
-									<p>{tagline}</p>
-									<p>{published}</p>
+									<h3 className='jdg-home-post-link-text-heading'>{title}</h3>
+									<p className='jdg-home-post-link-text-subheading'>{tagline}</p>
+									<p className='jdg-home-post-link-text-date'>{published}</p>
 								</div>
 								<img
 									className='jdg-home-post-link-image'

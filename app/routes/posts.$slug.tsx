@@ -1,10 +1,13 @@
 // GLOBALS
-import { json } from '@remix-run/node';
+import { json, LinksFunction } from '@remix-run/node';
 import React from 'react';
 import { useLoaderData } from '@remix-run/react';
+import styles from 'styles/index.css';
 
 // COMPONENTS
-import { LoadingSpinner } from 'components/Spinner';
+import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
+import { Footer, links as footerLinks } from 'components/Footer';
+import { LoadingSpinner, links as loadingSpinnerLinks } from 'components/Spinner';
 import ReactMarkdown from 'react-markdown';
 
 // SERVICES
@@ -18,39 +21,31 @@ import { stripParamsAndHash } from 'utils/utils.server';
 import type { DynamicLinksFunction } from 'remix-utils';
 import type { Handle } from 'types/types';
 import type { LoaderFunction } from '@remix-run/node';
-import type { Post } from '@prisma/client';
 
 // EXPORTS
 export const loader: LoaderFunction = async ({ params, request }) => {
-	const posts = await blog.getPostsAll();
+	const { slug } = params;
 
-	// Type predicate - is posts array
-	if (!Array.isArray(posts)) {
-		return json('Posts not found', { status: 404 });
-	}
-
-	// Sort posts
-	const postsSortedByDate = posts
-		.filter((post) => new Date(post.published_at).getTime() <= new Date().getTime())
-		.sort((a, b) => new Date(a.published_at).getTime() - new Date(b.published_at).getTime());
-
-	//  Post req from params
-	const post = posts.find((post) => post.slug === params.slug);
-
-	// Type predicate - if slug doesn't match psot
-	if (typeof post === 'undefined') {
-		throw json({ error: 'That post does not exist' }, { status: 404 });
-	}
+	const post = await blog.getPostBySlug(String(slug));
 
 	// Get post author
-	const author = await users.getUserByID(post.author_id);
+	const postAuthor = await users.getUserByID(String(post?.author_id));
+	const authorName = `${postAuthor?.name_first} ${postAuthor?.name_middle} ${postAuthor?.name_last}`;
 
 	return json({
-		author,
+		authorName,
 		canonical: stripParamsAndHash(request.url),
-		postsSortedByDate,
 		post,
 	});
+};
+
+export const links: LinksFunction = () => {
+	return [
+		...containerCenterLinks(),
+		...footerLinks(),
+		...loadingSpinnerLinks(),
+		{ rel: 'stylesheet', href: styles },
+	];
 };
 
 // TODO meta, etc.
@@ -67,18 +62,53 @@ export const handle: Handle = {
 export default function Post(): React.ReactElement {
 	const data = useLoaderData();
 
-	// TODO: handle this more elegantly
+	// TODO: handle this more elegantly, useTransition, etc.
 	if (typeof data === 'undefined') {
 		return <LoadingSpinner isDisplayed size='80px' />;
 	}
 
+	// VARS
 	const {
-		author,
+		authorName,
 		post: { content, image_featured, published_at, tagline, title },
-		postsSortedByDate,
 	} = data;
 
-	return <ReactMarkdown children={content}></ReactMarkdown>;
+	const authorToDisplay = authorName !== 'Joshua D. Graber' ? `Guest writer: ${authorName}` : null;
+	const dateToDisplay = new Date(published_at).toLocaleDateString();
+
+	return (
+		<div className='jdg-page jdg-page-post'>
+			{/* Header */}
+			<header className='jdg-post-header'>
+				<ContainerCenter className='jdg-container-center-post-header'>
+					<div className='jdg-post-header-image'>
+						<img src={image_featured} alt={`Hero image for ${title}: ${tagline}`} />
+					</div>
+					<div className='jdg-post-header-text-container'>
+						<div className='jdg-post-header-text'>
+							<h1 className='jdg-post-header-text-heading'>{title}</h1>
+							<p className='jdg-post-header-text-sub-heading'>{tagline}</p>
+
+							<div className='jdg-post-header-text-info'>
+								{authorName && <p className='jdg-post-header-text-author'>{authorName}</p>}
+								<p className='jdg-post-header-text-date'>{dateToDisplay}</p>
+							</div>
+						</div>
+					</div>
+				</ContainerCenter>
+			</header>
+
+			{/* Main */}
+			<main className='jdg-main'>
+				<ContainerCenter className='jdg-container-center-post-main'>
+					{/* TODO: Install and use GFM plugin, others? */}
+					<ReactMarkdown children={content} />
+				</ContainerCenter>
+			</main>
+
+			<Footer />
+		</div>
+	);
 }
 
 export { ErrorBoundary } from 'components/ErrorBoundary';
