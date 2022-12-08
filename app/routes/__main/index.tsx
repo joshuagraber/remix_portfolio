@@ -20,6 +20,7 @@ import type { LoaderFunction, LinksFunction } from '@remix-run/node';
 import type { Handle } from 'types/types';
 import type { Post } from '@prisma/client';
 
+// TODO: Make DB model and add admin route
 const shoutsData = [
 	{
 		tagline: 'Where your Instagram feed wants to go',

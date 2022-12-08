@@ -1,5 +1,6 @@
 // GLOBALS
 import {
+	json,
 	unstable_composeUploadHandlers,
 	unstable_createMemoryUploadHandler,
 	writeAsyncIterableToWritable,
@@ -56,57 +57,82 @@ export const uploadHandler: UploadHandler = unstable_composeUploadHandlers(
 
 // READ
 export const getImagesAll = async () => {
-	const allImages = await cloudinary.v2.search
-		.expression('folder:portfolio && resource_type:image')
-		.with_field('tags')
-		.sort_by('created_at', 'desc')
-		.execute()
-		.then((result) => result);
-	return allImages;
+	try {
+		const allImages = await cloudinary.v2.search
+			.expression('folder:portfolio && resource_type:image')
+			.with_field('tags')
+			.sort_by('created_at', 'desc')
+			.execute()
+			.then((result) => result);
+		return allImages;
+	} catch (error) {
+		throw json(error);
+	}
 };
 
 export const getImageByAssetID = async (id: string) => {
-	const searchExpression = `asset_id:${id}`;
-	const image = await cloudinary.v2.search
-		.expression(searchExpression)
-		.with_field('tags')
-		.execute()
-		.then((result) => result);
+	try {
+		const searchExpression = `asset_id:${id}`;
+		const image = await cloudinary.v2.search
+			.expression(searchExpression)
+			.with_field('tags')
+			.execute()
+			.then((result) => result);
 
-	return image.resources[0];
+		return image.resources[0];
+	} catch (error) {
+		throw json(error);
+	}
 };
 
 export const getImageByPublicID = async (id: string) => {
-	const searchExpression = `public_id:${id}`;
-	const image = await cloudinary.v2.search
-		.expression(searchExpression)
-		.with_field('tags')
-		.execute()
-		.then((result) => result);
+	try {
+		const searchExpression = `public_id:${id}`;
 
-	return image.resources[0];
+		const image = await cloudinary.v2.search
+			.expression(searchExpression)
+			.with_field('tags')
+			.execute()
+			.then((result) => result);
+
+		return image.resources[0];
+	} catch (error) {
+		throw json(error);
+	}
 };
 
 // UPDATE
 export const addImageTagsByImageIDs = async (tags: string[], ids: string[]) => {
-	const response = tags.map(async (tag) => {
-		await cloudinary.v2.uploader
-			.add_tag(tag, ids, { resource_type: 'image' })
-			.then((result) => result);
-	});
-	return response.length === tags.length;
+	try {
+		const response = tags.map(async (tag) => {
+			await cloudinary.v2.uploader
+				.add_tag(tag, ids, { resource_type: 'image' })
+				.then((result) => result);
+		});
+		return response.length === tags.length;
+	} catch (error) {
+		throw json(error);
+	}
 };
 
 export const deleteImageTagsByImageIDs = async (tags: string[], ids: string[]) => {
-	const responses = tags.map(async (tag) => {
-		await cloudinary.v2.uploader
-			.remove_tag(tag, ids, { resource_type: 'image' })
-			.then((result) => result);
-	});
-	return responses.length === tags.length;
+	try {
+		const responses = tags.map(async (tag) => {
+			await cloudinary.v2.uploader
+				.remove_tag(tag, ids, { resource_type: 'image' })
+				.then((result) => result);
+		});
+		return responses.length === tags.length;
+	} catch (error) {
+		throw json(error);
+	}
 };
 
 // DELETE
 export const deleteImageByPublicID = async (id: string) => {
-	return await cloudinary.v2.uploader.destroy(id);
+	try {
+		return await cloudinary.v2.uploader.destroy(id);
+	} catch (error) {
+		throw json(error);
+	}
 };

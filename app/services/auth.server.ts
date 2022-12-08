@@ -41,7 +41,7 @@ export const signup = async (formValues: UserFormValues, redirectTo: string = '/
 	const newUser = await users.createNewUser(formValues);
 
 	if (!newUser) {
-		return json(
+		throw json(
 			{
 				errors: {
 					form: 'Something went wrong when trying to create a new user. \n Please try again.',
@@ -53,7 +53,11 @@ export const signup = async (formValues: UserFormValues, redirectTo: string = '/
 		);
 	}
 
-	return createSession(newUser.id, redirectTo);
+	try {
+		return createSession(newUser.id, redirectTo);
+	} catch (error) {
+		throw json(error);
+	}
 };
 
 // Existing user sign in
@@ -65,13 +69,16 @@ export const signin = async (formValues: LoginFormValues, redirectTo: string = '
 	const isPasswordMatch = await bcrypt.compare(formValues.password, String(user?.password));
 
 	if (!user || !isPasswordMatch)
-		return json({
+		throw json({
 			errors: { form: 'Incorrect login' },
 			status: 400,
 		});
 
-	// TODO: session and redirect
-	return createSession(user.id, redirectTo);
+	try {
+		return createSession(user.id, redirectTo);
+	} catch (error) {
+		throw json(error);
+	}
 };
 
 // Sign out
@@ -79,17 +86,21 @@ export const signout = async (request: Request) => {
 	const session = await getUserSession(request);
 
 	if (!session) {
-		return json({
+		throw json({
 			errors: { form: 'Error getting user session.' },
 			status: 404,
 		});
 	}
 
-	return redirect('/sign/in', {
-		headers: {
-			'Set-Cookie': await storage.destroySession(session),
-		},
-	});
+	try {
+		return redirect('/sign/in', {
+			headers: {
+				'Set-Cookie': await storage.destroySession(session),
+			},
+		});
+	} catch (error) {
+		throw json(error);
+	}
 };
 
 // SESSIONS
@@ -101,49 +112,69 @@ export const createSession = async (userID: string, redirectTo: string = '/') =>
 	session.set('userID', userID);
 
 	// Redirect
-	return redirect(redirectTo, {
-		headers: {
-			'Set-Cookie': await storage.commitSession(session),
-		},
-	});
+	try {
+		return redirect(redirectTo, {
+			headers: {
+				'Set-Cookie': await storage.commitSession(session),
+			},
+		});
+	} catch (error) {
+		throw json(error);
+	}
 };
 
 export const requireUserId = async (
 	request: Request,
 	redirectTo: string = new URL(request.url).pathname
 ) => {
-	const session = await storage.getSession(request.headers.get('Cookie'));
-	const userID = session.get('userID');
+	try {
+		const session = await storage.getSession(request.headers.get('Cookie'));
+		const userID = session.get('userID');
 
-	if (!userID || typeof userID !== 'string') {
-		const redirectParam = new URLSearchParams([['redirect', redirectTo]]);
-		throw redirect(`/sign/in/?${redirectParam}`, {
-			headers: {
-				'Set-Cookie': await storage.commitSession(session),
-			},
-		});
+		if (!userID || typeof userID !== 'string') {
+			const redirectParam = new URLSearchParams([['redirect', redirectTo]]);
+			throw redirect(`/sign/in/?${redirectParam}`, {
+				headers: {
+					'Set-Cookie': await storage.commitSession(session),
+				},
+			});
+		}
+		return userID;
+	} catch (error) {
+		throw json(error);
 	}
-	return userID;
 };
 
 export const getUserSession = (request: Request) => {
-	return storage.getSession(request.headers.get('Cookie'));
+	try {
+		return storage.getSession(request.headers.get('Cookie'));
+	} catch (error) {
+		throw json(error);
+	}
 };
 
 export const getUserID = async (request: Request) => {
-	const session = await getUserSession(request);
-	const userID = session.get('userID');
+	try {
+		const session = await getUserSession(request);
+		const userID = session.get('userID');
 
-	if (!userID || typeof userID !== 'string') return null;
+		if (!userID || typeof userID !== 'string') {
+			throw json('that user does not exist', { status: 422 });
+		}
 
-	return userID;
+		return userID;
+	} catch (error) {
+		throw json(error);
+	}
 };
 
 export const getUser = async (request: Request) => {
-	const userID = await getUserID(request);
-	if (typeof userID !== 'string') return null;
-
 	try {
+		const userID = await getUserID(request);
+		if (typeof userID !== 'string') {
+			throw json('that user does not exist', { status: 422 });
+		}
+
 		const user = await prisma.user.findUnique({
 			where: { id: userID },
 			select: { id: true, email: true, name_first: true, name_last: true },

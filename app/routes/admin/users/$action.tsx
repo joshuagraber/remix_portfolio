@@ -17,7 +17,6 @@ import type { UserFormValues, UserFormValuesAllFormSubmission } from 'types/type
 export const action: ActionFunction = async ({ params, request }) => {
 	const submission: FormData = await request.formData();
 	const fields: Partial<UserFormValuesAllFormSubmission> = Object.fromEntries(submission);
-	const fieldsNormalizedForUpdateAction = { ...fields };
 
 	// VALIDATION
 	const errors: Record<keyof typeof fields, string | undefined> = {};
@@ -102,8 +101,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 	switch (params.action) {
 		case AdminActions.CREATE:
 			try {
-				const { id } = await users.createNewUser(fields as UserFormValues);
-				const createdUser = await users.getUserByID(id);
+				const createdUser = await users.createNewUser(fields as UserFormValues);
 
 				return json({ user: createdUser }, { status: 200 });
 			} catch (error) {
