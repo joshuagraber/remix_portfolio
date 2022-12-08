@@ -75,6 +75,18 @@
 			left: 16px;
 			transform: skewX(5deg);
 		}
+
+		&.modal {
+			width: 95%;
+
+			.jdg-contact-form {
+				padding: 0;
+
+				.jdg-button {
+					margin: 0 12px 12px;
+				}
+			}
+		}
 	}
 
 	@media (max-width: 500px) {
