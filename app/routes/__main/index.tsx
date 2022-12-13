@@ -6,6 +6,7 @@ import styles from 'styles/index.css';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
+import { Arrow } from 'components/SVG/Arrow';
 
 // SERVICES
 import * as blog from 'services/blog.server';
@@ -21,7 +22,7 @@ import type { Handle } from 'types/types';
 import type { Post } from '@prisma/client';
 
 // TODO: Make DB model and add admin route
-const shoutsData = [
+export const bookmarks = [
 	{
 		tagline: 'Where your Instagram feed wants to go',
 		title: '/death/null',
@@ -38,9 +39,11 @@ const shoutsData = [
 export const loader: LoaderFunction = async ({ request }) => {
 	const posts = await blog.getPostsAll();
 
+	// Only send 8 most recent bookmarks / posts
 	return json({
+		bookmarks: bookmarks.slice(0, 7),
 		canonical: stripParamsAndHash(request.url),
-		posts,
+		posts: posts.slice(0, 7),
 	});
 };
 
@@ -59,12 +62,13 @@ export const handle: Handle = {
 };
 
 export default function Index(): React.ReactElement {
-	const { posts } = useLoaderData();
+	// HOOKS - GLOBAL
+	const { bookmarks, posts } = useLoaderData();
 
 	return (
 		<ContainerCenter className='jdg-home-container-center'>
 			<div className='jdg-home-posts-container'>
-				<h2>Posts</h2>
+				<h2>Recent Posts</h2>
 				<div className='jdg-home-posts-container-inner'>
 					{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
 						const published = new Date(published_at).toLocaleDateString();
@@ -100,79 +104,48 @@ export default function Index(): React.ReactElement {
 							</Link>
 						);
 					})}
-					{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
-						const published = new Date(published_at).toLocaleDateString();
-						return (
-							<Link className='jdg-home-post-link' key={slug} to={`posts/${slug}`}>
-								<div className='jdg-home-post-link-text'>
-									<h3 className='jdg-home-post-link-text-heading'>{title}</h3>
-									<p className='jdg-home-post-link-text-subheading'>{tagline}</p>
-									<p className='jdg-home-post-link-text-date'>{published}</p>
-								</div>
-								<img
-									className='jdg-home-post-link-image'
-									src={image_featured}
-									alt={`Featured image for ${title}`}
-								/>
-							</Link>
-						);
-					})}
-					{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
-						const published = new Date(published_at).toLocaleDateString();
-						return (
-							<Link className='jdg-home-post-link' key={slug} to={`posts/${slug}`}>
-								<div className='jdg-home-post-link-text'>
-									<h3 className='jdg-home-post-link-text-heading'>{title}</h3>
-									<p className='jdg-home-post-link-text-subheading'>{tagline}</p>
-									<p className='jdg-home-post-link-text-date'>{published}</p>
-								</div>
-								<img
-									className='jdg-home-post-link-image'
-									src={image_featured}
-									alt={`Featured image for ${title}`}
-								/>
-							</Link>
-						);
-					})}
 				</div>
-				<Link to='posts'>All Posts</Link>
+				<Link className='jdg-home-posts-link-all' to='posts'>
+					All Posts
+					<Arrow direction='right' />
+				</Link>
 			</div>
-			<div className='jdg-home-shouts-container'>
-				<h2>Shouts</h2>
-				<div className='jdg-home-shouts-container-inner'>
-					{shoutsData.map((shout) => {
+
+			{/* Bookmarks */}
+			<div className='jdg-home-bookmarks-container'>
+				<h2>Recent Bookmarks</h2>
+				<div className='jdg-home-bookmarks-container-inner'>
+					{bookmarks.map((bookmark: any) => {
 						return (
-							<a className='jdg-home-shout-link' href={shout.url} key={shout.url} target='blank'>
-								<h3>{shout.title}</h3>
-								<p>{shout.tagline}</p>
+							<a
+								className='jdg-home-bookmark-link'
+								href={bookmark.url}
+								key={bookmark.url}
+								target='blank'
+							>
+								<h3>{bookmark.title}</h3>
+								<p>{bookmark.tagline}</p>
 							</a>
 						);
 					})}
-					{shoutsData.map((shout) => {
+					{bookmarks.map((bookmark: any) => {
 						return (
-							<a className='jdg-home-shout-link' href={shout.url} key={shout.url} target='blank'>
-								<h3>{shout.title}</h3>
-								<p>{shout.tagline}</p>
-							</a>
-						);
-					})}
-					{shoutsData.map((shout) => {
-						return (
-							<a className='jdg-home-shout-link' href={shout.url} key={shout.url} target='blank'>
-								<h3>{shout.title}</h3>
-								<p>{shout.tagline}</p>
-							</a>
-						);
-					})}
-					{shoutsData.map((shout) => {
-						return (
-							<a className='jdg-home-shout-link' href={shout.url} key={shout.url} target='blank'>
-								<h3>{shout.title}</h3>
-								<p>{shout.tagline}</p>
+							<a
+								className='jdg-home-bookmark-link'
+								href={bookmark.url}
+								key={bookmark.url}
+								target='blank'
+							>
+								<h3>{bookmark.title}</h3>
+								<p>{bookmark.tagline}</p>
 							</a>
 						);
 					})}
 				</div>
+				<Link className='jdg-home-posts-link-all' to='bookmarks'>
+					All Bookmarks
+					<Arrow direction='right' />
+				</Link>
 			</div>
 		</ContainerCenter>
 	);

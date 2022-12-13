@@ -11,7 +11,8 @@ import { ContainerCenter, links as containerCenterLinks } from 'components/Conta
 import { stripParamsAndHash } from 'utils/utils.server';
 
 // SERVICES
-import * as blog from 'services/blog.server';
+// import * as blog from 'services/blog.server';
+import { bookmarks } from 'routes/__main/index';
 
 // TYPES
 import type { Handle } from 'types/types';
@@ -21,11 +22,9 @@ import type { Post } from '@prisma/client';
 
 // EXPORTS
 export const loader: LoaderFunction = async ({ request }) => {
-	const posts = await blog.getPostsAll();
-
 	return json({
 		canonical: stripParamsAndHash(request.url),
-		posts,
+		bookmarks,
 	});
 };
 export const dynamicLinks: DynamicLinksFunction = ({ data }) => {
@@ -43,28 +42,25 @@ export const handle: Handle = {
 };
 
 export default function Posts() {
-	const { posts } = useLoaderData();
+	const { bookmarks } = useLoaderData();
 	return (
-		<ContainerCenter className='jdg-posts-container-center'>
-			<h2>Posts</h2>
-			<div className='jdg-posts-container-inner'>
-				{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
-					const published = new Date(published_at).toLocaleDateString();
-					return (
-						<Link className='jdg-posts-post-link' key={slug} to={`posts/${slug}`}>
-							<div className='jdg-posts-post-link-text'>
-								<h3 className='jdg-posts-post-link-text-heading'>{title}</h3>
-								<p className='jdg-posts-post-link-text-subheading'>{tagline}</p>
-								<p className='jdg-posts-post-link-text-date'>{published}</p>
-							</div>
-							<img
-								className='jdg-posts-post-link-image'
-								src={image_featured}
-								alt={`Featured image for ${title}`}
-							/>
-						</Link>
-					);
-				})}
+		<ContainerCenter className='jdg-bookmarks-container-center'>
+			<h2>Bookmarks</h2>
+			<div className='jdg-bookmarks-container-inner'>
+				{bookmarks &&
+					bookmarks.map((bookmark: any) => {
+						return (
+							<a
+								className='jdg-bookmarks-bookmark-link'
+								href={bookmark.url}
+								key={bookmark.url}
+								target='blank'
+							>
+								<h3>{bookmark.title}</h3>
+								<p>{bookmark.tagline}</p>
+							</a>
+						);
+					})}
 			</div>
 		</ContainerCenter>
 	);
