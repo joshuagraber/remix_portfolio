@@ -21,15 +21,16 @@ import { stripParamsAndHash } from 'utils/utils.server';
 import type { DynamicLinksFunction } from 'remix-utils';
 import type { Handle } from 'types/types';
 import type { LoaderFunction } from '@remix-run/node';
+import type { Post, User } from '@prisma/client';
 
 // EXPORTS
 export const loader: LoaderFunction = async ({ params, request }) => {
 	const { slug } = params;
 
-	const post = await blog.getPostBySlug(String(slug));
+	const post = (await blog.getPostBySlug(String(slug))) as Post;
 
 	// Get post author
-	const postAuthor = await users.getUserByID(String(post?.author_id));
+	const postAuthor = (await users.getUserByID(String(post?.author_id))) as User;
 	const authorName = `${postAuthor?.name_first} ${postAuthor?.name_middle} ${postAuthor?.name_last}`;
 
 	return json({
