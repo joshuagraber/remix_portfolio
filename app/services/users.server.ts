@@ -15,22 +15,20 @@ import { Role as UserRole, User } from '@prisma/client';
 // CREATE
 // TODO: Update RegisterFormValues type to include additional optional vals from admin form
 export const createNewUser = async (formValues: UserFormValues) => {
-	try {
-		const hashedPassword = await bcrypt.hash(formValues.password, 10);
-		const { email, name_first, name_middle, name_last } = formValues;
+	const hashedPassword = await bcrypt.hash(formValues.password, 10);
+	const { email, name_first, name_middle, name_last } = formValues;
 
-		return await prisma.user.create({
-			data: {
-				email,
-				password: hashedPassword,
-				name_first,
-				name_middle: name_middle ?? '',
-				name_last,
-			},
-		});
-	} catch (error) {
-		throw json(error);
-	}
+	const newUser = await prisma.user.create({
+		data: {
+			email,
+			password: hashedPassword,
+			name_first,
+			name_middle: name_middle ?? '',
+			name_last,
+		},
+	});
+
+	return { id: newUser.id, email: newUser.email };
 };
 
 // READ
@@ -38,7 +36,7 @@ export const getUsersAll = async () => {
 	try {
 		return await prisma.user.findMany();
 	} catch (error) {
-		throw json(error);
+		return json(error);
 	}
 };
 
@@ -46,7 +44,7 @@ export const getUsersByRole = async (role: UserRole) => {
 	try {
 		return await prisma.user.findMany({ where: { role } });
 	} catch (error) {
-		throw json(error);
+		return json(error);
 	}
 };
 
@@ -58,7 +56,7 @@ export const getUsersAreBlogAuthors = async () => {
 			},
 		});
 	} catch (error) {
-		throw json(error);
+		return json(error);
 	}
 };
 
@@ -66,7 +64,7 @@ export const getUserByID = async (id: string) => {
 	try {
 		return await prisma.user.findUnique({ where: { id } });
 	} catch (error) {
-		throw json(error);
+		return json(error);
 	}
 };
 
@@ -86,7 +84,7 @@ export const updateUserByID = async (id: string, formValues: Partial<UserFormVal
 
 		return updatedUser;
 	} catch (error) {
-		throw json({ errors: error, fields: { ...formValues, password: undefined } });
+		return json({ errors: error, fields: { ...formValues, password: undefined } });
 	}
 };
 
@@ -96,6 +94,6 @@ export const deleteUserByID = async (id: string) => {
 		const deletedUser = await prisma.user.delete({ where: { id } });
 		return deletedUser;
 	} catch (error) {
-		throw json(error);
+		return json(error);
 	}
 };
