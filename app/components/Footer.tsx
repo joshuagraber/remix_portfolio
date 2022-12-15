@@ -14,7 +14,7 @@ import type { LinksFunction } from '@remix-run/node';
 import { useToggleContactModal } from 'hooks/useModalPath';
 import { Link, useFetcher } from '@remix-run/react';
 interface Props {
-	isContact: boolean;
+	isContact?: boolean;
 }
 
 // EXPORTS
@@ -22,7 +22,7 @@ export const links: LinksFunction = () => {
 	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 };
 
-export const Footer: React.FC<Props> = ({ isContact }) => {
+export const Footer: React.FC<Props> = ({ isContact = 'false' }) => {
 	// HOOKS - GLOBAL
 
 	const { open } = useToggleContactModal();
