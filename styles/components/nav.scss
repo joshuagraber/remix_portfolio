@@ -1,47 +1,25 @@
 @import '../../styles/theme/variables.scss';
 
 .jdg-nav {
-	&-open-button {
-		cursor: pointer;
-		display: none;
-		background-color: var(--color-neutral-0);
-		border: unset;
-		border-radius: 5px;
-		height: 40px;
-		transition: background-color 0.2s ease;
-
-		&:hover,
-		&:focus {
-			background-color: var(--color-neutral-2);
-		}
-
-		:root[data-theme='jdg-light-mode'] & {
-			background-color: var(--color-neutral-10);
-
-			&:hover,
-			&:focus {
-				background-color: var(--color-neutral-8);
-			}
-		}
-
-		svg {
-			rotate: 0deg;
-			transition: rotate 0.3s 0.2s ease;
-		}
-	}
+	display: flex;
+	gap: 16px;
 
 	&-menu {
-		align-items: center;
-		display: flex;
-		gap: 16px;
 		padding: unset;
+
+		ul {
+			align-items: center;
+			display: flex;
+			gap: 16px;
+			list-style-type: none;
+		}
 	}
 
 	&-link {
 		border-radius: 5px;
 		line-height: 59px;
 		font-family: 'Catamaran', sans-serif;
-		font-size: 20px;
+		font-size: 18px;
 		text-align: center;
 		transition: 0.2s ease background-color;
 
@@ -61,59 +39,12 @@
 
 	@media (max-width: $mobile) {
 		display: flex;
-		flex-direction: column-reverse;
+		flex-direction: column;
 		gap: 12px;
 
 		&-menu {
-			flex-wrap: wrap;
-			justify-content: space-between;
-			max-height: 0;
-			overflow: hidden;
-			transform: rotateX(90deg);
-			transition: all 0.5s;
-		}
-
-		&-open-button[aria-expanded='true'] {
-			~ .jdg-nav-menu {
-				margin-top: 16px;
-				max-height: 500px;
-				transform: rotateX(0);
-			}
-
-			svg {
-				rotate: 180deg;
-			}
-		}
-
-		&-open-button {
-			align-items: center;
-			display: flex;
-			justify-content: center;
-		}
-
-		&-link {
-			background-color: var(--color-neutral-white-opacity_40);
-			flex: 1 0;
-			font-size: 16px;
-			line-height: 125%;
-			padding: 8px 12px 5px;
-			border-bottom: 3px solid transparent;
-
-			&-active,
-			&:hover,
-			&:focus {
-				border-bottom: 3px solid var(--color-theme-primary-4);
-				text-decoration: none;
-			}
-
-			:root[data-theme='jdg-light-mode'] & {
-				background-color: var(--color-neutral-black-opacity_20);
-
-				&-active,
-				&:hover {
-					border-bottom: 3px solid var(--color-theme-primary-1);
-					text-decoration: none;
-				}
+			ul {
+				justify-self: flex-end;
 			}
 		}
 	}

@@ -1,4 +1,7 @@
+// GLOBALS
 import React from 'react';
+import { getWindow } from 'ssr-window';
+import { useFetcher } from '@remix-run/react';
 
 // UTIL
 import { useLayoutEffect } from 'hooks/useLayoutEffectSSR';
@@ -8,14 +11,14 @@ import { DEFAULT_THEME } from 'utils/constants';
 const THEMES = ['unset', 'jdg-light-mode', 'jdg-dark-mode'];
 
 // TYPES
-enum ThemeValues {
+export enum ThemeValues {
 	UNSET = 'unset',
 	LIGHT = 'jdg-light-mode',
 	DARK = 'jdg-dark-mode',
 }
 
-type Theme = typeof THEMES[number];
-type Themes = `${ThemeValues}`;
+export type Theme = typeof THEMES[number];
+export type Themes = `${ThemeValues}`;
 
 interface ThemeContext {
 	theme: Themes;
@@ -24,10 +27,11 @@ interface ThemeContext {
 
 interface Props {
 	children: React.ReactNode;
+	userThemePreference: Themes;
 }
 
 // UTIL
-const isTheme = (themeValueToSet: string): themeValueToSet is ThemeValues => {
+export const isTheme = (themeValueToSet: string): themeValueToSet is ThemeValues => {
 	return Object.values(THEMES).some((theme) => theme === themeValueToSet);
 };
 
@@ -36,46 +40,56 @@ const ThemeContext: React.Context<ThemeContext | null> = React.createContext<The
 	null
 );
 
-export const ThemeProvider: React.FC<Props> = ({ children }) => {
-	// HOOKS
-	const [theme, setTheme] = React.useState<Themes>('unset');
+export const ThemeProvider: React.FC<Props> = ({ children, userThemePreference }) => {
+	// HOOKS - GLOBAL
+	const window = getWindow();
+	const themePersistence = useFetcher();
 
-	// VARS
-	let themeInUserPreferences: Theme | null = null;
-	let themeInLocalStorage: Theme | null = null;
+	// HOOKS - STATE
+	/* TODO: Don't love thi UNSET business. Is there a better way to avoid FART.
+	 * Also: any way to store this state in cookie so we don't need this context at all?
+	 * Answering own questin: Probably not until prefers-color-scheme header more widely adopted.
+	 */
+	const [theme, setTheme] = React.useState<Themes>(ThemeValues.UNSET);
 
-	// Check LS
-	if (typeof localStorage !== 'undefined') {
-		themeInLocalStorage = localStorage.getItem('theme');
+	let themeInUserPreferences: Themes | undefined;
+
+	if (userThemePreference) {
+		themeInUserPreferences = userThemePreference;
 	}
 
-	if (typeof window !== 'undefined') {
-		const userPrefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-		const userPrefersLightTheme = window.matchMedia('(prefers-color-scheme: light)').matches;
-
-		if (userPrefersDarkTheme) {
-			themeInUserPreferences = ThemeValues.DARK;
-		}
-		if (userPrefersLightTheme) {
-			themeInUserPreferences = ThemeValues.LIGHT;
-		}
+	if (typeof window !== 'undefined' && !userThemePreference) {
+		themeInUserPreferences = window.matchMedia('(prefers-color-scheme: dark)').matches
+			? ThemeValues.DARK
+			: window.matchMedia('(prefers-color-scheme: light)').matches
+			? ThemeValues.LIGHT
+			: undefined;
 	}
 
-	// If exists, set theme to one found in LS on first render only
 	React.useEffect(() => {
-		// LS first preference, if user has been here before,
-		// otherwise go with user preferences,
-		// otherwise default
-		const themeToSet = themeInLocalStorage ?? themeInUserPreferences ?? DEFAULT_THEME;
+		const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+		const handleChange = () => {
+			setTheme(darkModeQuery.matches ? ThemeValues.DARK : ThemeValues.LIGHT);
+		};
+		darkModeQuery.addEventListener('change', handleChange);
+		return () => darkModeQuery.removeEventListener('change', handleChange);
+	}, []);
+
+	// HOOKS - EFFECTS
+	// On render or user preference change
+	React.useEffect(() => {
+		// Nullish coalescing to get theme to set
+		const themeToSet = themeInUserPreferences ?? DEFAULT_THEME;
+
 		if (isTheme(themeToSet)) {
 			setTheme(themeToSet);
 		}
-	}, []);
+	}, [themeInUserPreferences]);
 
 	// Set both LS and root element
 	useLayoutEffect(() => {
-		localStorage.setItem('theme', theme);
 		document.documentElement.dataset.theme = theme;
+		themePersistence.submit({ theme }, { action: 'action/theme', method: 'post' });
 	}, [theme]);
 
 	const toggleTheme = () => {

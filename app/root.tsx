@@ -1,5 +1,5 @@
 // GLOBALS
-import { LinksFunction, MetaFunction } from '@remix-run/node';
+import { HeadersFunction, LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node';
 import {
 	Links,
 	LiveReload,
@@ -7,6 +7,7 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	useLoaderData,
 	useSearchParams,
 } from '@remix-run/react';
 import { DynamicLinks } from 'remix-utils';
@@ -17,7 +18,8 @@ import themes from 'styles/themes.css';
 import { ModalContactForm, links as modalContactFormLinks } from 'components/ModalContact';
 
 // CONTEXT
-import { ThemeProvider } from 'context/theme';
+import { ThemeProvider, ThemeValues } from 'context/theme';
+import { getThemeSession } from 'services/theme.server';
 
 export const links: LinksFunction = () => {
 	return [
@@ -27,7 +29,40 @@ export const links: LinksFunction = () => {
 	];
 };
 
+export const headers: HeadersFunction = () => {
+	// Cacheing baseline
+	return { 'Cache-Control': 'max-age=300, s-maxage=3600' };
+};
+
+export const loader: LoaderFunction = async ({ request }) => {
+	// Check theme session for previously saved theme
+	const themeSession = await getThemeSession(request);
+	let userThemePreferenceFromCookie = themeSession.getTheme();
+
+	// If 'UNSET' happens to get stored in cookie, ignore it.
+	if (userThemePreferenceFromCookie === ThemeValues.UNSET) {
+		userThemePreferenceFromCookie = null;
+	}
+
+	// Check client hints header for general user theme preference
+	const userThemePreferenceFromHeader = request.headers.get('sec-ch-prefers-color-scheme');
+
+	/*
+	 * First check cookie, then fall back to header preference if it exists,
+	 * and hook will check matchMedia on CSS prefers-color-scheme query as a
+	 * final client-side fallback for non-Chromium browsers
+	 */
+	const userThemePreference = userThemePreferenceFromCookie
+		? userThemePreferenceFromCookie
+		: userThemePreferenceFromHeader
+		? `jdg-${userThemePreferenceFromHeader}-mode`
+		: null;
+
+	return { userThemePreference };
+};
+
 export const meta: MetaFunction = () => {
+	// Meta default. Any route with no meta will receive this.
 	return {
 		charset: 'utf-8',
 		description: 'Award-winning writer, literary editor, full stack JavaScript web developer.',
@@ -37,12 +72,14 @@ export const meta: MetaFunction = () => {
 };
 
 export default function App() {
+	// HOOKS - GLOBAL
 	const [searchParams] = useSearchParams();
+	const { userThemePreference } = useLoaderData();
 
 	const isContactModalOpen = searchParams.get('contact') === 'open';
 
 	return (
-		<ThemeProvider>
+		<ThemeProvider userThemePreference={userThemePreference}>
 			<html lang='en'>
 				<head>
 					<Meta />

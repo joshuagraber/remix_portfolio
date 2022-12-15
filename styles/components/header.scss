@@ -11,6 +11,7 @@
 		align-items: center;
 		display: grid;
 		grid-template-columns: 1fr auto auto;
+		gap: 1rem;
 		grid-template-rows: repeat(2, auto);
 		width: 100%;
 	}
@@ -25,10 +26,18 @@
 
 	&-name-container {
 		grid-column: 1;
+		width: 100%;
 	}
 
-	&-name-container:hover,
-	&-name-container:focus {
+	&-name-link {
+		border-bottom: 3px transparent solid;
+		display: block;
+		width: max-content;
+	}
+
+	&-name-link:hover,
+	&-name-link:focus {
+		border-bottom-color: var(--color-theme-primary-1);
 		text-decoration: none;
 	}
 

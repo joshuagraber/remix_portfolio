@@ -13,7 +13,11 @@ export default function handleRequest(
 ) {
 	let markup = renderToString(<RemixServer context={remixContext} url={request.url} />);
 
+	// Theme preference headers (read in root)
 	responseHeaders.set('Content-Type', 'text/html');
+	responseHeaders.set('Accept-CH', 'Sec-CH-Prefers-Color-Scheme');
+	responseHeaders.set('Vary', 'Sec-CH-Prefers-Color-Scheme');
+	responseHeaders.set('Critical-CH', 'Sec-CH-Prefers-Color-Scheme');
 
 	return new Response('<!DOCTYPE html>' + markup, {
 		status: responseStatusCode,
