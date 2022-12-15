@@ -13,7 +13,6 @@ import { Role as UserRole, User } from '@prisma/client';
 
 ///////////////////// API
 // CREATE
-// TODO: Update RegisterFormValues type to include additional optional vals from admin form
 export const createNewUser = async (formValues: UserFormValues) => {
 	const hashedPassword = await bcrypt.hash(formValues.password, 10);
 	const { email, name_first, name_middle, name_last } = formValues;

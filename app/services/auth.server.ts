@@ -70,7 +70,6 @@ export const signin = async (formValues: LoginFormValues, redirectTo: string = '
 			status: 400,
 		});
 
-	// TODO: session and redirect
 	return createSession(user.id, redirectTo);
 };
 

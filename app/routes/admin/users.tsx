@@ -183,7 +183,6 @@ export default function UsersAdmin() {
 				);
 			}, [action, fields, errors])}
 
-			{/* TODO: create and style select component */}
 			<div className='jdg-input jdg-input-select'>
 				<label htmlFor='role'>Role</label>
 				<select

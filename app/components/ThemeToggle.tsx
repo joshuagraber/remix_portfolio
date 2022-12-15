@@ -17,7 +17,6 @@ export const links: LinksFunction = () => {
 	return [{ rel: 'stylesheet', href: styles }];
 };
 
-// TODO: Refactor to use react-aria,
 export const ThemeToggle: React.FC = () => {
 	// HOOKS - GLOBAL
 	const toggleThemePersistence = useFetcher();
