@@ -51,3 +51,10 @@ export interface BlogFormValues extends FormValues {
 	title: string;
 	published_at: Date;
 }
+
+export interface BookmarkFormValues extends FormValues {
+	image_url: string;
+	tagline: string;
+	title: string;
+	url: string;
+}

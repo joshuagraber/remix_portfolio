@@ -5,10 +5,24 @@ import { json } from '@remix-run/node';
 import { prisma } from 'services/prisma.server';
 
 // TYPES
-import type { BlogFormValues } from 'types/types.server';
+import type { BlogFormValues, BookmarkFormValues } from 'types/types.server';
 
 /////////////////// API
 // CREATE
+// CREATE - bookmark
+export const createNewBookmark = async (formValues: BookmarkFormValues) => {
+	try {
+		const newBookmark = await prisma.bookmark.create({
+			data: formValues,
+		});
+
+		return newBookmark;
+	} catch (error) {
+		throw json(error);
+	}
+};
+
+// CREATE - post
 export const createNewPost = async (formValues: BlogFormValues) => {
 	try {
 		let { published_at, ...rest } = formValues;
@@ -25,6 +39,16 @@ export const createNewPost = async (formValues: BlogFormValues) => {
 };
 
 // READ
+// READ - bookmarks
+export const getBookmarksAll = async () => {
+	try {
+		return await prisma.bookmark.findMany();
+	} catch (error) {
+		throw json(error);
+	}
+};
+
+// READ - posts
 export const getPostsAll = async () => {
 	try {
 		return await prisma.post.findMany();
@@ -50,6 +74,20 @@ export const getPostBySlug = async (slug: string) => {
 };
 
 // UPDATE
+// UPDATE - bookmarks
+export const updateBookmarkByID = async (id: string, formValues: Partial<BlogFormValues>) => {
+	try {
+		const updatedPost = await prisma.bookmark.update({
+			where: { id },
+			data: formValues,
+		});
+		return updatedPost;
+	} catch (error) {
+		throw json(error);
+	}
+};
+
+// UPDATE - posts
 export const updatePostByID = async (id: string, formValues: Partial<BlogFormValues>) => {
 	try {
 		const updatedPost = await prisma.post.update({
@@ -63,6 +101,17 @@ export const updatePostByID = async (id: string, formValues: Partial<BlogFormVal
 };
 
 // DELETE
+// DELETE - bookmark
+export const deleteBookmarkByID = async (id: string) => {
+	try {
+		const deletedPost = await prisma.bookmark.delete({ where: { id } });
+		return deletedPost;
+	} catch (error) {
+		throw json(error);
+	}
+};
+
+// DELETE - post
 export const deletePostByID = async (id: string) => {
 	try {
 		const deletedPost = await prisma.post.delete({ where: { id } });

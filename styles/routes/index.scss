@@ -36,7 +36,7 @@ $post-container-padding: 24px;
 	.jdg-home-container-center {
 		display: flex;
 		flex-direction: column;
-		gap: 48px;
+		gap: 24px;
 		max-width: 600px;
 		padding: 48px;
 
@@ -47,7 +47,7 @@ $post-container-padding: 24px;
 
 			h2 {
 				font: $font-heading-secondary;
-				margin-bottom: 24px;
+				margin-bottom: 16px;
 			}
 
 			&-inner {
@@ -159,13 +159,12 @@ $post-container-padding: 24px;
 	.jdg-bookmarks-container-center {
 		display: flex;
 		flex-direction: column;
-		gap: 48px;
+		gap: 24px;
 		max-width: 600px;
 		padding: 48px;
 
 		h2 {
 			font: $font-heading-secondary;
-			margin-bottom: 32px;
 		}
 
 		.jdg-bookmarks-container-inner {
@@ -237,13 +236,12 @@ $post-container-padding: 24px;
 	.jdg-posts-container-center {
 		display: flex;
 		flex-direction: column;
-		gap: 48px;
+		gap: 24px;
 		max-width: 600px;
 		padding: 48px;
 
 		h2 {
 			font: $font-heading-secondary;
-			margin-bottom: 32px;
 		}
 
 		.jdg-posts-container-inner {

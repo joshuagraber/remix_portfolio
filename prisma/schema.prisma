@@ -29,6 +29,18 @@ model User {
 }
 
 // Blog
+model Bookmark {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  // Not currently using images for these, but want to be part of db
+  image_url String   @default("")
+  tagline   String
+  title     String
+  url       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Not currently using comments, but want to be part of the db
 model Comment {
   id             String @id @default(auto()) @map("_id") @db.ObjectId
   author         User   @relation(fields: [author_id], references: [id])

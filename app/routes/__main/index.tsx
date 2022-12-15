@@ -21,22 +21,9 @@ import type { LoaderFunction, LinksFunction } from '@remix-run/node';
 import type { Handle } from 'types/types';
 import type { Post } from '@prisma/client';
 
-// TODO: Make DB model and add admin route
-export const bookmarks = [
-	{
-		tagline: 'Where your Instagram feed wants to go',
-		title: '/death/null',
-		url: 'http://www.deathnull.org/',
-	},
-	{
-		tagline: 'An essay from Hito Steyerl on E-flux on the images spamming the universe',
-		title: 'The Spam of the Earth: Withdrawal from Representation',
-		url: 'https://www.e-flux.com/journal/32/68260/the-spam-of-the-earth-withdrawal-from-representation//',
-	},
-];
-
 // EXPORTS
 export const loader: LoaderFunction = async ({ request }) => {
+	const bookmarks = await blog.getBookmarksAll();
 	const posts = await blog.getPostsAll();
 
 	// Only send 8 most recent bookmarks / posts

@@ -11,17 +11,18 @@ import { ContainerCenter, links as containerCenterLinks } from 'components/Conta
 import { stripParamsAndHash } from 'utils/utils.server';
 
 // SERVICES
-// import * as blog from 'services/blog.server';
-import { bookmarks } from 'routes/__main/index';
+import * as blog from 'services/blog.server';
 
 // TYPES
 import type { Handle } from 'types/types';
 import type { LinksFunction, LoaderFunction } from '@remix-run/node';
 import type { DynamicLinksFunction } from 'remix-utils';
-import type { Post } from '@prisma/client';
+import type { Bookmark } from '@prisma/client';
 
 // EXPORTS
 export const loader: LoaderFunction = async ({ request }) => {
+	const bookmarks = await blog.getBookmarksAll();
+
 	return json({
 		canonical: stripParamsAndHash(request.url),
 		bookmarks,
@@ -41,14 +42,15 @@ export const handle: Handle = {
 	ref: React.createRef(),
 };
 
-export default function Posts() {
+export default function Bookmarks() {
 	const { bookmarks } = useLoaderData();
+
 	return (
 		<ContainerCenter className='jdg-bookmarks-container-center'>
 			<h2>Bookmarks</h2>
 			<div className='jdg-bookmarks-container-inner'>
 				{bookmarks &&
-					bookmarks.map((bookmark: any) => {
+					bookmarks.map((bookmark: Bookmark) => {
 						return (
 							<a
 								className='jdg-bookmarks-bookmark-link'
