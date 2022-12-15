@@ -22,6 +22,6 @@ Notes to make nicer later:
 - Mongodb is IP-protected. For local development, don't use VPN or choose location that corresponds to least favorite American city
 
 - Query params to know:
-  - `?contact=true` --> displays contact modal on top of any route
+  - `?contact` --> displays contact modal on top of any route
     - See `useModalPath` exports
   - `?redirect={pathRelativeToRoot}` --> pass with auth redirect, to redirect back from auth

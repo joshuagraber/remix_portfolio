@@ -1,5 +1,6 @@
 // GLOBALS
 import styles from 'styles/index.css';
+import { useLocation } from '@remix-run/react';
 
 // COMPONENTS
 import { AnimatePresence } from 'components/AnimatePresence';
@@ -14,11 +15,15 @@ export const links: LinksFunction = () => {
 };
 
 export default function Layout(): JSX.Element {
+	const { pathname } = useLocation();
+
+	const isContact = pathname === '/contact';
+
 	return (
 		<div className='jdg-page'>
 			<Header />
 			<AnimatePresence />
-			<Footer />
+			<Footer isContact={isContact} />
 		</div>
 	);
 }

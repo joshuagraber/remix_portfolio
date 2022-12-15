@@ -20,6 +20,7 @@ import { ModalContactForm, links as modalContactFormLinks } from 'components/Mod
 // CONTEXT
 import { ThemeProvider, ThemeValues } from 'context/theme';
 import { getThemeSession } from 'services/theme.server';
+import { stripParamsAndHash } from 'utils/utils.server';
 
 export const links: LinksFunction = () => {
 	return [
@@ -35,6 +36,7 @@ export const headers: HeadersFunction = () => {
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
+	// THEME
 	// Check theme session for previously saved theme
 	const themeSession = await getThemeSession(request);
 	let userThemePreferenceFromCookie = themeSession.getTheme();
@@ -76,7 +78,7 @@ export default function App() {
 	const [searchParams] = useSearchParams();
 	const { userThemePreference } = useLoaderData();
 
-	const isContactModalOpen = searchParams.get('contact') === 'open';
+	const isContactModalOpen = typeof searchParams.get('contact') === 'string';
 
 	return (
 		<ThemeProvider userThemePreference={userThemePreference}>

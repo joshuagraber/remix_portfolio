@@ -1,6 +1,5 @@
 // GLOBALS
 import styles from 'styles/footer.css';
-import { useNavigate } from '@remix-run/react';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
@@ -13,16 +12,20 @@ import React from 'react';
 // TYPES
 import type { LinksFunction } from '@remix-run/node';
 import { useToggleContactModal } from 'hooks/useModalPath';
-import { Link } from '@remix-run/react';
+import { Link, useFetcher } from '@remix-run/react';
+interface Props {
+	isContact: boolean;
+}
 
 // EXPORTS
 export const links: LinksFunction = () => {
 	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 };
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC<Props> = ({ isContact }) => {
+	// HOOKS - GLOBAL
+
 	const { open } = useToggleContactModal();
-	const navigate = useNavigate();
 
 	return (
 		<div className='jdg-footer'>
@@ -34,7 +37,7 @@ export const Footer: React.FC = () => {
 					{SOCIAL_LINKS.map((link) => {
 						// TODO: useRouteMatches to check if on /contact. If so, don't render email link b/c redundant
 						const [type, url] = link;
-
+						if (isContact && type === 'email') return;
 						if (type === 'email') {
 							return (
 								<Link className='jdg-footer-contact-link' key={type} replace to={open}>
