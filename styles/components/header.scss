@@ -11,7 +11,7 @@
 		align-items: center;
 		display: grid;
 		grid-template-columns: 1fr auto auto;
-		gap: 1rem;
+		gap: 0 1rem;
 		grid-template-rows: repeat(2, auto);
 		width: 100%;
 	}
@@ -42,7 +42,7 @@
 	}
 
 	&-name-heading {
-		font: $font-heading-primary;
+		font: $font-heading-secondary;
 	}
 
 	&-name-sub-heading {

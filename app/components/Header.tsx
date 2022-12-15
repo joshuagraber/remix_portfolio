@@ -52,7 +52,7 @@ export const Header: React.FC = () => {
 				<div className='jdg-header-name-container'>
 					<Link className='jdg-header-name-link' to='/'>
 						<h1 className='jdg-header-name-heading'>Joshua D. Graber</h1>
-						<p className='jdg-header-name-sub-heading'>Syntax: language and code.</p>
+						<p className='jdg-header-name-sub-heading'>Syntax: language and code</p>
 					</Link>
 				</div>
 				<Nav isMobile={isMobile} />

@@ -9,6 +9,7 @@
 		border-radius: 50%;
 		box-shadow: unset;
 		color: var(--color-text-primary);
+		cursor: pointer;
 		display: flex;
 		height: 40px;
 		justify-content: center;
@@ -17,13 +18,22 @@
 
 		&:hover,
 		&:focus {
-			background-color: var(--color-accent-lavender-opacity_20);
+			background-image: linear-gradient(
+				to top,
+				var(--color-accent-lavender-opacity_20),
+				transparent
+			);
 			border-color: var(--color-accent-lavender-opacity_20);
-			transition: border-color, background-color 300ms ease-in;
+			transition: border-color, background-image 300ms ease-in;
 
 			:root[data-theme='jdg-light-mode'] & {
-				background-color: var(--color-accent-peach-opacity_20);
+				background-image: linear-gradient(
+					to top,
+					var(--color-accent-peach-opacity_20),
+					transparent
+				);
 				border-color: var(--color-accent-peach-opacity_20);
+				transition: border-color, background-image 300ms ease-in;
 			}
 		}
 
