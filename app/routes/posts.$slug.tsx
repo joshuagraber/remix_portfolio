@@ -1,7 +1,7 @@
 // GLOBALS
-import { json, LinksFunction } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import React from 'react';
-import { useLoaderData } from '@remix-run/react';
+import { useLoaderData, useTransition } from '@remix-run/react';
 import styles from 'styles/index.css';
 
 // COMPONENTS
@@ -12,6 +12,7 @@ import ReactMarkdown from 'react-markdown';
 
 // SERVICES
 import * as blog from 'services/blog.server';
+import * as media from 'services/media.server';
 import * as users from 'services/users.server';
 
 // UTIL
@@ -20,8 +21,18 @@ import { stripParamsAndHash } from 'utils/utils.server';
 // TYPES
 import type { DynamicLinksFunction } from 'remix-utils';
 import type { Handle } from 'types/types';
-import type { LoaderFunction } from '@remix-run/node';
+import type { LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node';
 import type { Post, User } from '@prisma/client';
+
+interface YouTubeEmbedProps {
+	src?: string;
+}
+
+interface ImageComponentProps {
+	alt?: string;
+	src?: string;
+	title?: string;
+}
 
 // EXPORTS
 export const loader: LoaderFunction = async ({ params, request }) => {
@@ -49,9 +60,22 @@ export const links: LinksFunction = () => {
 	];
 };
 
-// TODO meta, etc.
 export const dynamicLinks: DynamicLinksFunction = ({ data }) => {
 	return [{ rel: 'canonical', href: data.canonical }];
+};
+
+export const meta: MetaFunction = ({ data, params }) => {
+	if (!data) {
+		return {
+			description: `There is no post at the location: /${params.slug}`,
+			title: 'Missing post',
+		};
+	}
+
+	return {
+		description: data?.post?.tagline,
+		title: `${data?.post?.title}, by: ${data?.authorName}`,
+	};
 };
 
 export const handle: Handle = {
@@ -60,10 +84,50 @@ export const handle: Handle = {
 	ref: React.createRef(),
 };
 
+// SUB-COMPONENT
+const PostFigure: React.FC<ImageComponentProps> = ({ alt, title, src }) => {
+	title = title ?? alt;
+
+	if (typeof src === 'undefined') return null;
+	if (typeof alt === 'undefined') {
+		throw new Error('No images without alt tags!');
+	}
+
+	return (
+		<figure className='jdg-post-figure'>
+			<img className='jdg-post-figure-image' src={src} alt={alt} />
+			<figcaption className='jdg-post-figure-caption'>{title}</figcaption>
+		</figure>
+	);
+};
+
+const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ src }) => {
+	return (
+		<div className='jdg-post-you-tube-embed'>
+			<iframe
+				className='jdg-post-you-tube-embed-frame'
+				src={src}
+				title='YouTube video player'
+				allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+				allowFullScreen
+			></iframe>
+		</div>
+	);
+};
+
+const ImageComponent: React.FC<ImageComponentProps> = (props) => {
+	switch (true) {
+		case props.title === 'youtube':
+			return <YouTubeEmbed src={props.src} />;
+		default:
+			return <PostFigure {...props} />;
+	}
+};
+
 export default function Post(): React.ReactElement {
 	const data = useLoaderData();
+	const transition = useTransition();
 
-	// TODO: handle this more elegantly, useTransition, etc.
 	if (typeof data === 'undefined') {
 		return <LoadingSpinner isDisplayed size='80px' />;
 	}
@@ -79,6 +143,7 @@ export default function Post(): React.ReactElement {
 
 	return (
 		<div className='jdg-page jdg-page-post'>
+			{transition.state === 'loading' && <LoadingSpinner size='80px' />}
 			{/* Header */}
 			<header className='jdg-post-header'>
 				<ContainerCenter className='jdg-container-center-post-header'>
@@ -100,8 +165,19 @@ export default function Post(): React.ReactElement {
 			{/* Main */}
 			<main className='jdg-main'>
 				<ContainerCenter className='jdg-container-center-post-main'>
-					{/* TODO: Install and use GFM plugin, others? */}
-					<ReactMarkdown children={content} />
+					<ReactMarkdown
+						children={content}
+						components={{
+							img: (props) => <ImageComponent {...props} />,
+							h1: 'h2',
+							p: (props) => {
+								if (props.node.children.some((el) => el.type === 'element')) {
+									return <div {...props}></div>;
+								}
+								return <p {...props}></p>;
+							},
+						}}
+					/>
 				</ContainerCenter>
 			</main>
 

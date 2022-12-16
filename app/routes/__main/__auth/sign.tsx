@@ -17,11 +17,17 @@ import { Button, links as buttonLinks } from 'components/Button';
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 
 // TYPES
-import type { LinksFunction } from '@remix-run/node';
+import type { LinksFunction, MetaFunction } from '@remix-run/node';
 import { SignInActions } from 'types/types';
 
 export const links: LinksFunction = () => {
 	return [...buttonLinks(), ...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
+};
+
+export const meta: MetaFunction = () => {
+	return {
+		content: { name: 'robots', content: 'noindex, nofollow' },
+	};
 };
 
 export default function AuthForm() {

@@ -46,10 +46,6 @@ export const ThemeProvider: React.FC<Props> = ({ children, userThemePreference }
 	const themePersistence = useFetcher();
 
 	// HOOKS - STATE
-	/* TODO: Don't love thi UNSET business. Is there a better way to avoid FART.
-	 * Also: any way to store this state in cookie so we don't need this context at all?
-	 * Answering own questin: Probably not until prefers-color-scheme header more widely adopted.
-	 */
 	const [theme, setTheme] = React.useState<Themes>(ThemeValues.UNSET);
 
 	let themeInUserPreferences: Themes | undefined;

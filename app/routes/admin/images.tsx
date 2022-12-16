@@ -156,9 +156,7 @@ export default function ImagesAdmin() {
 							images.map(({ asset_id, secure_url }: Partial<UploadApiResponse>) => {
 								return (
 									<NavLink
-										className={({ isActive }) =>
-											isActive ? `${CLASS_NAME} ${ACTIVE_CLASS_NAME}` : `${CLASS_NAME}`
-										}
+										className={({ isActive }) => clsx(CLASS_NAME, isActive && ACTIVE_CLASS_NAME)}
 										key={asset_id}
 										to={asset_id as string}
 									>

@@ -26,9 +26,6 @@ export const ThemeToggle: React.FC = () => {
 	const lightIconContainerRef = React.useRef<HTMLDivElement>(null);
 
 	// HOOKS - CUSTOM
-	/* TODO: Asserting non-null because it will always exist
-	 * in code rendered on server, think about how to use a
-	 * loader to deliver instead? */
 	const { theme } = useTheme()!;
 
 	// VARS

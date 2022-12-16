@@ -22,3 +22,7 @@ export const action: ActionFunction = async ({ request }) => {
 	themeSession.setTheme(theme);
 	return json({ success: true }, { headers: { 'Set-Cookie': await themeSession.commit() } });
 };
+
+export default function noop() {
+	return null;
+}

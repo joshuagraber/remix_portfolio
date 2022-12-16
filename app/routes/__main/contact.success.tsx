@@ -22,8 +22,7 @@ export const links: LinksFunction = () => {
 
 export const meta: MetaFunction = () => {
 	return {
-		content: 'noindex',
-		name: 'robots',
+		content: { name: 'robots', content: 'noindex' },
 	};
 };
 

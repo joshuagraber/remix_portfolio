@@ -64,7 +64,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export const meta: MetaFunction = () => {
-	// Meta default. Any route with no meta will receive this.
 	return {
 		charset: 'utf-8',
 		description: 'Award-winning writer, literary editor, full stack JavaScript web developer.',

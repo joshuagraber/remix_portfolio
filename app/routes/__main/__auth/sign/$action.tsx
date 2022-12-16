@@ -13,10 +13,8 @@ import { useEffectDidUpdate } from 'hooks/useEffectDidUpdate';
 import * as authenticator from 'services/auth.server';
 
 // UTILS
+import { titleCase } from 'utils/utils';
 import { isValidEmail, isValidInputLength, isValidPassword } from 'utils/utils.server';
-
-// MISC
-import { startCase as _startCase, toLower as _toLower } from 'lodash';
 
 // TYPES
 import type { ActionFunction, LinksFunction } from '@remix-run/node';
@@ -39,8 +37,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 	if (params.action !== SignInActions.SIGNOUT) {
 		// Check that submission is returned with data
 
-		// TODO: Refactor: submission never returns undefined
-		if (typeof submission === 'undefined') {
+		if (submission) {
 			errors.form = 'Sorry, there was an error finding that user. \n Please try again.';
 			return json({ errors, fields: fieldsToReturn }, 404);
 		}
@@ -50,7 +47,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 			if (input === 'name_middle') continue; // Middle name not required
 
 			if (!isValidInputLength(fields[input], 1)) {
-				const fieldNameForDisplay = input.includes('name') ? 'Name' : _startCase(_toLower(input));
+				const fieldNameForDisplay = input.includes('name') ? 'Name' : titleCase(input);
 				errors[input] = `Your ${fieldNameForDisplay} is required`;
 			}
 		}

@@ -22,7 +22,7 @@ export const links: LinksFunction = () => {
 	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 };
 
-export const Footer: React.FC<Props> = ({ isContact = 'false' }) => {
+export const Footer: React.FC<Props> = ({ isContact = false }) => {
 	// HOOKS - GLOBAL
 
 	const { open } = useToggleContactModal();

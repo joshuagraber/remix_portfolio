@@ -51,7 +51,7 @@ export default function Posts() {
 				{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
 					const published = new Date(published_at).toLocaleDateString();
 					return (
-						<Link className='jdg-posts-post-link' key={slug} to={slug}>
+						<Link className='jdg-posts-post-link' key={slug} prefetch='intent' to={slug}>
 							<div className='jdg-posts-post-link-text'>
 								<h3 className='jdg-posts-post-link-text-heading'>{title}</h3>
 								<p className='jdg-posts-post-link-text-subheading'>{tagline}</p>

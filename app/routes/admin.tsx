@@ -11,7 +11,7 @@ import { links as inputLinks } from 'components/Input';
 import * as authenticator from 'services/auth.server';
 
 // TYPES
-import type { LinksFunction, LoaderFunction } from '@remix-run/node';
+import type { LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node';
 
 // EXPORTS
 export const loader: LoaderFunction = async ({ request }) => {
@@ -26,6 +26,12 @@ export const links: LinksFunction = () => {
 		...containerCenterLinks(),
 		{ rel: 'stylesheet', href: styles },
 	];
+};
+
+export const meta: MetaFunction = () => {
+	return {
+		content: { name: 'robots', content: 'noindex, nofollow' },
+	};
 };
 
 export default function Admin() {

@@ -7,7 +7,7 @@ import {
 } from '@remix-run/node';
 
 // MISC
-import cloudinary from 'cloudinary';
+import cloudinary, { ResourceApiResponse } from 'cloudinary';
 
 // TYPES
 import type { UploadApiResponse } from 'cloudinary';
@@ -97,6 +97,18 @@ export const getImageByPublicID = async (id: string) => {
 
 		return image.resources[0];
 	} catch (error) {
+		throw json(error);
+	}
+};
+
+export const getImageByUrl = async (url: string) => {
+	try {
+		const images: ResourceApiResponse = await getImagesAll();
+		const image = images.resources.find((image) => image.secure_url === url);
+
+		return image;
+	} catch (error) {
+		console.log('catching', { error });
 		throw json(error);
 	}
 };

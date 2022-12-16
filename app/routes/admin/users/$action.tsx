@@ -109,16 +109,18 @@ export const action: ActionFunction = async ({ params, request }) => {
 			}
 
 		case AdminActions.UPDATE:
+			const { select_user } = fields;
+
 			for (let input in fields) {
 				// Removing empty fields to avoid updating db fields to '' or undefined
-				// Removing 'select_user' because not needed in db
+				// Removing 'select_user' because not wanted in db
 				if (fields[input] === '' || !fields[input] || input === 'select_user') {
 					delete fields[input];
 				}
 			}
 
 			try {
-				const updatedUser = await users.updateUserByID(String(fields.select_user), fields);
+				const updatedUser = await users.updateUserByID(String(select_user), fields);
 
 				return json({ user: updatedUser }, { status: 200 });
 			} catch (error) {

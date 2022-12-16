@@ -2,8 +2,7 @@ import React from 'react';
 
 import { startCase as _startCase, toLower as _toLower } from 'lodash';
 
-// Title case
-// TODO: import and replace where lodash funcs used
+// Title case string (blunt)
 export function titleCase(s: string | undefined) {
 	if (typeof s === 'undefined') {
 		return '';

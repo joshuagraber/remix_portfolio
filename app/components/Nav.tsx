@@ -22,6 +22,7 @@ interface Props {
 }
 // CONSTANTS
 import { NAV_ROUTES } from 'utils/constants';
+import clsx from 'clsx';
 const ACTIVE_CLASS_NAME = 'jdg-nav-link-active';
 const CLASS_NAME = 'jdg-nav-link';
 
@@ -42,10 +43,7 @@ export const Nav: React.FC<Props> = ({ isMobile }) => {
 						return (
 							<li key={route}>
 								<NavLink
-									// TODO: use CLSX instead
-									className={({ isActive }) =>
-										isActive ? `${CLASS_NAME} ${ACTIVE_CLASS_NAME}` : `${CLASS_NAME}`
-									}
+									className={({ isActive }) => clsx(CLASS_NAME, isActive && ACTIVE_CLASS_NAME)}
 									prefetch='intent'
 									role='menuitem'
 									to={`/${route}`}

@@ -3,9 +3,6 @@ import styles from 'styles/index.css';
 import React from 'react';
 import { useActionData } from '@remix-run/react';
 
-// EXT LIBS
-import { startCase as _startCase, toLower as _toLower } from 'lodash';
-
 // COMPONENTS
 import { ContactForm, links as contactFormLinks } from 'components/ContactForm';
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
@@ -14,6 +11,7 @@ import { ContainerCenter, links as containerCenterLinks } from 'components/Conta
 import { sendMail } from 'services/mailer.server';
 
 // UTILS
+import { titleCase } from 'utils/utils';
 import { stripParamsAndHash, isValidEmail, isValidInputLength } from 'utils/utils.server';
 
 // TYPES
@@ -41,7 +39,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 	for (let input in fields) {
 		if (!isValidInputLength(fields[input], 1)) {
-			const fieldNameForDisplay = input.includes('name') ? 'Name' : _startCase(_toLower(input));
+			const fieldNameForDisplay = input.includes('name') ? 'Name' : titleCase(input);
 			errors[input] = `Your ${fieldNameForDisplay} is required.`;
 			errorCount++;
 		}
