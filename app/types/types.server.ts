@@ -49,7 +49,8 @@ export interface BlogFormValues extends FormValues {
 	tagline: string;
 	tags: string[];
 	title: string;
-	published_at: Date;
+	published_at: string;
+	select_post?: string;
 }
 
 export interface BookmarkFormValues extends FormValues {

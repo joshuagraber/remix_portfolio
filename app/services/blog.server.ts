@@ -25,11 +25,11 @@ export const createNewBookmark = async (formValues: BookmarkFormValues) => {
 // CREATE - post
 export const createNewPost = async (formValues: BlogFormValues) => {
 	try {
-		let { published_at, ...rest } = formValues;
-		published_at = new Date(published_at);
+		const { published_at, ...rest } = formValues;
+		const published_date = new Date(published_at);
 
 		const newBlogPost = await prisma.post.create({
-			data: { published_at, ...rest },
+			data: { published_at: published_date, ...rest },
 		});
 
 		return newBlogPost;
@@ -90,9 +90,14 @@ export const updateBookmarkByID = async (id: string, formValues: Partial<BlogFor
 // UPDATE - posts
 export const updatePostByID = async (id: string, formValues: Partial<BlogFormValues>) => {
 	try {
+		const { published_at, ...rest } = formValues;
+
+		const publish_date = typeof published_at !== 'undefined' ? new Date(published_at) : null;
+		const data = publish_date ? { ...rest, published_at: publish_date } : { ...rest };
+
 		const updatedPost = await prisma.post.update({
 			where: { id },
-			data: formValues,
+			data,
 		});
 		return updatedPost;
 	} catch (error) {

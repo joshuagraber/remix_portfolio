@@ -20,7 +20,6 @@ export const action: ActionFunction = async ({ params, request }) => {
 	const fields: Partial<BlogFormValues> = Object.fromEntries(submission);
 	// Images has multiple, tags need processing, so we get those directly.
 	const images = submission.getAll('images');
-	console.log({ images });
 	const tags = parseCommaSeparatedStringToArray(submission.get('tags'));
 	// Update fields obj with images and tags
 	Object.assign(fields, { images, tags });
