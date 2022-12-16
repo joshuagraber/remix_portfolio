@@ -63,5 +63,3 @@ export const Footer: React.FC<Props> = ({ isContact = false }) => {
 		</div>
 	);
 };
-
-export { ErrorBoundary } from 'components/ErrorBoundary';

@@ -174,3 +174,5 @@ export default function ImagesAdmin() {
 		</div>
 	);
 }
+
+export { CatchBoundary, ErrorBoundary } from 'components/Boundaries';

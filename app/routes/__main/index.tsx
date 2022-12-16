@@ -137,3 +137,5 @@ export default function Index(): React.ReactElement {
 		</ContainerCenter>
 	);
 }
+
+export { CatchBoundary, ErrorBoundary } from 'components/Boundaries';

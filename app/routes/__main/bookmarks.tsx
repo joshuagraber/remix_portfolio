@@ -67,3 +67,5 @@ export default function Bookmarks() {
 		</ContainerCenter>
 	);
 }
+
+export { CatchBoundary, ErrorBoundary } from 'components/Boundaries';

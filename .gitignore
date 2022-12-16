@@ -4,6 +4,7 @@ build
 public/build
 node_modules
 .env*
+**/test*
 
 # Sass
 *.css.map

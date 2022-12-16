@@ -608,6 +608,14 @@ $post-container-padding: 24px;
 	}
 }
 
+// Test
+.jdg-test-container-center {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
 // Home page animation keyframes
 @keyframes fade_in {
 	0% {

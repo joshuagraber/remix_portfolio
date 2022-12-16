@@ -38,3 +38,5 @@ export default function ContactFormSuccess() {
 		</ContainerCenter>
 	);
 }
+
+export { CatchBoundary, ErrorBoundary } from 'components/Boundaries';

@@ -220,3 +220,5 @@ export default function UsersAdmin() {
 		</usersFetcher.Form>
 	);
 }
+
+export { CatchBoundary, ErrorBoundary } from 'components/Boundaries';

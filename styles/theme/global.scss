@@ -84,3 +84,21 @@ ol {
 	margin-inline-end: unset;
 	padding-inline-start: unset;
 }
+
+// Boundaries
+.jdg-error-boundary {
+	padding: 48px;
+	align-self: center;
+	justify-self: center;
+	max-width: 600p;
+	width: max-content;
+
+	h2 {
+		font: $font-heading-secondary;
+	}
+
+	a {
+		text-decoration: underline 3px var(--color-theme-primary-4);
+		text-underline-offset: 6px;
+	}
+}

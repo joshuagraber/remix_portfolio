@@ -60,4 +60,4 @@ export const ContactFormModal: React.FC = () => {
 	);
 };
 
-export { ErrorBoundary } from 'components/ErrorBoundary';
+export { CatchBoundary, ErrorBoundary } from 'components/Boundaries';

@@ -112,4 +112,4 @@ export default function Contact(): React.ReactElement {
 	);
 }
 
-export { ErrorBoundary } from 'components/ErrorBoundary';
+export { CatchBoundary, ErrorBoundary } from 'components/Boundaries';
