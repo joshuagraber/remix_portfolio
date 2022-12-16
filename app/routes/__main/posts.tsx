@@ -69,3 +69,5 @@ export default function Posts() {
 		</ContainerCenter>
 	);
 }
+
+export { CatchBoundary, ErrorBoundary } from 'components/Boundaries';

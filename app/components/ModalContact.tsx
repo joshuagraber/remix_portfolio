@@ -25,3 +25,5 @@ export const ModalContactForm: React.FC<Props> = ({ isVisible }) => {
 		</Modal>
 	);
 };
+
+export { CatchBoundary, ErrorBoundary } from 'components/Boundaries';

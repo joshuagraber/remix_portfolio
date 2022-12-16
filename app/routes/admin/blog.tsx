@@ -356,3 +356,5 @@ export default function BlogAdmin() {
 		</blogFetcher.Form>
 	);
 }
+
+export { CatchBoundary, ErrorBoundary } from 'components/Boundaries';

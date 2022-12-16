@@ -110,4 +110,4 @@ export default function Admin() {
 	);
 }
 
-export { ErrorBoundary } from 'components/ErrorBoundary';
+export { CatchBoundary, ErrorBoundary } from 'components/Boundaries';
