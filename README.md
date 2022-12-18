@@ -23,5 +23,4 @@ Notes to make nicer later:
 
 - Query params to know:
   - `?contact` --> displays contact modal on top of any route
-    - See `useModalPath` exports
   - `?redirect={pathRelativeToRoot}` --> pass with auth redirect, to redirect back from auth

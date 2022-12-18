@@ -75,6 +75,14 @@ a {
 	}
 }
 
+// For buttons not styled as buttons
+.jdg-button-unset {
+	background: unset;
+	border: unset;
+	box-shadow: unset;
+	color: var(--color-text-primary);
+}
+
 // Lists
 ul,
 ol {
@@ -97,7 +105,8 @@ ol {
 		font: $font-heading-secondary;
 	}
 
-	a {
+	button {
+		cursor: pointer;
 		text-decoration: underline 3px var(--color-theme-primary-4);
 		text-underline-offset: 6px;
 	}

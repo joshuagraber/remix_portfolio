@@ -1,6 +1,5 @@
 // GLOBALS
-import { Link, useCatch } from '@remix-run/react';
-import { useToggleContactModal } from 'hooks/useModalPath';
+import { Form, Link, useCatch } from '@remix-run/react';
 
 // TYPES
 interface Props {
@@ -22,7 +21,6 @@ export const ErrorBoundary: React.FC<Props> = ({ error }) => {
 
 export const CatchBoundary: React.FC = () => {
 	const caught = useCatch();
-	const { open } = useToggleContactModal();
 
 	return (
 		<div className='jdg-error-boundary'>
@@ -32,9 +30,11 @@ export const CatchBoundary: React.FC = () => {
 				<p>If you're me, check out what went wrong below.</p>
 				<p>
 					If you're not me,{' '}
-					<Link replace to={open}>
-						Click here to send me a message about how this error occured.
-					</Link>
+					<Form replace>
+						<button className='jdg-button-unset' name='contact' type='submit'>
+							Click here to send me a message about how this error occured.
+						</button>
+					</Form>
 				</p>
 				<pre>
 					<code>{JSON.stringify(caught?.data, null, 2)}</code>

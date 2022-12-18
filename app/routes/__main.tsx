@@ -15,15 +15,13 @@ export const links: LinksFunction = () => {
 };
 
 export default function Layout(): JSX.Element {
-	const { pathname } = useLocation();
-
-	const isContact = pathname === '/contact';
+	const { search, pathname } = useLocation();
 
 	return (
 		<div className='jdg-page'>
 			<Header />
 			<AnimatePresence />
-			<Footer isContact={isContact} />
+			<Footer path={pathname + search} />
 		</div>
 	);
 }

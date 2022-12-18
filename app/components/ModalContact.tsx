@@ -2,9 +2,6 @@
 import { ContactFormModal, links as contactFormModalLinks } from 'components/ContactForm/Modal';
 import { Modal, links as modalLinks } from 'components/Modal';
 
-// HOOKS
-import { useToggleContactModal } from 'hooks/useModalPath';
-
 // TYPES
 import type { LinksFunction } from '@remix-run/node';
 interface Props {
@@ -17,10 +14,8 @@ export const links: LinksFunction = () => {
 };
 
 export const ModalContactForm: React.FC<Props> = ({ isVisible }) => {
-	const { close } = useToggleContactModal();
-
 	return (
-		<Modal isVisible={isVisible} pathToClose={close}>
+		<Modal isVisible={isVisible} param='contact'>
 			<ContactFormModal />
 		</Modal>
 	);

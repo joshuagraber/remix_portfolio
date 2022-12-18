@@ -1,7 +1,7 @@
 // GLOBALS
 import { json } from '@remix-run/node';
 import React from 'react';
-import { useLoaderData, useTransition } from '@remix-run/react';
+import { useLoaderData, useLocation, useTransition } from '@remix-run/react';
 import styles from 'styles/index.css';
 
 // COMPONENTS
@@ -12,7 +12,6 @@ import ReactMarkdown from 'react-markdown';
 
 // SERVICES
 import * as blog from 'services/blog.server';
-import * as media from 'services/media.server';
 import * as users from 'services/users.server';
 
 // UTIL
@@ -126,6 +125,7 @@ const ImageComponent: React.FC<ImageComponentProps> = (props) => {
 
 export default function Post(): React.ReactElement {
 	const data = useLoaderData();
+	const location = useLocation();
 	const transition = useTransition();
 
 	if (typeof data === 'undefined') {
@@ -135,7 +135,7 @@ export default function Post(): React.ReactElement {
 	// VARS
 	const {
 		authorName,
-		post: { content, image_featured, published_at, tagline, title },
+		post: { content, image_featured, published_at, tags, tagline, title },
 	} = data;
 
 	const authorToDisplay = authorName !== 'Joshua D. Graber' ? `Guest writer: ${authorName}` : null;
@@ -148,7 +148,11 @@ export default function Post(): React.ReactElement {
 			<header className='jdg-post-header'>
 				<ContainerCenter className='jdg-container-center-post-header'>
 					<div className='jdg-post-header-image'>
-						<img src={image_featured} alt={`Hero image for ${title}: ${tagline}`} />
+						{/* TODO: bad alt text.  */}
+						<img
+							src={image_featured}
+							alt={`Hero image for ${title}: ${tagline}, with tags: ${tags.join(', ')}`}
+						/>
 					</div>
 					<div className='jdg-post-header-text'>
 						<h1 className='jdg-post-header-text-heading'>{title}</h1>
@@ -181,7 +185,7 @@ export default function Post(): React.ReactElement {
 				</ContainerCenter>
 			</main>
 
-			<Footer />
+			<Footer path={location.pathname + location.search} />
 		</div>
 	);
 }
