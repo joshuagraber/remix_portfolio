@@ -7,7 +7,9 @@ import styles from 'styles/index.css';
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 import { Footer, links as footerLinks } from 'components/Footer';
+import { Header, links as headerLinks } from 'components/Header';
 import { LoadingSpinner, links as loadingSpinnerLinks } from 'components/Spinner';
+import { NotFound } from 'components/NotFound';
 import ReactMarkdown from 'react-markdown';
 
 // SERVICES
@@ -37,7 +39,14 @@ interface ImageComponentProps {
 export const loader: LoaderFunction = async ({ params, request }) => {
 	const { slug } = params;
 
-	const post = (await blog.getPostBySlug(String(slug))) as Post;
+	const post = await blog.getPostBySlug(String(slug));
+
+	if (!post) {
+		return {
+			canonical: null,
+			post: null,
+		};
+	}
 
 	// Get post author
 	const postAuthor = (await users.getUserByID(String(post?.author_id))) as User;
@@ -54,13 +63,17 @@ export const links: LinksFunction = () => {
 	return [
 		...containerCenterLinks(),
 		...footerLinks(),
+		...headerLinks(),
 		...loadingSpinnerLinks(),
 		{ rel: 'stylesheet', href: styles },
 	];
 };
 
 export const dynamicLinks: DynamicLinksFunction = ({ data }) => {
-	return [{ rel: 'canonical', href: data.canonical }];
+	if (data?.canonical) {
+		return [{ rel: 'canonical', href: data.canonical }];
+	}
+	return [];
 };
 
 export const meta: MetaFunction = ({ data, params }) => {
@@ -130,6 +143,16 @@ export default function Post(): React.ReactElement {
 
 	if (typeof data === 'undefined') {
 		return <LoadingSpinner isDisplayed size='80px' />;
+	}
+
+	if (!data.post) {
+		return (
+			<div className='jdg-page jdg-page-post'>
+				<Header />
+				<NotFound />
+				<Footer path={location.pathname + location.search} />
+			</div>
+		);
 	}
 
 	// VARS
