@@ -20,7 +20,6 @@ import { ModalContactForm, links as modalContactFormLinks } from 'components/Mod
 // CONTEXT
 import { ThemeProvider, ThemeValues } from 'context/theme';
 import { getThemeSession } from 'services/theme.server';
-import { stripParamsAndHash } from 'utils/utils.server';
 
 export const links: LinksFunction = () => {
 	return [

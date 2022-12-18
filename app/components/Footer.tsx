@@ -11,10 +11,9 @@ import React from 'react';
 
 // TYPES
 import type { LinksFunction } from '@remix-run/node';
-import { useToggleContactModal } from 'hooks/useModalPath';
-import { Link, useFetcher } from '@remix-run/react';
+import { Form } from '@remix-run/react';
 interface Props {
-	isContact?: boolean;
+	path: string;
 }
 
 // EXPORTS
@@ -22,11 +21,7 @@ export const links: LinksFunction = () => {
 	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 };
 
-export const Footer: React.FC<Props> = ({ isContact = false }) => {
-	// HOOKS - GLOBAL
-
-	const { open } = useToggleContactModal();
-
+export const Footer: React.FC<Props> = ({ path = '/' }) => {
 	return (
 		<div className='jdg-footer'>
 			<ContainerCenter>
@@ -36,13 +31,18 @@ export const Footer: React.FC<Props> = ({ isContact = false }) => {
 				<div className='jdg-footer-contact'>
 					{SOCIAL_LINKS.map((link) => {
 						const [type, url] = link;
-						if (isContact && type === 'email') return;
+						if (path === 'contact' && type === 'email') return;
 						if (type === 'email') {
 							return (
-								<Link className='jdg-footer-contact-link' key={type} replace to={open}>
-									{' '}
-									<SocialIcon type={type} />{' '}
-								</Link>
+								<Form action={path} key={type} replace>
+									<button
+										className='jdg-button-unset jdg-footer-contact-link'
+										name='contact'
+										type='submit'
+									>
+										<SocialIcon type={type} />{' '}
+									</button>
+								</Form>
 							);
 						}
 						return (

@@ -1,7 +1,7 @@
 // GLOBALS
 import clsx from 'clsx';
 import { getDocument } from 'ssr-window';
-import { Link } from '@remix-run/react';
+import { Form, Link, useLocation } from '@remix-run/react';
 import styles from 'styles/modal.css';
 import React from 'react';
 
@@ -18,7 +18,7 @@ interface Props {
 	className?: ClassValue;
 	children: React.ReactElement | React.ReactNode;
 	isVisible: boolean;
-	pathToClose: string;
+	param: string;
 }
 
 // EXPORTS
@@ -26,14 +26,10 @@ export const links: LinksFunction = () => {
 	return [{ rel: 'stylesheet', href: styles }];
 };
 
-export const Modal: React.FC<Props> = ({
-	className = '',
-	pathToClose,
-	children,
-	isVisible = false,
-}) => {
+export const Modal: React.FC<Props> = ({ className = '', children, isVisible = false, param }) => {
 	// GLOBALS
 	const document = getDocument();
+	const location = useLocation();
 	const ref = React.useRef<HTMLDivElement>(null);
 
 	// HOOKS - EFFECTS
@@ -69,6 +65,10 @@ export const Modal: React.FC<Props> = ({
 		timeout: 400,
 	};
 
+	const path = location.pathname;
+	const search = new URLSearchParams(location.search);
+	search.delete(param);
+
 	// Render
 	return (
 		<CSSTransition {...transitionProps}>
@@ -102,14 +102,16 @@ export const Modal: React.FC<Props> = ({
 								}}
 							>
 								<div className='jdg-modal-container' ref={ref}>
-									<Link
+									<Form
+										action={`${path}?${search}`}
 										aria-label='Close modal'
 										className='jdg-modal-icon-container'
 										replace
-										to={pathToClose}
 									>
-										<X />
-									</Link>
+										<button className='jdg-button-unset' type='submit'>
+											<X />
+										</button>
+									</Form>
 
 									<div className='jdg-modal-content'>{children}</div>
 								</div>

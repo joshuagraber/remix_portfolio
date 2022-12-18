@@ -75,6 +75,14 @@ a {
 	}
 }
 
+// For buttons not styled as buttons
+.jdg-button-unset {
+	background: unset;
+	border: unset;
+	box-shadow: unset;
+	color: var(--color-text-primary);
+}
+
 // Lists
 ul,
 ol {
