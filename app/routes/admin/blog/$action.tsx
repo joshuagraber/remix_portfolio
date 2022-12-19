@@ -43,7 +43,6 @@ export const action: ActionFunction = async ({ params, request }) => {
 				// If string, check for at least 1 char
 				if (typeof fields[input] === 'string') {
 					if (!isValidInputLength(fields[input], 1)) {
-						// TODO: use Obj.assign in other actions. Better.
 						Object.assign(errors, { [input]: `${input} is required` });
 					}
 				}

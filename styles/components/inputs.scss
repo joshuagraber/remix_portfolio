@@ -62,7 +62,8 @@
 	}
 
 	&-error {
-		input {
+		input,
+		textarea {
 			border-color: var(--color-error);
 		}
 

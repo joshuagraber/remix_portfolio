@@ -2,6 +2,9 @@
 import styles from 'styles/inputs.css';
 import React from 'react';
 
+// COMPONENT
+import { StatusMessage, links as statusMessageLinks, StatusMessageTypes } from './StatusMessage';
+
 // EXT LIBS
 import clsx, { ClassValue } from 'clsx';
 
@@ -25,7 +28,7 @@ interface Props {
 
 // EXPORTS
 export const links: LinksFunction = () => {
-	return [{ rel: 'stylesheet', href: styles }];
+	return [...statusMessageLinks(), { rel: 'stylesheet', href: styles }];
 };
 
 export const Input: React.FC<Props> = ({
@@ -136,8 +139,7 @@ export const Input: React.FC<Props> = ({
 		<div className={classes}>
 			<label htmlFor={id}>{label}</label>
 			<Component />
-			{/* TODO: Create subcomponent, add icon, make nice with animations */}
-			{errorMessage && <div className='jdg-input-error-message'>{errorMessage}</div>}
+			<StatusMessage message={errorMessage} type={StatusMessageTypes.ERROR} />
 		</div>
 	);
 };
