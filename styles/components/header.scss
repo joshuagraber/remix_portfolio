@@ -1,4 +1,4 @@
-@import '../../styles/theme/variables.scss';
+@import '../theme/themes.scss';
 
 .jdg-header {
 	align-items: center;
@@ -39,14 +39,18 @@
 	&-name-link:focus {
 		border-bottom-color: var(--color-theme-primary-1);
 		text-decoration: none;
+
+		:root[data-theme='jdg-light-mode'] & {
+			border-bottom-color: var(--color-theme-primary-4);
+		}
 	}
 
 	&-name-heading {
-		font: $font-heading-secondary;
+		font: var(--font-heading-secondary);
 	}
 
 	&-name-sub-heading {
-		font: $font-heading-quaternary-emphasis;
+		font: var(--font-heading-quaternary-emphasis);
 		letter-spacing: 1.3px;
 	}
 
@@ -86,7 +90,7 @@
 		}
 
 		&-name-heading {
-			font: $font-heading-tertiary;
+			font: var(--font-heading-tertiary);
 		}
 
 		&-name-sub-heading {

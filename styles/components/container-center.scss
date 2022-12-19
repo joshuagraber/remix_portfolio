@@ -1,8 +1,6 @@
-@import '../../styles/theme/variables.scss';
-
 .jdg-container-center {
 	margin: 0 auto;
-	max-width: $max-width;
+	max-width: var(--max-width);
 	position: relative;
 	width: 100%;
 

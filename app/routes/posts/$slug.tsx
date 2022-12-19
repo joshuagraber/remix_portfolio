@@ -2,7 +2,7 @@
 import { json } from '@remix-run/node';
 import React from 'react';
 import { useLoaderData, useLocation, useTransition } from '@remix-run/react';
-import styles from 'styles/index.css';
+import styles from 'styles/post.css';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';

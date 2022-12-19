@@ -1,4 +1,4 @@
-@import '../../styles/theme/variables.scss';
+@import '../theme/themes.scss';
 
 .jdg-contact-form-container {
 	height: 100%;
@@ -13,6 +13,9 @@
 		padding: 24px;
 		position: relative;
 		gap: 36px;
+		margin: 0 auto;
+		max-width: 500px;
+		width: 100vw;
 
 		&-input-fields {
 			&,
@@ -40,7 +43,7 @@
 	h3 {
 		background-color: var(--color-theme-primary-1);
 		font-size: 36px;
-		font: $font-heading-secondary;
+		font: var(--font-heading-secondary);
 		border-radius: 10px;
 		box-shadow: -1px -2px 0 1px var(--color-accent-primary),
 			1px 2px 0 1px var(--color-accent-primary);
@@ -77,13 +80,14 @@
 
 		&.modal {
 			width: 95%;
+		}
 
-			.jdg-contact-form {
-				padding: 0;
+		.jdg-contact-form {
+			padding: 0;
+			width: 100%;
 
-				.jdg-button {
-					margin: 0 12px 12px;
-				}
+			.jdg-button {
+				margin: 0 12px 12px;
 			}
 		}
 	}

@@ -1,8 +1,8 @@
 // GLOBALS
 import React from 'react';
 import { json } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
-import styles from 'styles/index.css';
+import { useLoaderData } from '@remix-run/react';
+import styles from 'styles/bookmarks.css';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';

@@ -1,4 +1,4 @@
-@import '../../styles/theme/variables.scss';
+@import '../theme/themes.scss';
 
 .jdg-modal {
 	opacity: 0;
@@ -94,11 +94,11 @@
 		max-height: 90vh;
 		overflow-y: auto;
 		padding: 48px;
-		width: calc($mobile - 96px); // Subtract 2x padding
+		width: calc(var(--mobile) - 96px); // Subtract 2x padding
 		z-index: 100;
 	}
 
-	@media (max-width: 650px) {
+	@media (max-width: $mobile) {
 		&-content {
 			border-radius: unset;
 			height: 100vh;

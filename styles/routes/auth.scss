@@ -1,0 +1,112 @@
+.jdg-page {
+	.jdg-signin-container-center {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		max-width: 600px;
+		padding: 80px 0;
+		width: 90%;
+
+		h2 {
+			font: var(--font-heading-secondary);
+			text-align: center;
+		}
+	}
+
+	.jdg-signin-form-container {
+		background-color: var(--color-neutral-black-opacity_40);
+		border-radius: 12px;
+		padding: 48px;
+	}
+
+	.jdg-signin-form-switch-container {
+		height: auto;
+		margin: 0 auto 24px;
+		overflow: hidden;
+		position: relative;
+		width: 100%;
+
+		input[type='checkbox'] {
+			height: 0;
+			opacity: 0%;
+		}
+
+		.jdg-signin-form-switch {
+			height: 100%;
+
+			label {
+				background-color: var(--color-neutral-2);
+				border: 2px transparent solid;
+				border-radius: 12px;
+				cursor: pointer;
+				display: block;
+				height: 60px;
+				margin-top: -20px;
+				position: relative;
+				width: 100%;
+			}
+
+			input {
+				& + label::before,
+				& + label::after {
+					align-items: center;
+					background-color: var(--color-neutral-0);
+					display: flex;
+					justify-content: center;
+					height: 50px;
+					position: absolute;
+					overflow: hidden;
+					top: 3px;
+				}
+
+				& + label::before {
+					border-radius: 12px 0 0 12px;
+					content: 'Sign Up';
+					left: 3px;
+					opacity: 100%;
+					right: 50%;
+				}
+
+				& + label::after {
+					content: 'Sign In';
+					border-radius: 0 12px 12px 0;
+					left: 50%;
+					opacity: 0%;
+					right: 50%;
+				}
+
+				&:checked {
+					& + label::before {
+						opacity: 0%;
+						left: 50%;
+					}
+
+					& + label::after {
+						opacity: 100%;
+						right: 3px;
+					}
+				}
+
+				&:focus + label {
+					border-color: var(--color-accent-primary);
+				}
+			}
+		}
+	}
+
+	.jdg-signin-form-signin {
+		fieldset {
+			border: unset;
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+			padding: unset;
+			margin-bottom: 24px;
+		}
+
+		.jdg-button {
+			margin: 32px 0 16px;
+			width: 100%;
+		}
+	}
+}

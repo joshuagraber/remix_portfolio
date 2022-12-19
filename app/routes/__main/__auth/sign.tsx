@@ -10,7 +10,7 @@ import {
 	useTransition,
 } from '@remix-run/react';
 import React from 'react';
-import styles from 'styles/index.css';
+import styles from 'styles/auth.css';
 
 // COMPONENTS
 import { Button, links as buttonLinks } from 'components/Button';

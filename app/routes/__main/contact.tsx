@@ -1,5 +1,5 @@
 import { json, LoaderFunction, redirect } from '@remix-run/node';
-import styles from 'styles/index.css';
+import styles from 'styles/contact.css';
 import React from 'react';
 import { useActionData } from '@remix-run/react';
 

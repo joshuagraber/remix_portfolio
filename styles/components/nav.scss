@@ -1,5 +1,3 @@
-@import '../../styles/theme/variables.scss';
-
 .jdg-nav {
 	display: flex;
 	gap: 16px;
@@ -37,7 +35,7 @@
 		}
 	}
 
-	@media (max-width: $mobile) {
+	@media (max-width: var(--mobile)) {
 		display: flex;
 		flex-direction: column;
 		gap: 12px;

@@ -1,4 +1,99 @@
-@import '../../styles/theme/variables.scss';
+@import '../theme/themes.scss';
+
+.jdg-header {
+	align-items: center;
+	display: flex;
+	height: min-content;
+	padding: 12px 24px;
+	transition: 0.2s ease background-color;
+
+	.jdg-container-center {
+		align-items: center;
+		display: grid;
+		grid-template-columns: 1fr auto auto;
+		gap: 0 1rem;
+		grid-template-rows: repeat(2, auto);
+		width: 100%;
+	}
+
+	.jdg-nav {
+		grid-column: 2;
+	}
+
+	.jdg-theme-toggle {
+		grid-column: 3;
+	}
+
+	&-name-container {
+		grid-column: 1;
+		width: 100%;
+	}
+
+	&-name-link {
+		border-bottom: 3px transparent solid;
+		display: block;
+		width: max-content;
+	}
+
+	&-name-link:hover,
+	&-name-link:focus {
+		border-bottom-color: var(--color-theme-primary-1);
+		text-decoration: none;
+	}
+
+	&-name-heading {
+		font: var(--font-heading-secondary);
+	}
+
+	&-name-sub-heading {
+		font: var(--font-heading-quaternary-emphasis);
+		letter-spacing: 1.3px;
+	}
+
+	:root[data-theme='jdg-dark-mode'] & {
+		background-color: var(--color-neutral-0);
+	}
+
+	@media (max-width: 850px) {
+		&-name-heading {
+			font-size: 36px;
+		}
+	}
+
+	@media (max-width: $mobile) {
+		padding: 24px 24px 8px;
+		// Handle rearrangment of nav on mobile
+		.jdg-container-center {
+			grid-template-columns: 1fr auto;
+		}
+
+		.jdg-theme-toggle {
+			grid-column: 2;
+			align-self: start;
+		}
+
+		.jdg-nav {
+			justify-self: center;
+			grid-column: 1 / -1;
+			grid-row: 2;
+			width: 100%;
+
+			&-menu {
+				> * {
+					flex-grow: 1;
+				}
+			}
+		}
+
+		&-name-heading {
+			font: var(--font-heading-tertiary);
+		}
+
+		&-name-sub-heading {
+			font-size: 16px;
+		}
+	}
+}
 
 .jdg-footer {
 	background: linear-gradient(to top, var(--color-neutral-0), var(--color-background));

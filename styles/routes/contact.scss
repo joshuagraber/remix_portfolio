@@ -1,0 +1,33 @@
+@import '../theme/themes.scss';
+
+.jdg-page {
+	.jdg-contact-container-center {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+		justify-content: center;
+		max-width: 600px;
+		padding: 24px 0;
+	}
+
+	.jdg-contact-success-container-center {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		padding: 48px;
+
+		h3 {
+			font: var(--font-heading-secondary);
+		}
+
+		p {
+			font: var(--font-paragraph-primary);
+		}
+
+		a {
+			font-size: 18px;
+		}
+	}
+}

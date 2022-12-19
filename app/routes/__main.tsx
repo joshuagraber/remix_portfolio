@@ -1,5 +1,4 @@
 // GLOBALS
-import styles from 'styles/index.css';
 import { useLocation } from '@remix-run/react';
 
 // COMPONENTS
@@ -11,7 +10,7 @@ import { Footer, links as footerLinks } from 'components/Footer';
 import type { LinksFunction } from '@remix-run/node';
 
 export const links: LinksFunction = () => {
-	return [...headerLinks(), ...footerLinks(), { rel: 'stylesheet', href: styles }];
+	return [...headerLinks(), ...footerLinks()];
 };
 
 export default function Layout(): JSX.Element {

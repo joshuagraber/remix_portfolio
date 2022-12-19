@@ -1,4 +1,13 @@
+// Font import
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400&family=Fira+Sans+Condensed:wght@500;600&family=Rubik:wght@300;400;500&display=swap');
+
+// LAYOUT
+$mobile: 750px;
+$tablet: 1000px;
+$max-width: 1400px;
+
 :root {
+	// THEMING
 	--color-neutral-0: #0d0d0d;
 	--color-neutral-1: #1e1e1e;
 	--color-neutral-2: #313131;
@@ -54,12 +63,27 @@
 	--color-text-secondary: var(--color-neutral-6);
 	--color-text-tertiary: var(--color-neutral-5);
 	--color-text-inverted: var(--color-neutral-0);
+
+	// FONT
+	--font-heading-primary: 300 38px/125% 'Catamaran', sans-serif;
+	--font-heading-secondary: 400 32px/125% 'Catamaran', sans-serif;
+	--font-heading-tertiary: 400 24px/125% 'Catamaran', sans-serif;
+	--font-heading-tertiary-emphasis: 500 24px/125% 'Fira Sans Condensed', sans-serif;
+	--font-heading-quaternary: 400 18px/125% 'Catamaran', sans-serif;
+	--font-heading-quaternary-emphasis: 500 18px/125% 'Fira Sans Condensed', sans-serif;
+
+	--font-paragraph-primary: 400 20px/125% 'Rubik', sans-serif;
+	--font-paragraph-secondary: 400 16px/125% 'Rubik', sans-serif;
+	--font-paragraph-tertiary: 400 12px/125% 'Rubik', sans-serif;
+
+	--font-link-cta: 500 inherit/125% 'Rubik', sans-serif;
+	--font-link-primary: 400 inherit/125% 'Rubik', sans-serif;
 }
 
 :root[data-theme='jdg-light-mode'] {
-	--color-background: var(--color-neutral-10);
-	--color-accent-primary: var(--color-accent-plum);
-	--color-accent-secondary: var(--color-accent-mauve);
+	--color-background: var(--color-neutral-9);
+	--color-accent-primary: var(--color-accent-mauve);
+	--color-accent-secondary: var(--color-accent-peach);
 	--color-text-primary: var(--color-neutral-0);
 	--color-text-secondary: var(--color-neutral-1);
 	--color-text-tertiary: var(--color-neutral-2);

@@ -1,6 +1,6 @@
 // GLOBALS
 import { NavLink, Outlet, useMatches } from '@remix-run/react';
-import styles from 'styles/index.css';
+import styles from 'styles/admin.css';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
