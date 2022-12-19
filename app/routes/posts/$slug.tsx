@@ -25,6 +25,12 @@ import type { Handle } from 'types/types';
 import type { LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node';
 import type { Post, User } from '@prisma/client';
 
+// CONSTANTS
+const VIDEO_ASPECT_RATIO = {
+	height: 6,
+	width: 9,
+};
+
 interface YouTubeEmbedProps {
 	src?: string;
 }
@@ -114,14 +120,38 @@ const PostFigure: React.FC<ImageComponentProps> = ({ alt, title, src }) => {
 };
 
 const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ src }) => {
+	const containerRef = React.useRef<HTMLDivElement>(null);
+	// TODO IF REPEATED: Create useElementDimensions hook that receives ref and returns useful DOM dimension / positioning props
+	const [dimensions, setDimensions] = React.useState({ clientHeight: 0, clientWidth: 0 });
+
+	React.useEffect(() => {
+		if (containerRef.current) {
+			const { clientHeight, clientWidth } = containerRef.current;
+			setDimensions({ clientHeight, clientWidth });
+
+			window.addEventListener('resize', handleResize);
+
+			return () => window.removeEventListener('resize', handleResize);
+		}
+
+		function handleResize() {
+			setDimensions({
+				clientHeight: containerRef.current?.clientHeight ?? 0,
+				clientWidth: containerRef.current?.clientWidth ?? 0,
+			});
+		}
+	}, [containerRef]);
+
 	return (
-		<div className='jdg-post-you-tube-embed'>
+		<div className='jdg-post-youtube-embed' ref={containerRef}>
 			<iframe
-				className='jdg-post-you-tube-embed-frame'
-				src={src}
-				title='YouTube video player'
 				allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
 				allowFullScreen
+				className='jdg-post-youtube-embed-frame'
+				src={src}
+				title='YouTube video player'
+				height={dimensions.clientWidth / (VIDEO_ASPECT_RATIO.width / VIDEO_ASPECT_RATIO.height)}
+				width={dimensions.clientWidth}
 			></iframe>
 		</div>
 	);
@@ -145,6 +175,7 @@ export default function Post(): React.ReactElement {
 		return <LoadingSpinner isDisplayed size='80px' />;
 	}
 
+	// NOPE! TODO: redirect from server instead, create /posts/not-found route for this.
 	if (!data.post) {
 		return (
 			<div className='jdg-page jdg-page-post'>
