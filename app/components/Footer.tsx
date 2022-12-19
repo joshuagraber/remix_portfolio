@@ -31,7 +31,7 @@ export const Footer: React.FC<Props> = ({ path = '/' }) => {
 				<div className='jdg-footer-contact'>
 					{SOCIAL_LINKS.map((link) => {
 						const [type, url] = link;
-						if (path === 'contact' && type === 'email') return;
+						if (path === '/contact' && type === 'email') return;
 						if (type === 'email') {
 							return (
 								<Form action={path} key={type} replace>
