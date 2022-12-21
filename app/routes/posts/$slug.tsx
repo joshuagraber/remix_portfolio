@@ -1,5 +1,5 @@
 // GLOBALS
-import { json } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 import React from 'react';
 import { useLoaderData, useLocation, useTransition } from '@remix-run/react';
 import styles from 'styles/post.css';
@@ -7,9 +7,7 @@ import styles from 'styles/post.css';
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 import { Footer, links as footerLinks } from 'components/Footer';
-import { Header, links as headerLinks } from 'components/Header';
 import { LoadingSpinner, links as loadingSpinnerLinks } from 'components/Spinner';
-import { NotFound } from 'components/NotFound';
 import ReactMarkdown from 'react-markdown';
 
 // SERVICES
@@ -17,7 +15,7 @@ import * as blog from 'services/blog.server';
 import * as users from 'services/users.server';
 
 // UTIL
-import { stripParamsAndHash } from 'utils/utils.server';
+import { createETag, stripParamsAndHash } from 'utils/utils.server';
 
 // TYPES
 import type { DynamicLinksFunction } from 'remix-utils';
@@ -48,28 +46,42 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 	const post = await blog.getPostBySlug(String(slug));
 
 	if (!post) {
-		return {
-			canonical: null,
-			post: null,
-		};
+		return redirect('/posts/not-found');
 	}
 
 	// Get post author
 	const postAuthor = (await users.getUserByID(String(post?.author_id))) as User;
 	const authorName = `${postAuthor?.name_first} ${postAuthor?.name_middle} ${postAuthor?.name_last}`;
 
-	return json({
+	// Data to return to client
+	const data = {
 		authorName,
 		canonical: stripParamsAndHash(request.url),
 		post,
-	});
+	};
+
+	// Cacheing
+	const responseEtag = createETag(String(data));
+	const requestEtag = request.headers.get('If-None-Match');
+
+	// If our etag equals browser's, return 304, browser should fall back to cache
+	if (responseEtag === requestEtag) {
+		return json(null, { status: 304 });
+	} else {
+		return json(data, {
+			headers: {
+				'Cache-Control': 'max-age=10',
+				etag: responseEtag,
+			},
+			status: 200,
+		});
+	}
 };
 
 export const links: LinksFunction = () => {
 	return [
 		...containerCenterLinks(),
 		...footerLinks(),
-		...headerLinks(),
 		...loadingSpinnerLinks(),
 		{ rel: 'stylesheet', href: styles },
 	];
@@ -171,21 +183,6 @@ export default function Post(): React.ReactElement {
 	const location = useLocation();
 	const transition = useTransition();
 
-	if (typeof data === 'undefined') {
-		return <LoadingSpinner isDisplayed size='80px' />;
-	}
-
-	// NOPE! TODO: redirect from server instead, create /posts/not-found route for this.
-	if (!data.post) {
-		return (
-			<div className='jdg-page jdg-page-post'>
-				<Header />
-				<NotFound />
-				<Footer path={location.pathname + location.search} />
-			</div>
-		);
-	}
-
 	// VARS
 	const {
 		authorName,
@@ -197,7 +194,9 @@ export default function Post(): React.ReactElement {
 
 	return (
 		<div className='jdg-page jdg-page-post'>
-			{transition.state === 'loading' && <LoadingSpinner size='80px' />}
+			{(transition.state === 'loading' || typeof data === 'undefined') && (
+				<LoadingSpinner size='80px' />
+			)}
 			{/* Header */}
 			<header className='jdg-post-header'>
 				<ContainerCenter className='jdg-container-center-post-header'>

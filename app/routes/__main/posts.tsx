@@ -8,7 +8,7 @@ import styles from 'styles/posts.css';
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 
 // UTILS
-import { stripParamsAndHash } from 'utils/utils.server';
+import { createETag, stripParamsAndHash } from 'utils/utils.server';
 
 // SERVICES
 import * as blog from 'services/blog.server';
@@ -23,11 +23,29 @@ import type { Post } from '@prisma/client';
 export const loader: LoaderFunction = async ({ request }) => {
 	const posts = await blog.getPostsAll();
 
-	return json({
+	const data = {
 		canonical: stripParamsAndHash(request.url),
 		posts,
-	});
+	};
+
+	// Cacheing
+	const responseEtag = createETag(String(data));
+	const requestEtag = request.headers.get('If-None-Match');
+
+	// If our etag equals browser's, return 304, browser should fall back to cache
+	if (responseEtag === requestEtag) {
+		return json(null, { status: 304 });
+	} else {
+		return json(data, {
+			headers: {
+				'Cache-Control': 'max-age=10',
+				etag: responseEtag,
+			},
+			status: 200,
+		});
+	}
 };
+
 export const dynamicLinks: DynamicLinksFunction = ({ data }) => {
 	return [{ rel: 'canonical', href: data.canonical }];
 };

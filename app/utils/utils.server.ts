@@ -1,8 +1,13 @@
-import fs from 'fs';
-import path from 'path';
+// GLOBALS
+import { createHash } from 'crypto';
 
 // TYPES
 import { FormValue } from 'types/types.server';
+
+// e-tag
+export function createETag(html: string) {
+	return createHash('md5').update(html).digest('hex');
+}
 
 // Remove any query string from URL
 export function stripParamsAndHash(url: string): string {

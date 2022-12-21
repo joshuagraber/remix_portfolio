@@ -12,7 +12,7 @@ import { Arrow } from 'components/SVG/Arrow';
 import * as blog from 'services/blog.server';
 
 // UTILS
-import { stripParamsAndHash } from 'utils/utils.server';
+import { createETag, stripParamsAndHash } from 'utils/utils.server';
 
 // TYPES
 import type { ClassValue } from 'clsx';
@@ -27,11 +27,28 @@ export const loader: LoaderFunction = async ({ request }) => {
 	const posts = await blog.getPostsAll();
 
 	// Only send 8 most recent bookmarks / posts
-	return json({
+	const data = {
 		bookmarks: bookmarks.slice(0, 7),
 		canonical: stripParamsAndHash(request.url),
 		posts: posts.slice(0, 7),
-	});
+	};
+
+	// Cacheing
+	const responseEtag = createETag(String(data));
+	const requestEtag = request.headers.get('If-None-Match');
+
+	// If our etag equals browser's, return 304, browser should fall back to cache
+	if (responseEtag === requestEtag) {
+		return json(null, { status: 304 });
+	} else {
+		return json(data, {
+			headers: {
+				'Cache-Control': 'max-age=10',
+				etag: responseEtag,
+			},
+			status: 200,
+		});
+	}
 };
 
 export const dynamicLinks: DynamicLinksFunction = ({ data }) => {

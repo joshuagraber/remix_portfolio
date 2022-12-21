@@ -1,5 +1,5 @@
 // GLOBALS
-import { HeadersFunction, LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node';
+import { json, LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node';
 import {
 	Links,
 	LiveReload,
@@ -29,11 +29,6 @@ export const links: LinksFunction = () => {
 	];
 };
 
-export const headers: HeadersFunction = () => {
-	// Cacheing baseline
-	return { 'Cache-Control': 'max-age=300, s-maxage=3600' };
-};
-
 export const loader: LoaderFunction = async ({ request }) => {
 	// THEME
 	// Check theme session for previously saved theme
@@ -59,7 +54,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 		? `jdg-${userThemePreferenceFromHeader}-mode`
 		: null;
 
-	return { userThemePreference };
+	return json({ userThemePreference });
 };
 
 export const meta: MetaFunction = () => {
@@ -92,7 +87,8 @@ export default function App() {
 					<div id='app'>
 						<Outlet />
 
-						{isContactModalOpen && <ModalContactForm isVisible={isContactModalOpen} />}
+						{/* Render contact modal here so it can be raised from any route */}
+						<ModalContactForm isVisible={isContactModalOpen} />
 
 						<ScrollRestoration />
 

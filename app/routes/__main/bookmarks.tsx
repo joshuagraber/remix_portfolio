@@ -8,7 +8,7 @@ import styles from 'styles/bookmarks.css';
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 
 // UTILS
-import { stripParamsAndHash } from 'utils/utils.server';
+import { createETag, stripParamsAndHash } from 'utils/utils.server';
 
 // SERVICES
 import * as blog from 'services/blog.server';
@@ -23,10 +23,27 @@ import type { Bookmark } from '@prisma/client';
 export const loader: LoaderFunction = async ({ request }) => {
 	const bookmarks = await blog.getBookmarksAll();
 
-	return json({
+	const data = {
 		canonical: stripParamsAndHash(request.url),
 		bookmarks,
-	});
+	};
+
+	// Cacheing
+	const responseEtag = createETag(String(data));
+	const requestEtag = request.headers.get('If-None-Match');
+
+	// If our etag equals browser's, return 304, browser should fall back to cache
+	if (responseEtag === requestEtag) {
+		return json(null, { status: 304 });
+	} else {
+		return json(data, {
+			headers: {
+				'Cache-Control': 'max-age=10',
+				etag: responseEtag,
+			},
+			status: 200,
+		});
+	}
 };
 export const dynamicLinks: DynamicLinksFunction = ({ data }) => {
 	return [{ rel: 'canonical', href: data.canonical }];

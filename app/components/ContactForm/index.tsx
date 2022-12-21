@@ -11,6 +11,7 @@ import { ContactFormFields, links as contactFormFieldsLinks } from './Fields';
 import { LinksFunction } from '@remix-run/node';
 import { RouteActionDataSelf } from 'types/types.server';
 import { useContactFormSubmitter } from 'hooks/useContactFormSubmitter';
+import { StatusMessage, StatusMessageTypes } from 'components/StatusMessage';
 
 // EXPORTS
 export const links: LinksFunction = () => {
@@ -51,6 +52,9 @@ export const ContactForm: React.FC<RouteActionDataSelf> = ({ data }) => {
 		<div className='jdg-contact-form-container'>
 			<h3>Say hello</h3>
 			<Form className='jdg-contact-form' method='post'>
+				{/* TODO: Update StatusMessage to accept timeout prop, to fade message out
+				 * after a particular duration if passed */}
+				<StatusMessage message={errorState?.form} type={StatusMessageTypes.ERROR} />
 				<ContactFormFields data={{ errors: errorState, fields: fieldsState }} />
 				<Button isLoading={isSubmitting ?? isLoading} type='submit'>
 					Send Now
