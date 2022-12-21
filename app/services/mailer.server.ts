@@ -2,7 +2,10 @@
 import type { SendMailOptions, Transporter } from 'nodemailer';
 import nodemailer from 'nodemailer';
 
-// Nodemailer
+// NODEMAILER
+/* TODO: cache this? Each render makes two func calls
+ * Since this func is called at top level scope with no checks.
+ * Not big deal since server-side, but still good to tighten up. */
 const transporter: Transporter = getTransporter();
 
 function getTransporter() {
@@ -18,6 +21,7 @@ function getTransporter() {
 				host: process.env.SMTP_HOST,
 				port: Number(process.env.SMTP_PORT),
 			};
+			break;
 		default:
 			config = {
 				auth: {

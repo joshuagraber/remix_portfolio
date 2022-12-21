@@ -76,7 +76,12 @@ export const action: ActionFunction = async ({ request }) => {
 			);
 		}
 	} catch (error: any) {
-		throw new Error(error?.message ?? 'There was an error trying to send email');
+		console.error('Error trying to send mail:', { error });
+		return json({
+			errors: {
+				form: 'There was an error trying to send email, please try again.',
+			},
+		});
 	}
 };
 
