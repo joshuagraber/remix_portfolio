@@ -80,7 +80,8 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
 export const links: LinksFunction = () => {
 	return [
-		...containerCenterLinks(),
+		/* Not returning containerCenter here, it is still on the route from being used in /posts,
+		 * and importing both places causes warnings on prefetch. */
 		...footerLinks(),
 		...loadingSpinnerLinks(),
 		{ rel: 'stylesheet', href: styles },
@@ -131,6 +132,7 @@ const PostFigure: React.FC<ImageComponentProps> = ({ alt, title, src }) => {
 	);
 };
 
+// TODO: use react-youtube (https://www.npmjs.com/package/react-youtube) or similar pkg that interacts with YT API directly
 const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ src }) => {
 	const containerRef = React.useRef<HTMLDivElement>(null);
 	// TODO IF REPEATED: Create useElementDimensions hook that receives ref and returns useful DOM dimension / positioning props
