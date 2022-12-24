@@ -140,9 +140,24 @@ export default function BlogAdmin() {
 		preventDefaults(event);
 		const { name, value } = event?.currentTarget;
 
+		// Handling images in handleOnImagesSelectClick
+		if (name === 'images') return;
+
 		setFields((previousFields) => {
-			const newValue = name === 'images' ? [...previousFields[name], value] : value;
-			return { ...previousFields, [name]: newValue };
+			return { ...previousFields, [name]: value };
+		});
+	}
+
+	function handleOnImagesSelectClick(event: React.MouseEvent<HTMLSelectElement>) {
+		preventDefaults(event);
+
+		const { value } = event.nativeEvent.target as unknown as HTMLOptionElement;
+
+		setFields((previousFields) => {
+			if (previousFields.images.includes(value)) {
+				return { ...previousFields, images: previousFields.images.filter((img) => img !== value) };
+			}
+			return { ...previousFields, images: [...previousFields.images, value] };
 		});
 	}
 
@@ -173,7 +188,7 @@ export default function BlogAdmin() {
 		return true;
 	}
 
-	function preventDefaults(e: React.ChangeEvent<Element>) {
+	function preventDefaults(e: any) {
 		e.preventDefault();
 		e.stopPropagation();
 	}
@@ -294,6 +309,7 @@ export default function BlogAdmin() {
 					id='images'
 					name='images'
 					onChange={handleOnSelectChange}
+					onClick={handleOnImagesSelectClick}
 					multiple
 				>
 					{images.map((image) => {
@@ -334,7 +350,7 @@ export default function BlogAdmin() {
 			<div className='jdg-input jdg-input-text'>
 				<label htmlFor='tags'>Tags</label>
 				<input
-					value={fields.tags?.join(', ')}
+					value={Array.isArray(fields.tags) ? fields.tags.join(', ') : fields.tags}
 					name='tags'
 					onChange={handleOnInputChange}
 					type='text'
