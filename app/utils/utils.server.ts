@@ -4,6 +4,23 @@ import { createHash } from 'crypto';
 // TYPES
 import { FormValue } from 'types/types.server';
 
+export function typedBoolean<T>(value: T): value is Exclude<T, '' | 0 | false | null | undefined> {
+	return Boolean(value);
+}
+
+export function getDomainUrl(request: Request) {
+	const host = request.headers.get('X-Forwarded-Host') ?? request.headers.get('host');
+	if (!host) {
+		throw new Error('Could not determine domain URL.');
+	}
+	const protocol = host.includes('localhost') ? 'http' : 'https';
+	return `${protocol}://${host}`;
+}
+
+export function removeDoubleSlashes(s: string) {
+	return s.replace('//', '/');
+}
+
 // e-tag
 export function createETag(html: string) {
 	return createHash('md5').update(html).digest('hex');

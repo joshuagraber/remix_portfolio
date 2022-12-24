@@ -1,5 +1,5 @@
 // GLOBALS
-import { json, LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node';
+import { DataFunctionArgs, json, LinksFunction, MetaFunction } from '@remix-run/node';
 import {
 	Links,
 	LiveReload,
@@ -13,6 +13,7 @@ import {
 import { DynamicLinks } from 'remix-utils';
 import globalStyles from 'styles/global.css';
 import themes from 'styles/themes.css';
+import { pathedRoutes } from 'other-routes.server';
 
 // COMPONENTS
 import { ModalContactForm, links as modalContactFormLinks } from 'components/ModalContact';
@@ -29,7 +30,7 @@ export const links: LinksFunction = () => {
 	];
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
+async function loader({ request }: DataFunctionArgs) {
 	// THEME
 	// Check theme session for previously saved theme
 	const themeSession = await getThemeSession(request);
@@ -55,7 +56,19 @@ export const loader: LoaderFunction = async ({ request }) => {
 		: null;
 
 	return json({ userThemePreference });
-};
+}
+
+export { loaderImpl as loader };
+
+async function loaderImpl({ request, ...rest }: DataFunctionArgs) {
+	// because this is called for every route, we'll do an early return for anything
+	// that has a other route setup. The response will be handled there.
+	if (pathedRoutes[new URL(request.url).pathname]) {
+		return new Response();
+	}
+	const result = await loader({ request, ...rest });
+	return result;
+}
 
 export const meta: MetaFunction = () => {
 	return {
