@@ -37,16 +37,18 @@ export async function getSitemapXml(request: Request, remixContext: EntryContext
 	const rawSitemapEntries = (
 		await Promise.all(
 			Object.entries(remixContext.routeModules).map(async ([id, mod]) => {
+				// exclude resource and action routes
+				if (id.startsWith('routes/action')) return;
+				if (!('default' in mod)) return;
+				// exclude root
 				if (id === 'root') return;
+				// exclude admin, test, 404 splat, auth
 				if (id.includes('admin')) return;
 				if (id.includes('test')) return;
 				if (id === 'routes/__main/$') return;
-				if (id.includes('action')) return;
 				if (id.includes('sign')) return;
 
-				// exclude resource routes from the sitemap
-				if (!('default' in mod)) return;
-
+				// Get route manifest entry
 				const manifestEntry = remixContext.manifest.routes[id];
 				if (!manifestEntry) {
 					console.warn(`Could not find a manifest entry for ${id}`);
@@ -57,6 +59,7 @@ export async function getSitemapXml(request: Request, remixContext: EntryContext
 				let parentId = manifestEntry.parentId;
 				let parent = parentId ? remixContext.manifest.routes[parentId] : null;
 
+				// Define path, get from manifestEntry
 				let path;
 				if (manifestEntry.path) {
 					path = manifestEntry.path;
@@ -66,7 +69,7 @@ export async function getSitemapXml(request: Request, remixContext: EntryContext
 					return;
 				}
 
-				// Get parents and grandparents and great-grandparents
+				// Get parents and grandparents and great-grandparents and etc.
 				while (parent) {
 					const parentPath = parent.path ?? '';
 
@@ -86,11 +89,14 @@ export async function getSitemapXml(request: Request, remixContext: EntryContext
 			})
 		)
 	)
+		// Add dynamic entries
+		.concat(siteMapEntriesFromPosts)
+		// Organize
 		.flatMap((z) => z)
 		.filter(typedBoolean)
-		.concat(siteMapEntriesFromPosts)
 		.sort((a, b) => (a.route > b.route ? 1 : -1));
 
+	// Filter non-duplicate entries and add to array.
 	const sitemapEntries: Array<SitemapEntry> = [];
 	for (const entry of rawSitemapEntries) {
 		const existingEntryForRoute = sitemapEntries.find((e) => e.route === entry.route);
@@ -105,6 +111,8 @@ export async function getSitemapXml(request: Request, remixContext: EntryContext
 			sitemapEntries.push(entry);
 		}
 	}
+
+	// RENDER
 	return `
 		<?xml version="1.0" encoding="UTF-8"?>
 		<urlset
