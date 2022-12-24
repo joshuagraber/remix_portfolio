@@ -51,7 +51,20 @@ export const getBookmarksAll = async () => {
 // READ - posts
 export const getPostsAll = async () => {
 	try {
-		return await prisma.post.findMany();
+		const now = new Date().toISOString();
+		const allPosts = await prisma.post.findMany();
+		const allPostsCurrentNoTests = allPosts.filter((post) => {
+			if (!post.slug.includes('test') && now > post.published_at.toISOString()) {
+				return post;
+			}
+		});
+
+		// If dev, return test posts and future posts
+		if (process.env.NODE_ENV === 'development') {
+			return allPosts;
+		}
+		// Otherwise, filtered posts only
+		return allPostsCurrentNoTests;
 	} catch (error) {
 		throw json(error);
 	}
