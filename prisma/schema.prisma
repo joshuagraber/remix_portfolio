@@ -53,18 +53,19 @@ model Comment {
 }
 
 model Post {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  author         User      @relation(fields: [author_id], references: [id])
-  author_id      String    @db.ObjectId
-  comments       Comment[]
-  content        String
-  images         String[]
-  image_featured String
-  slug           String    @unique
-  tagline        String
-  tags           String[]
-  title          String
-  published_at   DateTime
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  author              User      @relation(fields: [author_id], references: [id])
+  author_id           String    @db.ObjectId
+  comments            Comment[]
+  content             String
+  images              String[]
+  image_featured      String
+  image_featured_alt String    @default("")
+  slug                String    @unique
+  tagline             String
+  tags                String[]
+  title               String
+  published_at        DateTime
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 }

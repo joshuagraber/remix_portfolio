@@ -27,6 +27,7 @@ const INITIAL_FORM_STATE: BlogFormValues = {
 	content: '',
 	images: [],
 	image_featured: 'image_featured_instruction',
+	image_featured_alt: '',
 	slug: '',
 	tagline: '',
 	tags: [],
@@ -344,6 +345,20 @@ export default function BlogAdmin() {
 					})}
 				</select>
 				{errors?.image_featured && <div className='jdg-error-message'>{errors.image_featured}</div>}
+			</div>
+
+			{/* tags (text) */}
+			<div className='jdg-input jdg-input-text'>
+				<label htmlFor='tags'>Featured Image Alt Text</label>
+				<input
+					value={fields.image_featured_alt}
+					name='image_featured_alt'
+					onChange={handleOnInputChange}
+					type='text'
+				/>
+				{errors?.image_featured_alt && (
+					<div className='jdg-error-message'>{errors.image_featured_alt}</div>
+				)}
 			</div>
 
 			{/* tags (text) */}

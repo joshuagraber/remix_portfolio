@@ -45,6 +45,7 @@ export interface BlogFormValues extends FormValues {
 	content: string;
 	images: string[];
 	image_featured: string;
+	image_featured_alt: string;
 	slug: string;
 	tagline: string;
 	tags: string[];
