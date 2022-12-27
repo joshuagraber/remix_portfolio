@@ -1,14 +1,17 @@
 // GLOBALS
 import { json, redirect } from '@remix-run/node';
 import React from 'react';
-import { useLoaderData, useLocation, useTransition } from '@remix-run/react';
+import { Link, useLoaderData, useLocation, useTransition } from '@remix-run/react';
 import styles from 'styles/post.css';
 
 // COMPONENTS
-import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
+import { ContainerCenter } from 'components/ContainerCenter';
+import { Home } from 'components/SVG/Home';
 import { Footer, links as footerLinks } from 'components/Footer';
 import { LoadingSpinner, links as loadingSpinnerLinks } from 'components/Spinner';
+import { ThemeToggle, links as themeToggleLinks } from 'components/ThemeToggle';
 import ReactMarkdown from 'react-markdown';
+import YouTube from 'react-youtube';
 
 // SERVICES
 import * as blog from 'services/blog.server';
@@ -22,15 +25,10 @@ import type { DynamicLinksFunction } from 'remix-utils';
 import type { Handle } from 'types/types';
 import type { LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node';
 import type { Post, User } from '@prisma/client';
-
-// CONSTANTS
-const VIDEO_ASPECT_RATIO = {
-	height: 6,
-	width: 9,
-};
-
+import { useEffectDidUpdate } from 'hooks/useEffectDidUpdate';
+import { getDocument } from 'ssr-window';
 interface YouTubeEmbedProps {
-	src?: string;
+	videoId?: string;
 }
 
 interface ImageComponentProps {
@@ -80,10 +78,11 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
 export const links: LinksFunction = () => {
 	return [
-		/* Not returning containerCenter here, it is still on the route from being used in /posts,
+		/* Not returning ContainerCenter links here, it is still on the route from being used in /posts,
 		 * and importing both places causes warnings on prefetch. */
 		...footerLinks(),
 		...loadingSpinnerLinks(),
+		...themeToggleLinks(),
 		{ rel: 'stylesheet', href: styles },
 	];
 };
@@ -133,15 +132,35 @@ const PostFigure: React.FC<ImageComponentProps> = ({ alt, title, src }) => {
 };
 
 // TODO: use react-youtube (https://www.npmjs.com/package/react-youtube) or similar pkg that interacts with YT API directly
-const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ src }) => {
-	const containerRef = React.useRef<HTMLDivElement>(null);
-	// TODO IF REPEATED: Create useElementDimensions hook that receives ref and returns useful DOM dimension / positioning props
-	const [dimensions, setDimensions] = React.useState({ clientHeight: 0, clientWidth: 0 });
+const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ videoId }) => {
+	// HOOKS - GLOBAL
+	const document = getDocument();
 
-	React.useEffect(() => {
-		if (containerRef.current) {
-			const { clientHeight, clientWidth } = containerRef.current;
-			setDimensions({ clientHeight, clientWidth });
+	// HOOKS - REF
+	const query = `iframe[src*=${videoId}]`;
+	const iFrameRef = React.useRef<HTMLDivElement | null>(document.querySelector(query));
+
+	// HOOKS - STATE
+	// Dims to dynamically resize, since YT iFrame is butthole
+	const [dimensions, setDimensions] = React.useState<Record<string, number | string>>({
+		height: '100%',
+		width: '100%',
+	});
+
+	// CONSTANTS
+	const opts = {
+		playerVars: {
+			// https://developers.google.com/youtube/player_parameters
+			allowpresentation: true,
+			modestbranding: true,
+			sandbox: 'allow-scripts allow-same-origin allow-presentation',
+		},
+	};
+
+	useEffectDidUpdate(() => {
+		if (iFrameRef.current) {
+			const { clientHeight, clientWidth } = iFrameRef.current;
+			setDimensions({ height: clientHeight, width: clientWidth });
 
 			window.addEventListener('resize', handleResize);
 
@@ -150,31 +169,29 @@ const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ src }) => {
 
 		function handleResize() {
 			setDimensions({
-				clientHeight: containerRef.current?.clientHeight ?? 0,
-				clientWidth: containerRef.current?.clientWidth ?? 0,
+				height: iFrameRef?.current?.clientHeight ?? 0,
+				width: iFrameRef?.current?.clientWidth ?? 0,
 			});
 		}
-	}, [containerRef]);
+	}, [iFrameRef]);
 
 	return (
-		<div className='jdg-post-youtube-embed' ref={containerRef}>
-			<iframe
-				allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-				allowFullScreen
-				className='jdg-post-youtube-embed-frame'
-				src={src}
-				title='YouTube video player'
-				height={dimensions.clientWidth / (VIDEO_ASPECT_RATIO.width / VIDEO_ASPECT_RATIO.height)}
-				width={dimensions.clientWidth}
-			></iframe>
-		</div>
+		<YouTube
+			videoId={videoId}
+			opts={{ ...opts, ...dimensions }}
+			// Forcing aspect ratio via CSS,
+			// first render will set it, then
+			// dims will get accurate val.
+			// A bit hacky, but 🤷🏻‍♂️
+			style={{ ...dimensions, aspectRatio: '9/6' }}
+		/>
 	);
 };
 
 const ImageComponent: React.FC<ImageComponentProps> = (props) => {
 	switch (true) {
 		case props.title === 'youtube':
-			return <YouTubeEmbed src={props.src} />;
+			return <YouTubeEmbed videoId={props.src} />;
 		default:
 			return <PostFigure {...props} />;
 	}
@@ -188,7 +205,7 @@ export default function Post(): React.ReactElement {
 	// VARS
 	const {
 		authorName,
-		post: { content, image_featured, published_at, tags, tagline, title },
+		post: { content, image_featured, image_featured_alt, published_at, tags, tagline, title },
 	} = data;
 
 	const authorToDisplay = authorName !== 'Joshua D. Graber' ? `Guest writer: ${authorName}` : null;
@@ -203,14 +220,26 @@ export default function Post(): React.ReactElement {
 			<header className='jdg-post-header'>
 				<ContainerCenter className='jdg-container-center-post-header'>
 					<div className='jdg-post-header-image'>
-						{/* TODO: bad alt text.  */}
 						<img
 							src={image_featured}
-							alt={`Hero image for ${title}: ${tagline}, with tags: ${tags.join(', ')}`}
+							alt={
+								image_featured_alt ??
+								`Hero image for ${title}: ${tagline}, with tags: ${tags.join(', ')}`
+							}
 						/>
 					</div>
 					<div className='jdg-post-header-text'>
-						<h1 className='jdg-post-header-text-heading'>{title}</h1>
+						<div className='jdg-post-header-text-heading-container'>
+							<h1 className='jdg-post-header-text-heading'>{title}</h1>
+							<div className='jdg-post-header-text-icons-container'>
+								<Link to='/'>
+									<div className='jdg-post-header-text-icon-container-home'>
+										<Home />
+									</div>
+								</Link>
+								<ThemeToggle />
+							</div>
+						</div>
 						<p className='jdg-post-header-text-sub-heading'>{tagline}</p>
 
 						<div className='jdg-post-header-text-info'>
