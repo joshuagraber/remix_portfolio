@@ -34,7 +34,7 @@ export const ThemeToggle: React.FC = () => {
 
 	return (
 		<div className='jdg-theme-toggle'>
-			<toggleThemePersistence.Form action='action/theme' method='post'>
+			<toggleThemePersistence.Form action='/action/theme' method='post'>
 				{/* Icon */}
 
 				<button
