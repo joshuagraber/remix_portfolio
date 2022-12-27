@@ -75,7 +75,6 @@ export default function ImagesAdmin() {
 
 	// UTILS
 	function preventDefault(event: React.DragEvent<HTMLInputElement>) {
-		console.log('preventing default for event: ', event);
 		event.preventDefault();
 		event.stopPropagation();
 	}

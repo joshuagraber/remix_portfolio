@@ -15,7 +15,6 @@ import * as blog from 'services/blog.server';
 import { createETag, stripParamsAndHash } from 'utils/utils.server';
 
 // TYPES
-import type { ClassValue } from 'clsx';
 import type { DynamicLinksFunction } from 'remix-utils';
 import type { LoaderFunction, LinksFunction } from '@remix-run/node';
 import type { Handle } from 'types/types';
@@ -65,7 +64,7 @@ export const handle: Handle = {
 	ref: React.createRef(),
 };
 
-export default function Index(): React.ReactElement {
+export default function HomePage(): React.ReactElement {
 	// HOOKS - GLOBAL
 	const { bookmarks, posts } = useLoaderData();
 
@@ -74,23 +73,6 @@ export default function Index(): React.ReactElement {
 			<div className='jdg-home-posts-container'>
 				<h2>Recent Posts</h2>
 				<div className='jdg-home-posts-container-inner'>
-					{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
-						const published = new Date(published_at).toLocaleDateString();
-						return (
-							<Link className='jdg-home-post-link' key={slug} to={`posts/${slug}`}>
-								<div className='jdg-home-post-link-text'>
-									<h3 className='jdg-home-post-link-text-heading'>{title}</h3>
-									<p className='jdg-home-post-link-text-subheading'>{tagline}</p>
-									<p className='jdg-home-post-link-text-date'>{published}</p>
-								</div>
-								<img
-									className='jdg-home-post-link-image'
-									src={image_featured}
-									alt={`Featured image for ${title}`}
-								/>
-							</Link>
-						);
-					})}
 					{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
 						const published = new Date(published_at).toLocaleDateString();
 						return (
@@ -119,19 +101,6 @@ export default function Index(): React.ReactElement {
 			<div className='jdg-home-bookmarks-container'>
 				<h2>Recent Bookmarks</h2>
 				<div className='jdg-home-bookmarks-container-inner'>
-					{bookmarks.map((bookmark: any) => {
-						return (
-							<a
-								className='jdg-home-bookmark-link'
-								href={bookmark.url}
-								key={bookmark.url}
-								target='blank'
-							>
-								<h3>{bookmark.title}</h3>
-								<p>{bookmark.tagline}</p>
-							</a>
-						);
-					})}
 					{bookmarks.map((bookmark: any) => {
 						return (
 							<a

@@ -34,7 +34,6 @@ export const action: ActionFunction = async ({ params, request }) => {
 				// If array, check for at least one value
 				if (Array.isArray(fields[input])) {
 					const validateArray = fields[input] as string[];
-					console.log({ validateArray });
 					if (!validateArray[0]) {
 						Object.assign(errors, { [input]: `${input} is required` });
 					}

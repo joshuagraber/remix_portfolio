@@ -108,7 +108,6 @@ export const getImageByUrl = async (url: string) => {
 
 		return image;
 	} catch (error) {
-		console.log('catching', { error });
 		throw json(error);
 	}
 };
