@@ -25,7 +25,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 	const data = {
 		canonical: stripParamsAndHash(request.url),
-		bookmarks,
+		bookmarks: bookmarks.sort((a, b) =>
+			a.createdAt.toISOString() < b.createdAt.toISOString() ? -1 : 1
+		),
 	};
 
 	// Cacheing

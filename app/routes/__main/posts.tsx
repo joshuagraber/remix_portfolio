@@ -25,7 +25,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 	const data = {
 		canonical: stripParamsAndHash(request.url),
-		posts,
+		posts: posts.sort((a, b) =>
+			a.published_at.toISOString() < b.published_at.toISOString() ? -1 : 1
+		),
 	};
 
 	// Cacheing

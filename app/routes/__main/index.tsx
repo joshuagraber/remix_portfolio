@@ -27,9 +27,13 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 	// Only send 8 most recent bookmarks / posts
 	const data = {
-		bookmarks: bookmarks.slice(0, 7),
+		bookmarks: bookmarks
+			.sort((a, b) => (a.createdAt.toISOString() < b.createdAt.toISOString() ? -1 : 1))
+			.slice(0, 7),
 		canonical: stripParamsAndHash(request.url),
-		posts: posts.slice(0, 7),
+		posts: posts
+			.sort((a, b) => (a.published_at.toISOString() < b.published_at.toISOString() ? -1 : 1))
+			.slice(0, 7),
 	};
 
 	// Cacheing
