@@ -84,21 +84,27 @@ export const action: ActionFunction = async ({ params, request }) => {
 			}
 
 		case SignInActions.SIGNUP:
-			// Only need name fields for signup
-			const { name_first, name_middle, name_last } = fields;
-			const signUpValues = {
-				...signInValues,
-				name_first: String(name_first),
-				name_middle: String(name_middle),
-				name_last: String(name_last),
-			};
+			// Autofail until I need this
+			return json({
+				errors: {
+					form: 'Sorry, this signup link is invalid. Please send me a message if you think you should have access',
+				},
+			});
+		// Only need name fields for signup
+		// const { name_first, name_middle, name_last } = fields;
+		// const signUpValues = {
+		// 	...signInValues,
+		// 	name_first: String(name_first),
+		// 	name_middle: String(name_middle),
+		// 	name_last: String(name_last),
+		// };
 
-			try {
-				return await authenticator.signup({ ...signUpValues }, redirectTo);
-			} catch (error) {
-				console.error(error);
-				return json({ error });
-			}
+		// try {
+		// 	return await authenticator.signup({ ...signUpValues }, redirectTo);
+		// } catch (error) {
+		// 	console.error(error);
+		// 	return json({ error });
+		// }
 
 		case SignInActions.SIGNOUT:
 			try {
