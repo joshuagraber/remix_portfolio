@@ -1,0 +1,22 @@
+.jdg-page {
+	.jdg-not-authorized-container-center {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 80px;
+
+		h2 {
+			font: var(--font-heading-secondary);
+			margin-bottom: 24px;
+		}
+
+		p {
+			margin-bottom: 12px;
+		}
+
+		a {
+			text-decoration: underline var(--color-theme-primary-1) 3px;
+		}
+	}
+}

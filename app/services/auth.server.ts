@@ -5,11 +5,12 @@ import { createCookieSessionStorage, json, redirect } from '@remix-run/node';
 // DB
 import { prisma } from './prisma.server';
 
-// TYPES
-import type { LoginFormValues, UserFormValues } from 'types/types.server';
-
 // SERVICES
 import * as users from './users.server';
+
+// TYPES
+import type { LoginFormValues, UserFormValues } from 'types/types.server';
+import { Role, User } from '@prisma/client';
 
 // VARS
 const secret = process.env.SESSION_SECRET;
@@ -111,10 +112,16 @@ export const requireUserId = async (
 	request: Request,
 	redirectTo: string = new URL(request.url).pathname
 ) => {
-	const session = await storage.getSession(request.headers.get('Cookie'));
-	const userID = session.get('userID');
+	const session = await getUserSession(request);
+	const user = await getUser(request);
 
-	if (!userID || typeof userID !== 'string') {
+	// Protect admin route from everyone who's not me.
+	if (redirectTo.includes('admin') && user?.role !== Role.ADMIN) {
+		throw redirect('/not-authorized');
+	}
+
+	// If no user, send to sign in
+	if (!user?.id || typeof user.id !== 'string') {
 		const redirectParam = new URLSearchParams([['redirect', redirectTo]]);
 		throw redirect(`/sign/in/?${redirectParam}`, {
 			headers: {
@@ -122,7 +129,7 @@ export const requireUserId = async (
 			},
 		});
 	}
-	return userID;
+	return user.id;
 };
 
 export const getUserSession = (request: Request) => {
@@ -145,7 +152,7 @@ export const getUser = async (request: Request) => {
 	try {
 		const user = await prisma.user.findUnique({
 			where: { id: userID },
-			select: { id: true, email: true, name_first: true, name_last: true },
+			select: { id: true, email: true, name_first: true, name_last: true, role: true },
 		});
 		return user;
 	} catch (error) {
