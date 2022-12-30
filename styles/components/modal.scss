@@ -54,14 +54,14 @@
 	&-icon-container {
 		align-items: center;
 		background: var(--color-neutral-white-opacity_80);
-		border-radius: 50%;
+		border-radius: 6px;
 		cursor: pointer;
 		display: flex;
 		height: 40px;
 		justify-content: center;
 		position: absolute;
-		right: -18px;
-		top: -18px;
+		right: -20px;
+		top: -20px;
 		width: 40px;
 		z-index: 101;
 
@@ -108,8 +108,8 @@
 		}
 
 		&-icon-container {
-			right: 10px;
-			top: 10px;
+			right: 25px;
+			top: 25px;
 		}
 	}
 

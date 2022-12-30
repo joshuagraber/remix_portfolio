@@ -50,9 +50,9 @@
 		padding: 12px;
 		position: relative;
 		width: max-content;
-		rotate: -40deg;
-		top: 32px;
-		left: -75px;
+		top: 8px;
+		transform: skewX(5deg);
+		left: 64px;
 		z-index: 1;
 
 		:root[data-theme='jdg-light-mode'] & {
@@ -62,10 +62,8 @@
 	}
 
 	&.modal h3 {
-		rotate: 0deg;
 		top: 8px;
 		left: 16px;
-		transform: skewX(5deg);
 	}
 
 	@media (max-width: $mobile) {
@@ -73,9 +71,7 @@
 
 		h3 {
 			rotate: 0deg;
-			top: 8px;
 			left: 16px;
-			transform: skewX(5deg);
 		}
 
 		&.modal {

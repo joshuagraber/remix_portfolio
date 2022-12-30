@@ -16,7 +16,7 @@ export const ContactFormFields: React.FC<RouteActionDataSelf> = ({ data }) => {
 					error={data?.errors?.name_first}
 					label='First Name'
 					name='name_first'
-					placeholder='Jane'
+					placeholder='Jamie'
 					type='text'
 					defaultValue={data?.fields?.name_first}
 				/>
@@ -33,7 +33,7 @@ export const ContactFormFields: React.FC<RouteActionDataSelf> = ({ data }) => {
 				error={data?.errors?.email}
 				label='Email'
 				name='email'
-				placeholder='jane@doe.com'
+				placeholder='jamie@doe.com'
 				type='text'
 				defaultValue={data?.fields?.email}
 			/>
