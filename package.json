@@ -10,7 +10,7 @@
 		"dev": "run-p dev:*",
 		"dev:styles": "run-p styles:*",
 		"dev:remix": "remix dev",
-		"start": "remix build && run-p start:*",
+		"start": "npm run build && run-p start:*",
 		"start:remix": "node server.js",
 		"start:styles": "run-p styles:*",
 		"styles:css": "postcss styles/**/*.css --dir app/styles --use autoprefixer --watch",

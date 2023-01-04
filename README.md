@@ -10,7 +10,7 @@ Run the app locally in development mode with HMR:
 npm run dev
 ```
 
-Run the app locally in production mode with HMR:
+Run the app locally in production mode:
 
 ```sh
 npm start
