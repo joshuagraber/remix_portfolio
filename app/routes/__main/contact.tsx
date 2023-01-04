@@ -22,7 +22,6 @@ import type { Handle } from 'types/types';
 
 // EXPORTS
 export const action: ActionFunction = async ({ request }) => {
-	let errorCount: number = 0;
 	const errors: ContactErrors = {};
 
 	const submission: FormData = await request.formData();
@@ -41,25 +40,23 @@ export const action: ActionFunction = async ({ request }) => {
 		if (!isValidInputLength(fields[input], 1)) {
 			const fieldNameForDisplay = input.includes('name') ? 'Name' : titleCase(input);
 			errors[input] = `Your ${fieldNameForDisplay} is required.`;
-			errorCount++;
 		}
 	}
 
 	if (!isValidEmail(email)) {
 		errors.email = 'Please provide a valid email address.';
-		errorCount++;
 	}
 
-	if (errorCount > 0) {
-		return json({ errors, fields }, 422);
+	if (Object.values(errors).some(Boolean)) {
+		return json({ errors, fields }, { status: 422 });
 	}
 
 	try {
 		const response = await sendMail({
-			from: `${name} <${process.env.SMTP_EMAIL_FROM}>`,
+			from: `${name} <${email}>`,
 			to: process.env.SMTP_SEND_TO,
 			replyTo: email.toString(),
-			subject: 'Message from contact form',
+			subject: 'Message from Website Contact Form',
 			// TODO: Create template and render to html string
 			text: message.toString(),
 		});
@@ -81,6 +78,7 @@ export const action: ActionFunction = async ({ request }) => {
 			errors: {
 				form: 'There was an error trying to send email, please try again.',
 			},
+			fields,
 		});
 	}
 };

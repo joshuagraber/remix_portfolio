@@ -1,31 +1,32 @@
 // GLOBALS
 import type { SendMailOptions, Transporter } from 'nodemailer';
 import nodemailer from 'nodemailer';
-import { json } from '@remix-run/node';
 
 // NODEMAILER
-/* TODO: cache this? Each render makes two func calls
- * Since this func is called at top level scope with no checks.
- * Not big deal since server-side, but still good to tighten up. */
-const transporter: Transporter = nodemailer.createTransport(getConfig());
-
-function getConfig() {
+// UTIL
+async function getConfig() {
 	switch (process.env.NODE_ENV) {
+		// DEVELOPMENT
 		case 'development':
-			nodemailer.createTestAccount((err, account) => {
-				if (err) {
-					return json(err);
-				}
+			const {
+				smtp: { host, port, secure },
+				user,
+				pass,
+			} = await nodemailer.createTestAccount();
 
-				return {
-					auth: {
-						user: account.user,
-						pass: account.pass,
-					},
-					host: process.env.SMTP_HOST,
-					port: Number(process.env.SMTP_PORT),
-				};
-			});
+			// Log credentials to expose ethereal login for viewing email
+			console.log(
+				`
+	**** Nodemailer test account created **** \n
+	Log in to https://ethereal.email/login with the following credentials to view sent mail:
+	USERNAME: ${user}
+	PASSWORD: ${pass}
+	`
+			);
+
+			return { auth: { user, pass }, host, port, secure };
+
+		// PRODUCTION
 		default:
 			return {
 				auth: {
@@ -35,15 +36,13 @@ function getConfig() {
 				host: process.env.SMTP_HOST,
 				port: Number(process.env.SMTP_PORT),
 				requireTLS: true,
-				secure: false,
-				tls: {
-					ciphers: process.env.SMTP_CIPHERS,
-				},
+				secure: true,
 			};
 	}
 }
 
 // EXPORT
-export const sendMail = (options: SendMailOptions): Promise<any> => {
+export const sendMail = async (options: SendMailOptions): Promise<any> => {
+	const transporter: Transporter = nodemailer.createTransport(await getConfig());
 	return transporter.sendMail(options);
 };
