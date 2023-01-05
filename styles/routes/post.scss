@@ -56,8 +56,11 @@ $post-container-padding: 24px;
 			}
 
 			&-heading {
-				font: var(--font-heading-primary);
 				margin-bottom: 8px;
+
+				h1 {
+					font: var(--font-heading-primary);
+				}
 			}
 
 			&-sub-heading {

@@ -183,7 +183,7 @@ const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ videoId }) => {
 			// first render will set it, then
 			// dims will get accurate val.
 			// A bit hacky, but 🤷🏻‍♂️
-			style={{ ...dimensions, aspectRatio: '9/6' }}
+			style={{ ...dimensions, aspectRatio: '16/9' }}
 		/>
 	);
 };
@@ -210,6 +210,7 @@ export default function Post(): React.ReactElement {
 
 	const authorToDisplay = authorName !== 'Joshua D. Graber' ? `Guest writer: ${authorName}` : null;
 	const dateToDisplay = new Date(published_at).toLocaleDateString();
+	const titleNormalizedForMarkdown = title.includes('#') ? title : `# ${title}`;
 
 	return (
 		<div className='jdg-page jdg-page-post'>
@@ -230,7 +231,9 @@ export default function Post(): React.ReactElement {
 					</div>
 					<div className='jdg-post-header-text'>
 						<div className='jdg-post-header-text-heading-container'>
-							<h1 className='jdg-post-header-text-heading'>{title}</h1>
+							<div className='jdg-post-header-text-heading'>
+								<ReactMarkdown children={titleNormalizedForMarkdown} />
+							</div>
 							<div className='jdg-post-header-text-icons-container'>
 								<Link to='/'>
 									<div className='jdg-post-header-text-icon-container-home'>
@@ -240,7 +243,9 @@ export default function Post(): React.ReactElement {
 								<ThemeToggle />
 							</div>
 						</div>
-						<p className='jdg-post-header-text-sub-heading'>{tagline}</p>
+						<p className='jdg-post-header-text-sub-heading'>
+							<ReactMarkdown children={tagline} />
+						</p>
 
 						<div className='jdg-post-header-text-info'>
 							{authorToDisplay && <p className='jdg-post-header-text-author'>{authorToDisplay}</p>}
@@ -258,11 +263,18 @@ export default function Post(): React.ReactElement {
 						components={{
 							img: (props) => <ImageComponent {...props} />,
 							h1: 'h2',
-							p: (props) => {
-								if (props.node.children.some((el) => el.type === 'element')) {
-									return <div {...props}></div>;
+							// ReactMarkdown wraps everything in p - explicit check for any elements that should
+							// be wrapped in p and keep those as p (element children that are not em / strong tags)
+							// Wrap everything else in a div.
+							p: ({ node, ...props }) => {
+								if (
+									node.children.some(
+										(el) => el.type === 'element' && el.tagName !== 'em' && el.tagName !== 'strong'
+									)
+								) {
+									return <div {...props} />;
 								}
-								return <p {...props}></p>;
+								return <p {...props} />;
 							},
 						}}
 					/>
