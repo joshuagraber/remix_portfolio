@@ -19,9 +19,9 @@ if (!secret) {
 	throw new Error('SESSION_SECRET is not defined');
 }
 
-const storage = createCookieSessionStorage({
+const userSessionStorage = createCookieSessionStorage({
 	cookie: {
-		name: 'jdg-session',
+		name: 'jdg_user',
 		secure: process.env.NODE_ENV === 'production',
 		secrets: [secret],
 		sameSite: 'lax',
@@ -87,7 +87,7 @@ export const signout = async (request: Request) => {
 
 	return redirect('/sign/in', {
 		headers: {
-			'Set-Cookie': await storage.destroySession(session),
+			'Set-Cookie': await userSessionStorage.destroySession(session),
 		},
 	});
 };
@@ -95,7 +95,7 @@ export const signout = async (request: Request) => {
 // SESSIONS
 export const createSession = async (userID: string, redirectTo: string = '/') => {
 	// Create session
-	const session = await storage.getSession();
+	const session = await userSessionStorage.getSession();
 
 	// Set user to session
 	session.set('userID', userID);
@@ -103,7 +103,7 @@ export const createSession = async (userID: string, redirectTo: string = '/') =>
 	// Redirect
 	return redirect(redirectTo, {
 		headers: {
-			'Set-Cookie': await storage.commitSession(session),
+			'Set-Cookie': await userSessionStorage.commitSession(session),
 		},
 	});
 };
@@ -125,7 +125,7 @@ export const requireUserId = async (
 		const redirectParam = new URLSearchParams([['redirect', redirectTo]]);
 		throw redirect(`/sign/in/?${redirectParam}`, {
 			headers: {
-				'Set-Cookie': await storage.commitSession(session),
+				'Set-Cookie': await userSessionStorage.commitSession(session),
 			},
 		});
 	}
@@ -133,7 +133,7 @@ export const requireUserId = async (
 };
 
 export const getUserSession = (request: Request) => {
-	return storage.getSession(request.headers.get('Cookie'));
+	return userSessionStorage.getSession(request.headers.get('Cookie'));
 };
 
 export const getUserID = async (request: Request) => {

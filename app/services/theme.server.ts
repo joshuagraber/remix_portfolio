@@ -7,7 +7,7 @@ if (!sessionSecret) {
 	throw new Error('SESSION_SECRET must be set');
 }
 
-const themeStorage = createCookieSessionStorage({
+const themeSessionStorage = createCookieSessionStorage({
 	cookie: {
 		name: 'jdg_theme',
 		secure: true,
@@ -19,13 +19,13 @@ const themeStorage = createCookieSessionStorage({
 });
 
 export async function getThemeSession(request: Request) {
-	const session = await themeStorage.getSession(request.headers.get('Cookie'));
+	const session = await themeSessionStorage.getSession(request.headers.get('Cookie'));
 	return {
 		getTheme: () => {
 			const themeValue = session.get('theme');
 			return isTheme(themeValue) ? themeValue : null;
 		},
 		setTheme: (theme: Theme) => session.set('theme', theme),
-		commit: () => themeStorage.commitSession(session),
+		commit: () => themeSessionStorage.commitSession(session),
 	};
 }
