@@ -9,6 +9,8 @@ export const links: LinksFunction = () => {
 };
 
 export const ContactFormFields: React.FC<RouteActionDataSelf> = ({ data }) => {
+	console.log({ data });
+
 	return (
 		<div className='jdg-contact-form-input-fields'>
 			<fieldset name='Name'>
@@ -44,7 +46,7 @@ export const ContactFormFields: React.FC<RouteActionDataSelf> = ({ data }) => {
 				placeholder='What would you like to say...'
 				type='textarea'
 				defaultValue={data?.fields?.message}
-			></Input>
+			/>
 		</div>
 	);
 };

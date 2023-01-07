@@ -5,8 +5,10 @@ import React from 'react';
 // COMPONENT
 import { StatusMessage, links as statusMessageLinks, StatusMessageTypes } from './StatusMessage';
 
-// EXT LIBS
+// UTILS
 import clsx, { ClassValue } from 'clsx';
+import { isValidEmail } from 'utils/utils';
+import { v4 as uuid } from 'uuid';
 
 // TYPES
 type InputTypes = 'checkbox' | 'password' | 'text' | 'textarea'; // Add as needed
@@ -15,15 +17,15 @@ import { LinksFunction } from '@remix-run/node';
 interface Props {
 	className?: ClassValue;
 	defaultChecked?: boolean;
-	error?: string | undefined;
+	error?: string;
 	id?: string;
 	isDisabled?: boolean;
+	key?: string;
 	label: string | React.ReactElement;
 	name: string;
-	// onFocus?: (e: React.FocusEvent) => void;
 	placeholder?: string;
 	type: InputTypes;
-	defaultValue?: string | undefined;
+	defaultValue?: string;
 }
 
 // EXPORTS
@@ -38,6 +40,7 @@ export const Input: React.FC<Props> = ({
 	id,
 	isDisabled = false,
 	label,
+	key = uuid(),
 	name,
 	placeholder,
 	type,
@@ -84,22 +87,32 @@ export const Input: React.FC<Props> = ({
 
 	// Update error state when input un-focused
 	const onBlur = () => {
+		const name = textAreaRef?.current?.name ?? inputRef?.current?.name;
 		const value = textAreaRef?.current?.value ?? inputRef?.current?.value;
-		if (!value) {
+		if (name === 'email') {
+			if (!isValidEmail(value) || !value) {
+				setErrorMessage(error);
+			}
+		}
+		if (typeof value !== 'undefined' && value.length < 1) {
 			setErrorMessage(error);
 		}
 	};
 
 	// VARS
-	const classes: ClassValue = clsx('jdg-input', `jdg-input-${type}`, className, {
-		'jdg-input-error': errorMessage,
-		'jdg-input-disabled': isDisabled,
-	});
+	const classes: ClassValue = clsx(
+		'jdg-input',
+		`jdg-input-${type}`,
+		className,
+		errorMessage && 'jdg-input-error',
+		isDisabled && 'jdg-input-disabled'
+	);
 
 	const sharedProps = {
 		defaultValue,
 		disabled: isDisabled,
 		id: id ?? name,
+		key,
 		name,
 		onBlur,
 		onFocus,
@@ -125,6 +138,12 @@ export const Input: React.FC<Props> = ({
 
 	// Render
 	const Component = () => {
+		if (type === 'text') {
+			console.log('rendering Input:', {
+				inputProps,
+			});
+		}
+
 		switch (type) {
 			case 'textarea':
 				return <textarea {...textAreaProps} />;

@@ -102,12 +102,15 @@ export const Modal: React.FC<Props> = ({ className = '', children, isVisible = f
 								}}
 							>
 								<div className='jdg-modal-container' ref={ref}>
-									<Form action={`${path}?${search}`} aria-label='Close modal' replace>
-										<div className='jdg-modal-icon-container'>
-											<button className='jdg-button-unset' type='submit'>
-												<X />
-											</button>
-										</div>
+									<Form
+										action={`${path}?${search}`}
+										className='jdg-modal-icon-container'
+										aria-label='Close modal'
+										replace
+									>
+										<button className='jdg-button-unset' type='submit'>
+											<X />
+										</button>
 									</Form>
 
 									<div className='jdg-modal-content'>{children}</div>

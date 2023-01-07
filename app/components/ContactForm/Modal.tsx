@@ -26,7 +26,6 @@ export const ContactFormModal: React.FC = () => {
 	// HOOKS - EFFECTS
 	React.useEffect(() => {
 		if (isLoading && !fetchContactAction?.data?.errors) {
-			// hide();
 		}
 	}, [fetchContactAction]);
 

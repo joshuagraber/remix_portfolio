@@ -70,7 +70,9 @@
 		}
 
 		&:hover,
-		&:focus {
+		&:focus,
+		&:focus-within,
+		&-focus-visible {
 			background: var(--color-theme-primary-1);
 
 			svg {
