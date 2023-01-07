@@ -31,7 +31,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 	};
 
 	// Cacheing
-	const responseEtag = createETag(String(data));
+	const responseEtag = createETag(JSON.stringify(data));
 	const requestEtag = request.headers.get('If-None-Match');
 
 	// If our etag equals browser's, return 304, browser should fall back to cache
