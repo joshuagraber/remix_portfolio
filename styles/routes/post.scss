@@ -3,28 +3,28 @@
 $post-container-max-width: 650px;
 $post-container-padding: 24px;
 
-.jdg-header {
-	align-items: center;
-	display: flex;
-	height: min-content;
-	padding: 12px 24px;
-	transition: 0.2s ease background-color;
-
-	.jdg-container-center {
-		align-items: center;
-		display: grid;
-		grid-template-columns: 1fr auto auto;
-		gap: 0 1rem;
-		grid-template-rows: repeat(2, auto);
-		width: 100%;
-	}
-
-	@media (max-width: $mobile) {
-		padding: 24px 24px 8px;
-	}
-}
-
 .jdg-page {
+	.jdg-header {
+		align-items: center;
+		display: flex;
+		height: min-content;
+		padding: 12px 24px;
+		transition: 0.2s ease background-color;
+
+		.jdg-container-center {
+			align-items: center;
+			display: grid;
+			grid-template-columns: 1fr auto auto;
+			gap: 0 1rem;
+			grid-template-rows: repeat(2, auto);
+			width: 100%;
+		}
+
+		@media (max-width: $mobile) {
+			padding: 24px 24px 8px;
+		}
+	}
+
 	.jdg-container-center-post-header {
 		margin-bottom: 80px;
 
@@ -129,9 +129,10 @@ $post-container-padding: 24px;
 		display: flex;
 		flex-direction: column;
 		max-width: $post-container-max-width;
+		padding-bottom: 40px;
 
 		> * {
-			margin-bottom: 24px;
+			margin: 0 0 24px;
 		}
 
 		h2,
@@ -164,7 +165,7 @@ $post-container-padding: 24px;
 		}
 
 		p {
-			padding: 16px 0;
+			margin-bottom: 8px;
 		}
 
 		blockquote {
@@ -178,8 +179,12 @@ $post-container-padding: 24px;
 			}
 		}
 
+		a {
+			text-decoration: underline var(--color-theme-primary-2) 3px;
+			text-underline-offset: 3px;
+		}
+
 		.jdg-post-figure {
-			margin-bottom: 24px;
 			overflow: hidden;
 			position: relative;
 
@@ -265,6 +270,35 @@ $post-container-padding: 24px;
 						transform: translateX(16px);
 					}
 				}
+			}
+		}
+	}
+
+	.jdg-post-break {
+		margin: 40px 0;
+	}
+
+	.jdg-post-email-list-signup {
+		form {
+			display: flex;
+			flex-direction: column;
+			overflow: scroll;
+		}
+
+		.jdg-button {
+			margin: 0 auto;
+			max-width: 300px;
+			width: 100%;
+		}
+
+		.jdg-input {
+			margin-bottom: 8px;
+		}
+
+		&-confirmation {
+			h4,
+			p {
+				text-align: center;
 			}
 		}
 	}

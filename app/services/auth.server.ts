@@ -115,12 +115,12 @@ export const requireUserId = async (
 	const session = await getUserSession(request);
 	const user = await getUser(request);
 
-	// Protect admin route from everyone who's not me.
-	if (redirectTo.includes('admin') && user?.role !== Role.ADMIN) {
+	// If not admin, redirect to not-authorized
+	if (redirectTo.includes('admin') && user && user?.role !== Role.ADMIN) {
 		throw redirect('/not-authorized');
 	}
 
-	// If no user, send to sign in
+	// If no user, redirect to sign in
 	if (!user?.id || typeof user.id !== 'string') {
 		const redirectParam = new URLSearchParams([['redirect', redirectTo]]);
 		throw redirect(`/sign/in/?${redirectParam}`, {

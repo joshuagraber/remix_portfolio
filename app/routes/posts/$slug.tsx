@@ -1,10 +1,18 @@
 // GLOBALS
 import { json, redirect } from '@remix-run/node';
 import React from 'react';
-import { Link, useLoaderData, useLocation, useTransition } from '@remix-run/react';
+import {
+	Form,
+	Link,
+	useFetcher,
+	useLoaderData,
+	useLocation,
+	useTransition,
+} from '@remix-run/react';
 import styles from 'styles/post.css';
 
 // COMPONENTS
+import { Accordion, links as accordionLinks } from 'components/Accordion';
 import { ContainerCenter } from 'components/ContainerCenter';
 import { Home } from 'components/SVG/Home';
 import { Footer, links as footerLinks } from 'components/Footer';
@@ -27,6 +35,8 @@ import type { LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/nod
 import type { Post, User } from '@prisma/client';
 import { useEffectDidUpdate } from 'hooks/useEffectDidUpdate';
 import { getDocument } from 'ssr-window';
+import { Input, links as inputLinks } from 'components/Input';
+import { Button, links as buttonLinks } from 'components/Button';
 interface YouTubeEmbedProps {
 	videoId?: string;
 }
@@ -78,9 +88,12 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
 export const links: LinksFunction = () => {
 	return [
+		...accordionLinks(),
+		...buttonLinks(),
 		/* Not returning ContainerCenter links here, it is still on the route from being used in /posts,
 		 * and importing both places causes warnings on prefetch. */
 		...footerLinks(),
+		...inputLinks(),
 		...loadingSpinnerLinks(),
 		...themeToggleLinks(),
 		{ rel: 'stylesheet', href: styles },
@@ -201,6 +214,9 @@ export default function Post(): React.ReactElement {
 	const data = useLoaderData();
 	const location = useLocation();
 	const transition = useTransition();
+	const subscribe = useFetcher();
+
+	const bool = true;
 
 	// VARS
 	const {
@@ -243,9 +259,9 @@ export default function Post(): React.ReactElement {
 								<ThemeToggle />
 							</div>
 						</div>
-						<p className='jdg-post-header-text-sub-heading'>
+						<div className='jdg-post-header-text-sub-heading'>
 							<ReactMarkdown children={tagline} />
-						</p>
+						</div>
 
 						<div className='jdg-post-header-text-info'>
 							{authorToDisplay && <p className='jdg-post-header-text-author'>{authorToDisplay}</p>}
@@ -261,10 +277,11 @@ export default function Post(): React.ReactElement {
 					<ReactMarkdown
 						children={content}
 						components={{
+							a: ({ node, ...props }) => <a rel='noreferrer' target='_blank' {...props} />,
 							img: (props) => <ImageComponent {...props} />,
 							h1: 'h2',
 							// ReactMarkdown wraps everything in p - explicit check for any elements that should
-							// be wrapped in p and keep those as p (element children that are not em / strong tags)
+							// be wrapped in p and keep those as p (string children or em / strong elements)
 							// Wrap everything else in a div.
 							p: ({ node, ...props }) => {
 								if (
@@ -278,6 +295,66 @@ export default function Post(): React.ReactElement {
 							},
 						}}
 					/>
+
+					<hr className='jdg-post-break' />
+
+					{/*  TODO: abstract to separate component */}
+					<div className='jdg-post-email-list-signup'>
+						<Accordion heading='Sign up for my newsletter' name='mailing'>
+							<subscribe.Form action='/action/subscribe' method='post'>
+								{subscribe.type === 'done' && !subscribe.data && (
+									<div className='jdg-post-email-list-signup-confirmation'>
+										<h4>You've successfully signed up!</h4>
+										<p>Look out for an email confirmation in your inbox shortly.</p>
+										{/* TODO: Set up magic link to confirm signups. */}
+									</div>
+								)}
+								{(subscribe.type !== 'done' || subscribe.data) && (
+									<>
+										<h5>Get updates on new posts and exclusive content, once a month or less.</h5>
+										<Input
+											defaultValue={subscribe.data?.fields?.email}
+											error={subscribe.data?.errors?.email}
+											label='Email'
+											name='email'
+											type='text'
+										/>
+
+										<Input
+											defaultValue={subscribe.data?.fields?.name_first}
+											error={subscribe.data?.errors?.name_first}
+											label='First Name'
+											name='name_first'
+											type='text'
+										/>
+
+										<Input
+											defaultValue={subscribe.data?.fields?.name_middle}
+											error={subscribe.data?.errors?.name_middle}
+											label='Middle name or initial (optional)'
+											name='name_middle'
+											type='text'
+										/>
+
+										<Input
+											defaultValue={subscribe.data?.fields?.name_last}
+											error={subscribe.data?.errors?.name_last}
+											label='Last Name'
+											name='name_last'
+											type='text'
+										/>
+
+										<Button
+											isLoading={subscribe.state === 'submitting' || subscribe.state === 'loading'}
+											type='submit'
+										>
+											Sign up now
+										</Button>
+									</>
+								)}
+							</subscribe.Form>
+						</Accordion>
+					</div>
 				</ContainerCenter>
 			</main>
 
