@@ -138,12 +138,6 @@ export const Input: React.FC<Props> = ({
 
 	// Render
 	const Component = () => {
-		if (type === 'text') {
-			console.log('rendering Input:', {
-				inputProps,
-			});
-		}
-
 		switch (type) {
 			case 'textarea':
 				return <textarea {...textAreaProps} />;

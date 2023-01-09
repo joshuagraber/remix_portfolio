@@ -1,6 +1,7 @@
 // GLOBALS
 import styles from 'styles/accordion.css';
 import React from 'react';
+import { Form, useLocation, useSearchParams } from '@remix-run/react';
 
 // LIBS
 import clsx from 'clsx';
@@ -9,7 +10,7 @@ import clsx from 'clsx';
 import { Chevron } from 'components/SVG/Chevron';
 
 // UTIL
-import { handleKeyDownLikeClick } from 'utils/utils';
+import { scrollTo } from 'utils/utils';
 
 // EXPORTS
 export function links() {
@@ -20,23 +21,24 @@ export function links() {
 interface Props {
 	children: React.ReactElement | string;
 	isDisabled?: boolean;
-	isOpen?: boolean;
 	heading: string;
+	name: string;
 }
 
-export const Accordion: React.FC<Props> = ({
-	children,
-	isDisabled = false,
-	isOpen = false,
-	heading,
-}) => {
-	// HOOKS - STATE
-	const [isAccordionOpen, setIsAccordionOpen] = React.useState(isOpen);
+export const Accordion: React.FC<Props> = ({ children, isDisabled = false, heading, name }) => {
+	// HOOKS - GLOBAL
+	const { pathname } = useLocation();
+	const [params] = useSearchParams();
 
-	// HOOKS - EFFECTS
-	React.useEffect(() => {
-		setIsAccordionOpen(isOpen);
-	}, [isOpen]);
+	const newParams = new URLSearchParams(params);
+
+	// VARS
+	const isAccordionOpen = typeof params.get(name) === 'string';
+	const buttonName = !isAccordionOpen ? name : undefined;
+
+	if (isAccordionOpen) {
+		newParams.delete(name);
+	}
 
 	// VARS
 	const classes = clsx('jdg-accordion', {
@@ -44,36 +46,24 @@ export const Accordion: React.FC<Props> = ({
 		'jdg-accordion-active': isAccordionOpen,
 	});
 
-	// HANDLERS
-	const onClick = () => {
-		if (isDisabled) {
-			return;
-		}
-
-		setIsAccordionOpen((wasAccordionOpen) => !wasAccordionOpen);
-	};
-
-	const onKeydown = (event: React.KeyboardEvent) => {
-		handleKeyDownLikeClick(onClick, event);
-	};
-
 	return (
 		<div className={classes}>
 			<div className='jdg-accordion-heading-container'>
-				<button
-					aria-controls='jdg-accordion-body'
-					aria-expanded={isAccordionOpen}
-					className='jdg-accordion-button'
-					disabled={isDisabled}
-					onClick={onClick}
-					onKeyDown={onKeydown}
-					type='button'
-				>
-					<div className='jdg-accordion-heading-text'>{heading}</div>
-					<div className='jdg-accordion-icon'>
-						<Chevron direction='down' />
-					</div>
-				</button>
+				<Form action={`${pathname}?${newParams.toString()}`}>
+					<button
+						aria-controls='jdg-accordion-body'
+						aria-expanded={isAccordionOpen}
+						className='jdg-accordion-button'
+						disabled={isDisabled}
+						name={buttonName}
+						type='submit'
+					>
+						<div className='jdg-accordion-heading-text'>{heading}</div>
+						<div className='jdg-accordion-icon'>
+							<Chevron direction='down' />
+						</div>
+					</button>
+				</Form>
 			</div>
 			<div aria-hidden={!isAccordionOpen} className='jdg-accordion-body' id='jdg-accordion-body'>
 				<div className='jdg-accordion-body-container'>{children}</div>
