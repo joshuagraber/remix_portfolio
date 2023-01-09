@@ -61,8 +61,14 @@ export interface BookmarkFormValues extends FormValues {
 	url: string;
 }
 
-// Sitemap
+export interface SubscriberFormValues extends FormValues {
+	email: string;
+	name_first: string;
+	name_middle?: string;
+	name_last: string;
+}
 
+// Sitemap
 export interface SitemapEntry {
 	route: string;
 	lastmod?: string;

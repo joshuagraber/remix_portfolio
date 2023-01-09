@@ -58,3 +58,18 @@ export function isValidPassword(
 	if (typeof input !== 'string') return false;
 	return Boolean(matchPassword.test(input));
 }
+
+// Get name field for display
+// TODO: use this everywhere name fields are used
+export function getNameTypeForDisplay(input: string) {
+	switch (input) {
+		case 'name_first':
+			return 'First Name';
+		case 'name_last':
+			return 'Last Name';
+		case 'name_middle':
+			return 'Middle Name';
+		default:
+			throw new Error('getNameTypeForDisplay is being used on a field other than names.');
+	}
+}

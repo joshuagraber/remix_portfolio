@@ -8,11 +8,21 @@ import { prisma } from 'services/prisma.server';
 import bcrypt from 'bcrypt';
 
 // TYPES
-import type { UserFormValues } from 'types/types.server';
-import { Role as UserRole, User } from '@prisma/client';
+import type { SubscriberFormValues, UserFormValues } from 'types/types.server';
+import { Role as UserRole } from '@prisma/client';
 
 ///////////////////// API
 // CREATE
+export const createNewSubscriber = async (formValues: SubscriberFormValues) => {
+	try {
+		return await prisma.subscriber.create({
+			data: formValues,
+		});
+	} catch (error) {
+		return json(error);
+	}
+};
+
 export const createNewUser = async (formValues: UserFormValues) => {
 	const hashedPassword = await bcrypt.hash(formValues.password, 10);
 	const { email, name_first, name_middle, name_last } = formValues;
@@ -31,6 +41,26 @@ export const createNewUser = async (formValues: UserFormValues) => {
 };
 
 // READ
+export const getSubscribersAll = async () => {
+	try {
+		return await prisma.subscriber.findMany();
+	} catch (error) {
+		return json(error);
+	}
+};
+
+export const getSubscriberByEmail = async (email: string) => {
+	try {
+		return await prisma.subscriber.findFirst({
+			where: {
+				email,
+			},
+		});
+	} catch (error) {
+		return json(error);
+	}
+};
+
 export const getUsersAll = async () => {
 	try {
 		return await prisma.user.findMany();
