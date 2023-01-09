@@ -20,7 +20,7 @@ model User {
   email       String    @unique
   password    String
   name_first  String
-  name_middle String
+  name_middle String?
   name_last   String
   posts       Post[]
   role        Role      @default(USER)
@@ -28,11 +28,19 @@ model User {
   updatedAt   DateTime  @updatedAt
 }
 
+model Subscriber {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  email       String
+  name_first  String
+  name_last   String
+  name_middle String?
+}
+
 // Blog
 model Bookmark {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   // Not currently using images for these, but want to be part of db
-  image_url String   @default("")
+  image_url String?
   tagline   String
   title     String
   url       String
@@ -42,30 +50,30 @@ model Bookmark {
 
 // Not currently using comments, but want to be part of the db
 model Comment {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
-  author         User   @relation(fields: [author_id], references: [id])
-  author_id      String @db.ObjectId
-  author_email   String
-  author_website String
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  author         User    @relation(fields: [author_id], references: [id])
+  author_id      String  @db.ObjectId
+  author_email   String?
+  author_website String?
   content        String
-  post           Post   @relation(fields: [post_id], references: [id])
-  post_id        String @db.ObjectId
+  post           Post    @relation(fields: [post_id], references: [id])
+  post_id        String  @db.ObjectId
 }
 
 model Post {
-  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
-  author              User      @relation(fields: [author_id], references: [id])
-  author_id           String    @db.ObjectId
-  comments            Comment[]
-  content             String
-  images              String[]
-  image_featured      String
-  image_featured_alt String    @default("")
-  slug                String    @unique
-  tagline             String
-  tags                String[]
-  title               String
-  published_at        DateTime
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  author             User      @relation(fields: [author_id], references: [id])
+  author_id          String    @db.ObjectId
+  comments           Comment[]
+  content            String
+  images             String[]
+  image_featured     String
+  image_featured_alt String?
+  slug               String    @unique
+  tagline            String
+  tags               String[]
+  title              String
+  published_at       DateTime
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 }
