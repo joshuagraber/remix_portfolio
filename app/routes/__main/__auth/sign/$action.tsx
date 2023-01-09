@@ -37,7 +37,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 	if (params.action !== SignInActions.SIGNOUT) {
 		// Check that submission is returned with data
 
-		if (submission) {
+		if (!submission) {
 			errors.form = 'Sorry, there was an error finding that user. \n Please try again.';
 			return json({ errors, fields: fieldsToReturn }, 404);
 		}
