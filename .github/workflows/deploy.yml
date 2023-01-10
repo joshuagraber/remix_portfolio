@@ -1,0 +1,73 @@
+name: 🚀 Deploy
+
+env:
+ 
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: [10.x, 12.x, 14.x, 15.x, 16.x]
+
+      - name: Create .env file
+          uses: SpicyPizza/create-envfile@v1
+          with:
+            envkey_NODE_ENV: ${{ secrets.NODE_ENV }}
+            envkey_HOST: ${{ secrets.HOST }}
+            envkey_PORT: ${{ secrets.PORT }}
+            envkey_SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+            envkey_DATABASE_URL: ${{ secrets.DATABASE_URL }}
+            envkey_CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+            envkey_CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+            envkey_CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+            envkey_CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+            envkey_SMTP_HOST: ${{ secrets.SMTP_HOST }}
+            envkey_SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+            envkey_SMTP_PORT: ${{ secrets.SMTP_PORT }}
+            envkey_SMTP_USER: ${{ secrets.SMTP_USER }}
+            envkey_SMTP_SEND_TO: ${{ secrets.SMTP_SEND_TO }}
+
+      - name: 📦 Install npm packages
+        run: npm install && npm run postinstall
+
+      - name: 🔨 Build app and bundle
+        run: npm run bundle
+        env:
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+
+      - name: 🚀 FTP public files to host
+        uses: sebastianpopp/ftp-action@releases/v2
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          user: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          localDir: 'public'
+          remoteDir: 'www/public'
+          options: '--verbose --ascii'
+
+      - name: 🚀 FTP server file to host
+        uses: sebastianpopp/ftp-action@releases/v2
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          user: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          localDir: 'dist'
+          remoteDir: 'www'
+          options: '--verbose --ascii'
