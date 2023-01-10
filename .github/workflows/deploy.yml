@@ -1,7 +1,5 @@
 name: 🚀 Deploy
 
-env:
-
 on:
   workflow_dispatch:
   push:
