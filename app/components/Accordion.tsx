@@ -49,7 +49,7 @@ export const Accordion: React.FC<Props> = ({ children, isDisabled = false, headi
 	return (
 		<div className={classes}>
 			<div className='jdg-accordion-heading-container'>
-				<Form action={`${pathname}?${newParams.toString()}`}>
+				<Form action={`${pathname}?${newParams.toString()}`} replace>
 					<button
 						aria-controls='jdg-accordion-body'
 						aria-expanded={isAccordionOpen}
