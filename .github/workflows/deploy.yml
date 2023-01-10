@@ -44,7 +44,7 @@ jobs:
         run: npm install && npm run postinstall
 
       - name: 🔨 Build app and bundle
-        run: npm run bundle
+        run: npm run build
         env:
           FTP_USER: ${{ secrets.FTP_USER }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
