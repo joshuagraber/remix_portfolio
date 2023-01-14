@@ -42,7 +42,7 @@ jobs:
           user: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           localDir: 'public'
-          remoteDir: 'www/public_html'
+          remoteDir: '/public_html'
           options: '--verbose --ascii'
 
       - name: 🚀 FTP server file to host
@@ -52,5 +52,5 @@ jobs:
           user: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           localDir: 'dist'
-          remoteDir: 'www'
+          remoteDir: '/'
           options: '--verbose --ascii'
