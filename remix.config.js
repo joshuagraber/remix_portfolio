@@ -1,10 +1,11 @@
 /** @type {import('@remix-run/dev').AppConfig} */
 module.exports = {
+	serverBuildTarget: 'netlify',
 	serverDependenciesToBundle: ['ssr-window'],
-	ignoredRouteFiles: ['**/.*', '.*', '*.css', '*.css.map', '*.scss'],
-	// server: './server.js',
+	server: process.env.NETLIFY || process.env.NETLIFY_LOCAL ? './server.js' : undefined,
+	ignoredRouteFiles: ['**/.*'],
 	// appDirectory: "app",
 	// assetsBuildDirectory: "public/build",
-	// serverBuildPath: "build/index.js",
+	// serverBuildPath: ".netlify/functions-internal/server.js",
 	// publicPath: "/build/",
 };
