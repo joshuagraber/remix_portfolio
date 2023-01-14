@@ -1,5 +1,5 @@
 [build]
-  command = "build"
+  command = "CI= npm runbuild"
   publish = "public"
 
 [dev]
