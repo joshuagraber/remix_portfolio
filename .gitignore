@@ -7,10 +7,12 @@ node_modules
 .env*
 **/test*
 
+# Netlify
+/.netlify
+
 # Sass
 *.css.map
 *.css
 
 # To-dos
 PROJECT_TO_DO.md
-
