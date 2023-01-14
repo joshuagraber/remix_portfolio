@@ -7,7 +7,7 @@
 		"build:sass": "sass styles/:styles/",
 		"build:css": "postcss styles/**/*.css --dir app/styles --use autoprefixer",
 		"bundle": "npm run build && npm run bundle:esbuild",
-		"bundle:esbuild": "esbuild --bundle build/index.js --platform=node --outfile=dist/index.js --external:mock-aws-s3 --external:aws-sdk --external:nock",
+		"bundle:esbuild": "esbuild --bundle build/index.js --platform=node --outfile=dist/app.js --external:mock-aws-s3 --external:aws-sdk --external:nock",
 		"clean": "rimraf ./build ./.cache ./public/build ./app/styles dist",
 		"dev": "run-p dev:*",
 		"dev:styles": "run-p styles:*",
