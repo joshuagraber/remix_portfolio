@@ -37,7 +37,7 @@
 		"react-stately": "^3.17.0",
 		"react-transition-group": "^4.4.5",
 		"react-youtube": "^10.1.0",
-		"remix-utils": "^3.3.0",
+		"remix-utils": "^6.0.0",
 		"ssr-window": "^4.0.2",
 		"uuid": "^9.0.0"
 	},
