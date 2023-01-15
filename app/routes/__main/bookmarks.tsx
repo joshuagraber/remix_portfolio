@@ -1,6 +1,6 @@
 // GLOBALS
 import React from 'react';
-import { json } from '@remix-run/node';
+import { json, SerializeFrom } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import styles from 'styles/bookmarks.css';
 
@@ -22,9 +22,10 @@ import type { Bookmark } from '@prisma/client';
 // EXPORTS
 export const loader: LoaderFunction = async ({ request }) => {
 	const bookmarks = await blog.getBookmarksAll();
+	const canonical = stripParamsAndHash(request.url);
 
 	const data = {
-		canonical: stripParamsAndHash(request.url),
+		canonical,
 		bookmarks: bookmarks.sort((a, b) =>
 			a.createdAt.toISOString() < b.createdAt.toISOString() ? -1 : 1
 		),
@@ -36,7 +37,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 	// If our etag equals browser's, return 304, browser should fall back to cache
 	if (responseEtag === requestEtag) {
-		return json(null, { status: 304 });
+		return json({ canonical }, { status: 304 });
 	} else {
 		return json(data, {
 			headers: {
@@ -47,7 +48,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 		});
 	}
 };
-export const dynamicLinks: DynamicLinksFunction = ({ data }) => {
+const dynamicLinks: DynamicLinksFunction<SerializeFrom<typeof loader>> = ({ data }) => {
 	return [{ rel: 'canonical', href: data.canonical }];
 };
 

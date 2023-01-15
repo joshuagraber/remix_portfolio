@@ -1,6 +1,6 @@
 // GLOBALS
 import React from 'react';
-import { json } from '@remix-run/node';
+import { json, SerializeFrom } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import styles from 'styles/posts.css';
 
@@ -22,9 +22,10 @@ import type { Post } from '@prisma/client';
 // EXPORTS
 export const loader: LoaderFunction = async ({ request }) => {
 	const posts = await blog.getPostsAll();
+	const canonical = stripParamsAndHash(request.url);
 
 	const data = {
-		canonical: stripParamsAndHash(request.url),
+		canonical,
 		posts: posts.sort((a, b) =>
 			a.published_at.toISOString() < b.published_at.toISOString() ? -1 : 1
 		),
@@ -36,7 +37,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 	// If our etag equals browser's, return 304, browser should fall back to cache
 	if (responseEtag === requestEtag) {
-		return json(null, { status: 304 });
+		return json({ canonical }, { status: 304 });
 	} else {
 		return json(data, {
 			headers: {
@@ -48,7 +49,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 	}
 };
 
-export const dynamicLinks: DynamicLinksFunction = ({ data }) => {
+const dynamicLinks: DynamicLinksFunction<SerializeFrom<typeof loader>> = ({ data }) => {
 	return [{ rel: 'canonical', href: data.canonical }];
 };
 

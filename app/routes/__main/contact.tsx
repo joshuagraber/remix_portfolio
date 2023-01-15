@@ -1,4 +1,4 @@
-import { json, LoaderFunction, redirect } from '@remix-run/node';
+import { json, LoaderFunction, redirect, SerializeFrom } from '@remix-run/node';
 import styles from 'styles/contact.css';
 import React from 'react';
 import { useActionData } from '@remix-run/react';
@@ -83,7 +83,11 @@ export const action: ActionFunction = async ({ request }) => {
 	}
 };
 
-export const dynamicLinks: DynamicLinksFunction = ({ data }) => {
+export const loader: LoaderFunction = ({ request }) => {
+	return { canonical: stripParamsAndHash(request.url) };
+};
+
+const dynamicLinks: DynamicLinksFunction<SerializeFrom<typeof loader>> = ({ data }) => {
 	return [{ rel: 'canonical', href: data.canonical }];
 };
 
@@ -92,10 +96,6 @@ export const links: LinksFunction = () => {
 };
 
 export const handle: Handle = { animatePresence: true, dynamicLinks, ref: React.createRef() };
-
-export const loader: LoaderFunction = ({ request }) => {
-	return { canonical: stripParamsAndHash(request.url) };
-};
 
 export const meta: MetaFunction = () => {
 	return {

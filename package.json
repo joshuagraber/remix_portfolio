@@ -10,7 +10,7 @@
 		"dev:remix": "remix dev",
 		"dev:styles": "run-p styles:*",
 		"reinstall": "rimraf ./node_modules ./package-lock.json && npm install",
-		"start": "cross-env NODE_ENV=production netlify dev",
+		"start": "run-s clean && npm run build && cross-env NODE_ENV=production netlify dev",
 		"start:styles": "run-p styles:*",
 		"styles:css": "postcss styles/**/*.css --dir app/styles --use autoprefixer --watch",
 		"styles:sass": "sass --watch styles/:styles/",

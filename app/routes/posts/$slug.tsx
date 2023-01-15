@@ -49,6 +49,7 @@ interface ImageComponentProps {
 
 // EXPORTS
 export const loader: LoaderFunction = async ({ params, request }) => {
+	const canonical = stripParamsAndHash(request.url);
 	const { slug } = params;
 
 	const post = await blog.getPostBySlug(String(slug));
@@ -64,7 +65,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 	// Data to return to client
 	const data = {
 		authorName,
-		canonical: stripParamsAndHash(request.url),
+		canonical,
 		post,
 	};
 
@@ -74,7 +75,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
 	// If our etag equals browser's, return 304, browser should fall back to cache
 	if (responseEtag === requestEtag) {
-		return json(null, { status: 304 });
+		return json({ canonical }, { status: 304 });
 	} else {
 		return json(data, {
 			headers: {
@@ -100,8 +101,8 @@ export const links: LinksFunction = () => {
 	];
 };
 
-export const dynamicLinks: DynamicLinksFunction = ({ data }) => {
-	if (data?.canonical) {
+const dynamicLinks: DynamicLinksFunction = ({ data }) => {
+	if (data) {
 		return [{ rel: 'canonical', href: data.canonical }];
 	}
 	return [];

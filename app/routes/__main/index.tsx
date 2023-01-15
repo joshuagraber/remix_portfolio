@@ -1,5 +1,5 @@
 // GLOBALS
-import { json } from '@remix-run/node';
+import { json, SerializeFrom } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import React from 'react';
 import styles from 'styles/home.css';
@@ -24,13 +24,14 @@ import type { Post } from '@prisma/client';
 export const loader: LoaderFunction = async ({ request }) => {
 	const bookmarks = await blog.getBookmarksAll();
 	const posts = await blog.getPostsAll();
+	const canonical = stripParamsAndHash(request.url);
 
 	// Only send 8 most recent bookmarks / posts
 	const data = {
 		bookmarks: bookmarks
 			.sort((a, b) => (a.createdAt.toISOString() < b.createdAt.toISOString() ? -1 : 1))
 			.slice(0, 7),
-		canonical: stripParamsAndHash(request.url),
+		canonical,
 		posts: posts
 			.sort((a, b) => (a.published_at.toISOString() < b.published_at.toISOString() ? -1 : 1))
 			.slice(0, 7),
@@ -43,7 +44,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 	// If our etag equals browser's, return 304, browser should fall back to cache
 	if (responseEtag === requestEtag) {
-		return json(null, { status: 304 });
+		return json({ canonical }, { status: 304 });
 	} else {
 		return json(data, {
 			headers: {
@@ -55,7 +56,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 	}
 };
 
-export const dynamicLinks: DynamicLinksFunction = ({ data }) => {
+const dynamicLinks: DynamicLinksFunction<SerializeFrom<typeof loader>> = ({ data }) => {
 	return [{ rel: 'canonical', href: data.canonical }];
 };
 

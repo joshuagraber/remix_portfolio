@@ -1,6 +1,6 @@
 // GLOBALS
 import React from 'react';
-import { json } from '@remix-run/node';
+import { json, SerializeFrom } from '@remix-run/node';
 import { Link } from '@remix-run/react';
 import styles from 'styles/not-authorized.css';
 
@@ -20,7 +20,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 	return json({ canonical: stripParamsAndHash(request.url) });
 };
 
-export const dynamicLinks: DynamicLinksFunction = ({ data }) => {
+const dynamicLinks: DynamicLinksFunction<SerializeFrom<typeof loader>> = ({ data }) => {
 	return [{ rel: 'canonical', href: data.canonical }];
 };
 
