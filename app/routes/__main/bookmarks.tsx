@@ -52,6 +52,7 @@ const dynamicLinks: DynamicLinksFunction<SerializeFrom<typeof loader>> = ({ data
 	if (data?.canonical) {
 		return [{ rel: 'canonical', href: data.canonical }];
 	}
+	return [];
 };
 
 export const links: LinksFunction = () => {
