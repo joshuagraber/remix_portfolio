@@ -88,7 +88,10 @@ export const loader: LoaderFunction = ({ request }) => {
 };
 
 const dynamicLinks: DynamicLinksFunction<SerializeFrom<typeof loader>> = ({ data }) => {
-	return [{ rel: 'canonical', href: data.canonical }];
+	if (data?.canonical) {
+		return [{ rel: 'canonical', href: data.canonical }];
+	}
+	return [];
 };
 
 export const links: LinksFunction = () => {

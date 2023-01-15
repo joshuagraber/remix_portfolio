@@ -102,7 +102,7 @@ export const links: LinksFunction = () => {
 };
 
 const dynamicLinks: DynamicLinksFunction = ({ data }) => {
-	if (data) {
+	if (data?.canonical) {
 		return [{ rel: 'canonical', href: data.canonical }];
 	}
 	return [];

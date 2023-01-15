@@ -49,7 +49,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 	}
 };
 const dynamicLinks: DynamicLinksFunction<SerializeFrom<typeof loader>> = ({ data }) => {
-	return [{ rel: 'canonical', href: data.canonical }];
+	if (data?.canonical) {
+		return [{ rel: 'canonical', href: data.canonical }];
+	}
 };
 
 export const links: LinksFunction = () => {
