@@ -37,8 +37,6 @@ export const loader: LoaderFunction = async ({ request }) => {
 			.slice(0, 7),
 	};
 
-	console.log('Data from index loader', { data });
-
 	// Cacheing
 	// TODO: Abstract cacheing into repeatable util
 	const responseEtag = createETag(JSON.stringify(data));
