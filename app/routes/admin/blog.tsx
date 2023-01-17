@@ -171,6 +171,7 @@ export default function BlogAdmin() {
 		if (post) {
 			setFields({
 				...post,
+				image_featured_alt: post.image_featured_alt ?? '',
 				published_at: normalizeDateForDateTimeInput(post.published_at.toLocaleString()),
 				select_post: event.target.value,
 			});

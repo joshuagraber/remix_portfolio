@@ -1,14 +1,7 @@
 // GLOBALS
 import { json, redirect } from '@remix-run/node';
 import React from 'react';
-import {
-	Form,
-	Link,
-	useFetcher,
-	useLoaderData,
-	useLocation,
-	useTransition,
-} from '@remix-run/react';
+import { Link, useFetcher, useLoaderData, useLocation, useTransition } from '@remix-run/react';
 import styles from 'styles/post.css';
 
 // COMPONENTS
@@ -128,7 +121,7 @@ export const handle: Handle = {
 	ref: React.createRef(),
 };
 
-// SUB-COMPONENT
+// SUB-COMPONENTS
 const PostFigure: React.FC<ImageComponentProps> = ({ alt, title, src }) => {
 	title = title ?? alt;
 
@@ -145,7 +138,6 @@ const PostFigure: React.FC<ImageComponentProps> = ({ alt, title, src }) => {
 	);
 };
 
-// TODO: use react-youtube (https://www.npmjs.com/package/react-youtube) or similar pkg that interacts with YT API directly
 const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ videoId }) => {
 	// HOOKS - GLOBAL
 	const document = getDocument();
@@ -166,7 +158,8 @@ const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ videoId }) => {
 		playerVars: {
 			// https://developers.google.com/youtube/player_parameters
 			allowpresentation: true,
-			modestbranding: true,
+			// Casting 1 as 1 (absurd) to satisfy react-youtube's strange typing
+			modestbranding: 1 as 1,
 			sandbox: 'allow-scripts allow-same-origin allow-presentation',
 		},
 	};
