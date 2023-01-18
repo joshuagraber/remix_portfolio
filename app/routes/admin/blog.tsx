@@ -112,10 +112,10 @@ export default function BlogAdmin() {
 	}, [loaderData]);
 
 	// UTIL
-	function normalizeDateForDateTimeInput(dateString: string) {
+	function normalizeDateForDateTimeInput(date: Date) {
 		// For whatever reason, date inputs only accept Years, Months, Days, Hours, and Minutes.
 		// Slice off the rest of it.
-		return new Date(dateString).toLocaleString().slice(0, -8);
+		return new Date(date).toISOString().slice(0, -8);
 	}
 
 	// HANDLERS
@@ -172,7 +172,7 @@ export default function BlogAdmin() {
 			setFields({
 				...post,
 				image_featured_alt: post.image_featured_alt ?? '',
-				published_at: normalizeDateForDateTimeInput(post.published_at.toLocaleString()),
+				published_at: normalizeDateForDateTimeInput(post.published_at),
 				select_post: event.target.value,
 			});
 		}
