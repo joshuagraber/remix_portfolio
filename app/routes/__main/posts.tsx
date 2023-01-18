@@ -8,7 +8,7 @@ import styles from 'styles/posts.css';
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 
 // UTILS
-import { createETag, stripParamsAndHash } from 'utils/utils.server';
+import { cachedLoaderResponse, stripParamsAndHash } from 'utils/utils.server';
 
 // SERVICES
 import * as blog from 'services/blog.server';
@@ -31,22 +31,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 		),
 	};
 
-	// Cacheing
-	const responseEtag = createETag(JSON.stringify(data));
-	const requestEtag = request.headers.get('If-None-Match');
-
-	// If our etag equals browser's, return 304, browser should fall back to cache
-	if (responseEtag === requestEtag) {
-		return json({ canonical }, { status: 304 });
-	} else {
-		return json(data, {
-			headers: {
-				'Cache-Control': 'max-age=10',
-				etag: responseEtag,
-			},
-			status: 200,
-		});
-	}
+	return cachedLoaderResponse(request, data);
 };
 
 const dynamicLinks: DynamicLinksFunction<SerializeFrom<typeof loader>> = ({ data }) => {

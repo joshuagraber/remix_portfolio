@@ -12,7 +12,7 @@ import { Arrow } from 'components/SVG/Arrow';
 import * as blog from 'services/blog.server';
 
 // UTILS
-import { createETag, stripParamsAndHash } from 'utils/utils.server';
+import { cachedLoaderResponse, stripParamsAndHash } from 'utils/utils.server';
 
 // TYPES
 import type { DynamicLinksFunction } from 'remix-utils';
@@ -37,23 +37,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 			.slice(0, 7),
 	};
 
-	// Cacheing
-	// TODO: Abstract cacheing into repeatable util
-	const responseEtag = createETag(JSON.stringify(data));
-	const requestEtag = request.headers.get('If-None-Match');
-
-	// If our etag equals browser's, return 304, browser should fall back to cache
-	if (responseEtag === requestEtag) {
-		return json({ canonical }, { status: 304 });
-	} else {
-		return json(data, {
-			headers: {
-				'Cache-Control': 'max-age=10',
-				etag: responseEtag,
-			},
-			status: 200,
-		});
-	}
+	return cachedLoaderResponse(request, data);
 };
 
 const dynamicLinks: DynamicLinksFunction<SerializeFrom<typeof loader>> = ({ data }) => {

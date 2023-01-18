@@ -19,7 +19,7 @@ import * as blog from 'services/blog.server';
 import * as users from 'services/users.server';
 
 // UTIL
-import { createETag, stripParamsAndHash } from 'utils/utils.server';
+import { cachedLoaderResponse, stripParamsAndHash } from 'utils/utils.server';
 
 // TYPES
 import type { DynamicLinksFunction } from 'remix-utils';
@@ -62,22 +62,7 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 		post,
 	};
 
-	// Cacheing
-	const responseEtag = createETag(JSON.stringify(data));
-	const requestEtag = request.headers.get('If-None-Match');
-
-	// If our etag equals browser's, return 304, browser should fall back to cache
-	if (responseEtag === requestEtag) {
-		return json({ canonical }, { status: 304 });
-	} else {
-		return json(data, {
-			headers: {
-				'Cache-Control': 'max-age=10',
-				etag: responseEtag,
-			},
-			status: 200,
-		});
-	}
+	return cachedLoaderResponse(request, data);
 };
 
 export const links: LinksFunction = () => {
