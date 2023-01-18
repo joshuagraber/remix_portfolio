@@ -10,7 +10,7 @@ import { Sun } from 'components/SVG/Sun';
 
 // UTIL
 import { ThemeValues, useTheme } from '../context/theme';
-import { CSSTransition, SwitchTransition, TransitionGroup } from 'react-transition-group';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import clsx from 'clsx';
 
 export const links: LinksFunction = () => {
@@ -35,8 +35,6 @@ export const ThemeToggle: React.FC = () => {
 	return (
 		<div className='jdg-theme-toggle'>
 			<toggleThemePersistence.Form action='/action/theme' method='post'>
-				{/* Icon */}
-
 				<button
 					aria-label='toggle dark and light theme'
 					className='jdg-theme-toggle-button'
@@ -49,7 +47,6 @@ export const ThemeToggle: React.FC = () => {
 						<SwitchTransition>
 							<CSSTransition
 								classNames='jdg-theme-toggle-button-icon-container'
-								// in={isDarkMode}
 								key={isDarkMode ? 'dark mode' : 'light mode'}
 								nodeRef={iconContainerRef}
 								timeout={300}
