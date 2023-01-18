@@ -6,30 +6,33 @@ import styles from 'styles/post.css';
 
 // COMPONENTS
 import { Accordion, links as accordionLinks } from 'components/Accordion';
+import { Button, links as buttonLinks } from 'components/Button';
 import { ContainerCenter } from 'components/ContainerCenter';
-import { Home } from 'components/SVG/Home';
 import { Footer, links as footerLinks } from 'components/Footer';
+import { Home } from 'components/SVG/Home';
+import { Input, links as inputLinks } from 'components/Input';
 import { LoadingSpinner, links as loadingSpinnerLinks } from 'components/Spinner';
-import { ThemeToggle, links as themeToggleLinks } from 'components/ThemeToggle';
 import ReactMarkdown from 'react-markdown';
+import { ThemeToggle, links as themeToggleLinks } from 'components/ThemeToggle';
 import YouTube from 'react-youtube';
+
+// HOOKS
+import { useEffectDidUpdate } from 'hooks/useEffectDidUpdate';
 
 // SERVICES
 import * as blog from 'services/blog.server';
 import * as users from 'services/users.server';
 
-// UTIL
+// UTILS
 import { cachedLoaderResponse, stripParamsAndHash } from 'utils/utils.server';
+import { getDocument } from 'ssr-window';
 
 // TYPES
 import type { DynamicLinksFunction } from 'remix-utils';
 import type { Handle } from 'types/types';
 import type { LinksFunction, LoaderFunction, MetaFunction } from '@remix-run/node';
+import type { Options } from 'youtube-player/dist/types';
 import type { Post, User } from '@prisma/client';
-import { useEffectDidUpdate } from 'hooks/useEffectDidUpdate';
-import { getDocument } from 'ssr-window';
-import { Input, links as inputLinks } from 'components/Input';
-import { Button, links as buttonLinks } from 'components/Button';
 interface YouTubeEmbedProps {
 	videoId?: string;
 }
@@ -107,6 +110,7 @@ export const handle: Handle = {
 };
 
 // SUB-COMPONENTS
+// TODO: Move sub-components to separate files, I don't like 300-line components
 const PostFigure: React.FC<ImageComponentProps> = ({ alt, title, src }) => {
 	title = title ?? alt;
 
@@ -123,6 +127,7 @@ const PostFigure: React.FC<ImageComponentProps> = ({ alt, title, src }) => {
 	);
 };
 
+// TODO: Add Vimeo embed as well, and use that unless absolutely have to use YT
 const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ videoId }) => {
 	// HOOKS - GLOBAL
 	const document = getDocument();
@@ -132,23 +137,23 @@ const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ videoId }) => {
 	const iFrameRef = React.useRef<HTMLDivElement | null>(document.querySelector(query));
 
 	// HOOKS - STATE
-	// Dims to dynamically resize, since YT iFrame is butthole
+	// Dims to dynamically resize, since YT iFrame is 💩 butthole
 	const [dimensions, setDimensions] = React.useState<Record<string, number | string>>({
 		height: '100%',
 		width: '100%',
 	});
 
 	// CONSTANTS
-	const opts = {
+	const opts: Options = {
 		playerVars: {
 			// https://developers.google.com/youtube/player_parameters
-			allowpresentation: true,
-			// Casting 1 as 1 (absurd) to satisfy react-youtube's strange typing
-			modestbranding: 1 as 1,
-			sandbox: 'allow-scripts allow-same-origin allow-presentation',
+			autoplay: 0,
+			modestbranding: 1,
+			color: 'white',
 		},
 	};
 
+	// On resize, only run if component updates
 	useEffectDidUpdate(() => {
 		if (iFrameRef.current) {
 			const { clientHeight, clientWidth } = iFrameRef.current;
@@ -173,8 +178,8 @@ const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ videoId }) => {
 			opts={{ ...opts, ...dimensions }}
 			// Forcing aspect ratio via CSS,
 			// first render will set it, then
-			// dims will get accurate val.
-			// A bit hacky, but 🤷🏻‍♂️
+			// dims will get accurate val when cDU.
+			// A bit hacky, but 🤷🏻‍♂️ YT iFrame is 💩
 			style={{ ...dimensions, aspectRatio: '16/9' }}
 		/>
 	);
@@ -195,14 +200,13 @@ export default function Post(): React.ReactElement {
 	const transition = useTransition();
 	const subscribe = useFetcher();
 
-	const bool = true;
-
 	// VARS
 	const {
 		authorName,
 		post: { content, image_featured, image_featured_alt, published_at, tags, tagline, title },
 	} = data;
 
+	// TODO: move this stuff to the server, no need for it to be on the client
 	const authorToDisplay = authorName !== 'Joshua D. Graber' ? `Guest writer: ${authorName}` : null;
 	const dateToDisplay = new Date(published_at).toLocaleDateString();
 	const titleNormalizedForMarkdown = title.includes('#') ? title : `# ${title}`;
