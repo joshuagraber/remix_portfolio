@@ -53,12 +53,12 @@ export const action: ActionFunction = async ({ request }) => {
 
 	try {
 		const response = await sendMail({
-			from: `${name} <${email}>`,
+			from: process.env.SMTP_SEND_FROM,
 			to: process.env.SMTP_SEND_TO,
 			replyTo: email.toString(),
 			subject: 'Message from Website Contact Form',
 			// TODO: Create template and render to html string
-			text: message.toString(),
+			text: `Message from ${name}: \n ${message.toString()}`,
 		});
 
 		if (response.accepted.length >= 1) {

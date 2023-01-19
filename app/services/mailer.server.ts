@@ -37,6 +37,7 @@ async function getConfig() {
 				port: Number(process.env.SMTP_PORT),
 				requireTLS: true,
 				secure: true,
+				service: 'Zoho',
 			};
 	}
 }
