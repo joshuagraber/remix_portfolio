@@ -26,9 +26,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 	const data = {
 		canonical,
-		bookmarks: bookmarks.sort((a, b) =>
-			a.createdAt.toISOString() < b.createdAt.toISOString() ? -1 : 1
-		),
+		bookmarks: bookmarks.sort((a, b) => (a.createdAt.valueOf() > b.createdAt.valueOf() ? -1 : 1)),
 	};
 
 	return cachedLoaderResponse(request, data);

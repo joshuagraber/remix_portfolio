@@ -29,11 +29,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 	// Only send 8 most recent bookmarks / posts
 	const data = {
 		bookmarks: bookmarks
-			.sort((a, b) => (a.createdAt.toISOString() < b.createdAt.toISOString() ? -1 : 1))
+			.sort((a, b) => (a.createdAt.valueOf() > b.createdAt.valueOf() ? -1 : 1))
 			.slice(0, 7),
 		canonical,
 		posts: posts
-			.sort((a, b) => (a.published_at.toISOString() < b.published_at.toISOString() ? -1 : 1))
+			.sort((a, b) => (a.published_at.valueOf() > b.published_at.valueOf() ? -1 : 1))
 			.slice(0, 7),
 	};
 

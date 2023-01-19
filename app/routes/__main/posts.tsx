@@ -26,9 +26,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 	const data = {
 		canonical,
-		posts: posts.sort((a, b) =>
-			a.published_at.toISOString() < b.published_at.toISOString() ? -1 : 1
-		),
+		posts: posts.sort((a, b) => (a.published_at.valueOf() > b.published_at.valueOf() ? -1 : 1)),
 	};
 
 	return cachedLoaderResponse(request, data);
