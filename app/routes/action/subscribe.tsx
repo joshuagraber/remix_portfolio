@@ -55,7 +55,3 @@ export const action: ActionFunction = async ({ request }) => {
 		return json(error);
 	}
 };
-
-export default function noop() {
-	return null;
-}
