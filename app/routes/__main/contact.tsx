@@ -51,6 +51,11 @@ export const action: ActionFunction = async ({ request }) => {
 		return json({ errors, fields }, { status: 422 });
 	}
 
+	/* TODO: Write template for confirmation email and
+	 * send to submitter's email address, confirm success
+	 * before sending through to graber.io address,
+	 * as a basic guard against spamminess. */
+
 	try {
 		const response = await sendMail({
 			from: process.env.SMTP_SEND_FROM,

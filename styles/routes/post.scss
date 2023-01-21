@@ -180,7 +180,9 @@ $post-container-padding: 24px;
 		}
 
 		a {
-			text-decoration: underline var(--color-theme-primary-2) 3px;
+			text-decoration-line: underline;
+			text-decoration-thickness: 3px;
+			text-decoration-color: var(--color-theme-primary-1);
 			text-underline-offset: 3px;
 		}
 

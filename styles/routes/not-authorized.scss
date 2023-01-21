@@ -16,7 +16,10 @@
 		}
 
 		a {
-			text-decoration: underline var(--color-theme-primary-1) 3px;
+			text-decoration-line: underline;
+			text-decoration-thickness: 3px;
+			text-decoration-style: solid;
+			text-decoration-color: var(--color-theme-primary-1);
 		}
 	}
 }

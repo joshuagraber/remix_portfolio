@@ -24,7 +24,11 @@
 		&-active,
 		&:hover,
 		&:focus {
-			text-decoration: 3px solid underline var(--color-theme-primary-1);
+			// Declaring properties separately because mobile Safari doesn't support shorthand???
+			text-decoration-line: underline;
+			text-decoration-thickness: 3px;
+			text-decoration-style: solid;
+			text-decoration-color: var(--color-theme-primary-1);
 			text-underline-offset: 6px;
 		}
 

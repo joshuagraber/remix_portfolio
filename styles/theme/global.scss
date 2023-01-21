@@ -56,7 +56,9 @@ a {
 	&:hover,
 	&:active,
 	&:focus {
-		text-decoration: underline var(--color-theme-primary-1) 3px;
+		text-decoration-line: underline;
+		text-decoration-thickness: 3px;
+		text-decoration-color: var(--color-theme-primary-1);
 		text-underline-offset: 6px;
 
 		:root[data-theme='jdg-light-mode'] & {
@@ -80,6 +82,7 @@ a {
 	box-shadow: unset;
 	color: var(--color-text-primary);
 	cursor: pointer;
+	padding: unset;
 }
 
 // Lists
@@ -114,7 +117,9 @@ strong {
 
 	button {
 		cursor: pointer;
-		text-decoration: underline 3px var(--color-theme-primary-4);
+		text-decoration-line: underline;
+		text-decoration-thickness: 3px;
+		text-decoration-color: var(--color-theme-primary-4);
 		text-underline-offset: 6px;
 	}
 }
