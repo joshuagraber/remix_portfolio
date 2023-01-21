@@ -9,9 +9,6 @@ import clsx from 'clsx';
 // COMPONENTS
 import { Chevron } from 'components/SVG/Chevron';
 
-// UTIL
-import { scrollTo } from 'utils/utils';
-
 // EXPORTS
 export function links() {
 	return [{ rel: 'stylesheet', href: styles }];

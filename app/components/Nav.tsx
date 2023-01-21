@@ -3,18 +3,6 @@ import React from 'react';
 import { NavLink } from '@remix-run/react';
 import styles from 'styles/nav.css';
 
-// EXTERNAL LIBS
-import { getWindow } from 'ssr-window';
-
-// HOOKS
-import { useEffectDidUpdate } from 'hooks/useEffectDidUpdate';
-
-// COMPONENTS
-import { Chevron } from 'components/SVG/Chevron';
-
-// UTILS
-import { handleKeyDownLikeClick } from 'utils/utils';
-
 // TYPES
 import type { LinksFunction } from '@remix-run/node';
 interface Props {
