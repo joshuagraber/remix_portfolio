@@ -171,6 +171,11 @@ $post-container-padding: 24px;
 			margin-bottom: 16px;
 		}
 
+		em,
+		strong {
+			font-size: 18px;
+		}
+
 		blockquote {
 			border-left: 2px solid var(--color-text-primary);
 			margin-left: 5%;
