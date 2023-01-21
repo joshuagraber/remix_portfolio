@@ -8,6 +8,10 @@
 	width: 100%;
 	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 
+	&-button {
+		padding: unset;
+	}
+
 	// Removes sitewide default button state styles
 	&-button:focus,
 	&-button:hover,

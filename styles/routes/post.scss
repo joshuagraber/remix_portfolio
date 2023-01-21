@@ -140,7 +140,7 @@ $post-container-padding: 24px;
 		h4,
 		h5,
 		h6 {
-			margin-bottom: 8px;
+			margin-bottom: 16px;
 			text-align: center;
 		}
 
@@ -157,21 +157,29 @@ $post-container-padding: 24px;
 		}
 
 		h5 {
-			font: var(--font-heading-tertiary)-emphasis;
+			font: var(--font-heading-tertiary-emphasis);
 		}
 
 		h6 {
 			font: var(--font-heading-quaternary-emphasis);
 		}
 
-		p {
-			margin-bottom: 8px;
+		p:not(.jdg-status-message-text) {
+			font: var(--font-paragraph-secondary);
+			font-size: 18px;
+			line-height: 150%;
+			margin-bottom: 16px;
 		}
 
 		blockquote {
 			border-left: 2px solid var(--color-text-primary);
 			margin-left: 5%;
 			padding-left: 2%;
+
+			> * {
+				font-size: 18px;
+				line-height: 150%;
+			}
 
 			p {
 				padding-top: 0;
@@ -188,6 +196,7 @@ $post-container-padding: 24px;
 
 		.jdg-post-figure {
 			overflow: hidden;
+			margin: 20px 0;
 			position: relative;
 
 			img {
@@ -281,6 +290,16 @@ $post-container-padding: 24px;
 	}
 
 	.jdg-post-email-list-signup {
+		.jdg-accordion-heading-text {
+			font-size: 28px;
+		}
+
+		h5 {
+			font-size: 18px;
+			margin-bottom: 20px;
+			text-align: left;
+		}
+
 		form {
 			display: flex;
 			flex-direction: column;
@@ -288,7 +307,7 @@ $post-container-padding: 24px;
 		}
 
 		.jdg-button {
-			margin: 0 auto;
+			margin: 20px auto 0;
 			max-width: 300px;
 			width: 100%;
 		}

@@ -105,6 +105,7 @@
 
 		.jdg-home-bookmark-link {
 			flex-direction: column;
+			gap: 8px;
 
 			&:nth-of-type(4n + 1) {
 				background-color: var(--color-accent-lavender);
@@ -120,6 +121,14 @@
 
 			&:nth-of-type(4n + 4) {
 				background-color: var(--color-accent-mauve);
+			}
+
+			h3 {
+				font: var(--font-heading-tertiary);
+			}
+
+			p {
+				font-size: 16px;
 			}
 		}
 	}

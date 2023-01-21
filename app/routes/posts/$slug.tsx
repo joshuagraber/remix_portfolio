@@ -269,7 +269,11 @@ export default function Post(): React.ReactElement {
 							p: ({ node, ...props }) => {
 								if (
 									node.children.some(
-										(el) => el.type === 'element' && el.tagName !== 'em' && el.tagName !== 'strong'
+										(el) =>
+											el.type === 'element' &&
+											el.tagName !== 'em' &&
+											el.tagName !== 'strong' &&
+											el.tagName !== 'a'
 									)
 								) {
 									return <div {...props} />;
