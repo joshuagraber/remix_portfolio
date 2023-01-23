@@ -351,5 +351,22 @@ $post-container-padding: 24px;
 				}
 			}
 		}
+
+		.jdg-post-email-list-signup {
+			.jdg-accordion-heading-text {
+				font-size: 20px;
+			}
+
+			.jdg-input {
+				label {
+					font-size: 16px;
+				}
+			}
+
+			h5 {
+				font-size: 16px;
+				margin-bottom: 14px;
+			}
+		}
 	}
 }

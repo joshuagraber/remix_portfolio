@@ -1,7 +1,14 @@
 // GLOBALS
 import { json, redirect } from '@remix-run/node';
 import React from 'react';
-import { Link, useFetcher, useLoaderData, useLocation, useTransition } from '@remix-run/react';
+import {
+	Link,
+	useFetcher,
+	useLoaderData,
+	useLocation,
+	useSearchParams,
+	useTransition,
+} from '@remix-run/react';
 import styles from 'styles/post.css';
 
 // COMPONENTS
@@ -195,10 +202,35 @@ const ImageComponent: React.FC<ImageComponentProps> = (props) => {
 };
 
 export default function Post(): React.ReactElement {
+	// HOOKS - GLOBALS
 	const data = useLoaderData();
 	const location = useLocation();
 	const transition = useTransition();
 	const subscribe = useFetcher();
+	const [search] = useSearchParams();
+	const document = getDocument();
+
+	// HOOKS - REF
+	const scrollToRef = React.useRef<HTMLDivElement>(null);
+
+	// HOOKS - EFFECTS
+	// Handles edge case of user not being quite at the bottom of the screen when opening accordion
+	React.useEffect(() => {
+		let timeout: NodeJS.Timeout | undefined;
+
+		if (search.get('mailing') !== null && scrollToRef.current instanceof HTMLDivElement) {
+			timeout = setTimeout(() => {
+				const dims = scrollToRef?.current?.getBoundingClientRect();
+				const bodyScrollHeight = document.body.scrollHeight;
+
+				window.scrollTo({ top: bodyScrollHeight + dims!.y, behavior: 'smooth' });
+			}, 400);
+		}
+
+		if (timeout) {
+			return () => clearTimeout(timeout);
+		}
+	}, [scrollToRef, search]);
 
 	// VARS
 	const {
@@ -341,6 +373,7 @@ export default function Post(): React.ReactElement {
 								)}
 							</subscribe.Form>
 						</Accordion>
+						<div className='jdg-post-signup-scroll-to' ref={scrollToRef} />
 					</div>
 				</ContainerCenter>
 			</main>
