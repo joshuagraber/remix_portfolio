@@ -93,8 +93,13 @@
 					margin-bottom: 16px;
 				}
 
-				&-subheading {
+				&-subheading,
+				&-subheading * {
 					font: var(--font-paragraph-secondary);
+
+					em {
+						font-style: italic;
+					}
 				}
 
 				&-date {

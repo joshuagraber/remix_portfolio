@@ -135,6 +135,17 @@ $post-container-padding: 24px;
 			margin: 0 0 24px;
 		}
 
+		p:not(.jdg-status-message-text) {
+			font: var(--font-paragraph-secondary);
+			font-size: 18px;
+			line-height: 150%;
+			margin-bottom: 16px;
+		}
+
+		p:last-of-type {
+			margin-bottom: 0;
+		}
+
 		h2,
 		h3,
 		h4,
@@ -162,13 +173,6 @@ $post-container-padding: 24px;
 
 		h6 {
 			font: var(--font-heading-quaternary-emphasis);
-		}
-
-		p:not(.jdg-status-message-text) {
-			font: var(--font-paragraph-secondary);
-			font-size: 18px;
-			line-height: 150%;
-			margin-bottom: 16px;
 		}
 
 		em,

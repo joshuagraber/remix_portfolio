@@ -1,12 +1,13 @@
 // GLOBALS
-import { json, SerializeFrom } from '@remix-run/node';
+import { SerializeFrom } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import React from 'react';
 import styles from 'styles/home.css';
 
 // COMPONENTS
-import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
 import { Arrow } from 'components/SVG/Arrow';
+import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
+import ReactMarkdown from 'react-markdown';
 
 // SERVICES
 import * as blog from 'services/blog.server';
@@ -72,7 +73,9 @@ export default function HomePage(): React.ReactElement {
 							<Link className='jdg-home-post-link' key={slug} to={`posts/${slug}`}>
 								<div className='jdg-home-post-link-text'>
 									<h3 className='jdg-home-post-link-text-heading'>{title}</h3>
-									<p className='jdg-home-post-link-text-subheading'>{tagline}</p>
+									<div className='jdg-home-post-link-text-subheading'>
+										<ReactMarkdown>{tagline}</ReactMarkdown>
+									</div>
 									<p className='jdg-home-post-link-text-date'>{published}</p>
 								</div>
 								<img

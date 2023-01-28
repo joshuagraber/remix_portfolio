@@ -1,11 +1,12 @@
 // GLOBALS
 import React from 'react';
-import { json, SerializeFrom } from '@remix-run/node';
+import { SerializeFrom } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import styles from 'styles/posts.css';
 
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from 'components/ContainerCenter';
+import ReactMarkdown from 'react-markdown';
 
 // UTILS
 import { cachedLoaderResponse, stripParamsAndHash } from 'utils/utils.server';
@@ -61,7 +62,9 @@ export default function Posts() {
 						<Link className='jdg-posts-post-link' key={slug} prefetch='intent' to={slug}>
 							<div className='jdg-posts-post-link-text'>
 								<h3 className='jdg-posts-post-link-text-heading'>{title}</h3>
-								<p className='jdg-posts-post-link-text-subheading'>{tagline}</p>
+								<div className='jdg-posts-post-link-text-subheading'>
+									<ReactMarkdown>{tagline}</ReactMarkdown>
+								</div>
 								<p className='jdg-posts-post-link-text-date'>{published}</p>
 							</div>
 							<img

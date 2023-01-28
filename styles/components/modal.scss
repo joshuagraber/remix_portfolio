@@ -32,6 +32,12 @@
 		opacity: 0;
 	}
 
+	.jdg-button-unset {
+		align-items: center;
+		display: flex;
+		justify-content: center;
+	}
+
 	&-backdrop {
 		align-items: center;
 		background-color: var(--color-neutral-black-opacity_60);
