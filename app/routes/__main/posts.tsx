@@ -54,7 +54,13 @@ export default function Posts() {
 	const { posts } = useLoaderData();
 	return (
 		<ContainerCenter className='jdg-posts-container-center'>
-			<h2>Posts</h2>
+			<div className='jdg-posts-heading'>
+				<h2>Recent Posts</h2>
+				<p>
+					Occasional fragments on books, technology, art, and whatever else might occur to me to
+					share here.
+				</p>
+			</div>
 			<div className='jdg-posts-container-inner'>
 				{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
 					const published = new Date(published_at).toLocaleDateString();

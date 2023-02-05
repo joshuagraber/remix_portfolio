@@ -53,7 +53,10 @@ export default function Bookmarks() {
 
 	return (
 		<ContainerCenter className='jdg-bookmarks-container-center'>
-			<h2>Bookmarks</h2>
+			<div className='jdg-bookmarks-heading'>
+				<h2>Recent Bookmarks</h2>
+				<p>Interesting stuff I found on the Internet.</p>
+			</div>
 			<div className='jdg-bookmarks-container-inner'>
 				{bookmarks &&
 					bookmarks.map((bookmark: Bookmark) => {

@@ -65,7 +65,13 @@ export default function HomePage(): React.ReactElement {
 	return (
 		<ContainerCenter className='jdg-home-container-center'>
 			<div className='jdg-home-posts-container'>
-				<h2>Recent Posts</h2>
+				<div className='jdg-home-posts-heading'>
+					<h2>Recent Posts</h2>
+					<p>
+						Occasional fragments on books, technology, art, and whatever else might occur to me to
+						share here.
+					</p>
+				</div>
 				<div className='jdg-home-posts-container-inner'>
 					{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
 						const published = new Date(published_at).toLocaleDateString();
@@ -95,7 +101,10 @@ export default function HomePage(): React.ReactElement {
 
 			{/* Bookmarks */}
 			<div className='jdg-home-bookmarks-container'>
-				<h2>Recent Bookmarks</h2>
+				<div className='jdg-home-bookmarks-heading'>
+					<h2>Recent Bookmarks</h2>
+					<p>Interesting stuff I found on the Internet.</p>
+				</div>
 				<div className='jdg-home-bookmarks-container-inner'>
 					{bookmarks.map((bookmark: any) => {
 						return (
