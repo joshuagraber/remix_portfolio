@@ -324,7 +324,7 @@ export default function Post(): React.ReactElement {
 								{subscribe.type === 'done' && !subscribe.data && (
 									<div className='jdg-post-email-list-signup-confirmation'>
 										<h4>You've successfully signed up!</h4>
-										<p>Look out for an email confirmation in your inbox shortly.</p>
+										<p>Thank you for subscribing to the newsletter.</p>
 										{/* TODO: Set up magic link to confirm signups. */}
 									</div>
 								)}
