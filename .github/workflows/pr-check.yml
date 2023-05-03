@@ -20,6 +20,7 @@ jobs:
     # Event has to be a pull request, or the base branch has to be main
     if: >-
       github.event_name == 'pull_request'
+        || github.event_name == 'pull_request_review'
         || github.event.pull_request.base.ref == 'main'
 
     steps:
