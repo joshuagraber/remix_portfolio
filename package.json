@@ -2,7 +2,7 @@
 	"private": true,
 	"sideEffects": false,
 	"scripts": {
-		"build": "run-s build:* && remix build",
+		"build": "prisma generate && run-s build:* && remix build",
 		"build:sass": "sass styles/:styles/",
 		"build:css": "postcss styles/**/*.css --dir app/styles --use autoprefixer",
 		"clean": "rimraf ./build ./.cache ./public/build ./app/styles ./.netlify",
