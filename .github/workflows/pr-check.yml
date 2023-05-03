@@ -4,7 +4,7 @@ on:
   # PR into main opened, reopened, or synchronized
   pull_request:
     branches:
-      - main
+      - master
 
   # When a review is submitted
   pull_request_review:
