@@ -2,13 +2,14 @@
 	"private": true,
 	"sideEffects": false,
 	"scripts": {
-		"build": "run-s build:* && remix build",
+		"build": "prisma generate && run-s build:* && remix build",
 		"build:sass": "sass styles/:styles/",
 		"build:css": "postcss styles/**/*.css --dir app/styles --use autoprefixer",
 		"clean": "rimraf ./build ./.cache ./public/build ./app/styles ./.netlify",
 		"dev": "run-p dev:*",
 		"dev:remix": "remix dev",
 		"dev:styles": "run-p styles:*",
+		"postinstall": "prisma generate",
 		"reinstall": "rimraf ./node_modules ./package-lock.json && npm install",
 		"start": "run-s clean && cross-env NODE_ENV=production npm run build && netlify serve",
 		"styles:css": "postcss styles/**/*.css --dir app/styles --use autoprefixer --watch",
@@ -30,7 +31,7 @@
 		"lodash": "^4.17.21",
 		"nodemailer": "^6.9.1",
 		"npm": "^8.19.4",
-		"prisma": "^4.8.1",
+		"prisma": "^4.13.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-markdown": "^6.0.3",
@@ -42,7 +43,7 @@
 		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
-		"@prisma/client": "^4.8.1",
+		"@prisma/client": "^4.13.0",
 		"@remix-run/dev": "^1.16.0",
 		"@remix-run/eslint-config": "^1.16.0",
 		"@remix-run/serve": "^1.16.0",
