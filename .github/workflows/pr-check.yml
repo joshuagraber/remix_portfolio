@@ -1,7 +1,7 @@
 name: Check PR approval for non-admin authors
 
 on:
-  # PR into main opened, reopened, or synchronized
+  # PR into master opened, reopened, or synchronized
   pull_request:
     branches:
       - master
@@ -17,10 +17,9 @@ jobs:
 
     runs-on: ubuntu-20.04
 
-    # Event has to be a pull request, or the base branch has to be main
+    # Event has to be a pull request, or the base branch has to be master
     if: >-
       github.event_name == 'pull_request'
-        || github.event_name == 'pull_request_review'
         || github.event.pull_request.base.ref == 'master'
 
     steps:
@@ -74,14 +73,14 @@ jobs:
           # Set success state in environment
           echo "STATE=success" >> "$GITHUB_ENV"
 
-      - name: Set result in separate status
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          sha: ${{ github.event.pull_request.head.sha }}
-          repo: ${{ github.repository }}
-          id: ${{ github.run_id }}
-        run: |
-          gh api "repos/$repo/statuses/$sha" \
-              --raw-field state="$STATE" \
-              --raw-field context='Non-admin PR approval' \
-              --raw-field target_url="https://github.com/$repo/actions/runs/$id"
+      # - name: Set result in separate status
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}
+      #     sha: ${{ github.event.pull_request.head.sha }}
+      #     repo: ${{ github.repository }}
+      #     id: ${{ github.run_id }}
+      #   run: |
+      #     gh api "repos/$repo/statuses/$sha" \
+      #         --raw-field state="$STATE" \
+      #         --raw-field context='Non-admin PR approval' \
+      #         --raw-field target_url="https://github.com/$repo/actions/runs/$id"
