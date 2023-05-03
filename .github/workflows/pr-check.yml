@@ -21,7 +21,7 @@ jobs:
     if: >-
       github.event_name == 'pull_request'
         || github.event_name == 'pull_request_review'
-        || github.event.pull_request.base.ref == 'main'
+        || github.event.pull_request.base.ref == 'master'
 
     steps:
       - name: Check if author is repo admin
