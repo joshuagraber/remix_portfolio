@@ -3,7 +3,12 @@ import * as blog from 'services/blog.server';
 
 // UTILS
 import { isEqual } from 'lodash';
-import { getDomainUrl, removeDoubleSlashes, typedBoolean } from 'utils/utils.server';
+import {
+	filterPostsByEnvironment,
+	getDomainUrl,
+	removeDoubleSlashes,
+	typedBoolean,
+} from 'utils/utils.server';
 
 // TYPES
 import type { EntryContext } from '@remix-run/node';
@@ -24,7 +29,7 @@ export async function getSitemapXml(request: Request, remixContext: EntryContext
   `.trim();
 	}
 
-	const siteMapEntriesFromPosts: SitemapEntry[] = await (
+	const siteMapEntriesFromPosts: SitemapEntry[] = await filterPostsByEnvironment(
 		await blog.getPostsAll()
 	).map((post) => {
 		return {
