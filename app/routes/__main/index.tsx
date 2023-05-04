@@ -13,7 +13,11 @@ import ReactMarkdown from 'react-markdown';
 import * as blog from 'services/blog.server';
 
 // UTILS
-import { cachedLoaderResponse, stripParamsAndHash } from 'utils/utils.server';
+import {
+	cachedLoaderResponse,
+	filterPostsByEnvironment,
+	stripParamsAndHash,
+} from 'utils/utils.server';
 
 // TYPES
 import type { DynamicLinksFunction } from 'remix-utils';
@@ -24,7 +28,7 @@ import type { Post } from '@prisma/client';
 // EXPORTS
 export const loader: LoaderFunction = async ({ request }) => {
 	const bookmarks = await blog.getBookmarksAll();
-	const posts = await blog.getPostsAll();
+	const posts = filterPostsByEnvironment(await blog.getPostsAll());
 	const canonical = stripParamsAndHash(request.url);
 
 	// Only send 8 most recent bookmarks / posts

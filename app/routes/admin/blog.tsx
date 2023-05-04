@@ -45,6 +45,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 	try {
 		const authors = await users.getUsersAreBlogAuthors();
 		const images = await media.getImagesAll();
+		// Not filtering because we want all posts in admin
 		const posts = await blog.getPostsAll();
 
 		return json({ authors, images: images.resources, posts }, { status: 200 });

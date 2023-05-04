@@ -4,9 +4,9 @@ import { json } from '@remix-run/node';
 
 // TYPES
 import { FormValue } from 'types/types.server';
+import { Post } from '@prisma/client';
 
 // TODO: ORGANIZE THIS
-
 export function typedBoolean<T>(value: T): value is Exclude<T, '' | 0 | false | null | undefined> {
 	return Boolean(value);
 }
@@ -102,4 +102,20 @@ export function cachedLoaderResponse(request: Request, data: any, maxAge: number
 			status: 200,
 		});
 	}
+}
+/**
+ * Removes test posts and posts scheduled for the future from prod env
+ * @param {Post[]} posts array of all post objects
+ * @returns {Post[]} filtered array of post objects
+ */
+export function filterPostsByEnvironment(posts: Post[]): Post[] {
+	if (process.env.NODE_ENV === 'production') {
+		const now = new Date().toISOString();
+		return posts.filter((post) => {
+			if (!post.slug.includes('test') && now > post.published_at.toISOString()) {
+				return post;
+			}
+		});
+	}
+	return posts;
 }

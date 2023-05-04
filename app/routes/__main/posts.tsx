@@ -9,7 +9,11 @@ import { ContainerCenter, links as containerCenterLinks } from 'components/Conta
 import ReactMarkdown from 'react-markdown';
 
 // UTILS
-import { cachedLoaderResponse, stripParamsAndHash } from 'utils/utils.server';
+import {
+	cachedLoaderResponse,
+	filterPostsByEnvironment,
+	stripParamsAndHash,
+} from 'utils/utils.server';
 
 // SERVICES
 import * as blog from 'services/blog.server';
@@ -22,7 +26,7 @@ import type { Post } from '@prisma/client';
 
 // EXPORTS
 export const loader: LoaderFunction = async ({ request }) => {
-	const posts = await blog.getPostsAll();
+	const posts = filterPostsByEnvironment(await blog.getPostsAll());
 	const canonical = stripParamsAndHash(request.url);
 
 	const data = {

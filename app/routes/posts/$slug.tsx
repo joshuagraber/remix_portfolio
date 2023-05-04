@@ -211,26 +211,26 @@ export default function Post(): React.ReactElement {
 	const document = getDocument();
 
 	// HOOKS - REF
-	const scrollToRef = React.useRef<HTMLDivElement>(null);
+	// const scrollToRef = React.useRef<HTMLDivElement>(null);
 
 	// HOOKS - EFFECTS
 	// Handles edge case of user not being quite at the bottom of the screen when opening accordion
-	React.useEffect(() => {
-		let timeout: NodeJS.Timeout | undefined;
+	// React.useEffect(() => {
+	// 	let timeout: NodeJS.Timeout | undefined;
 
-		if (search.get('mailing') !== null && scrollToRef.current instanceof HTMLDivElement) {
-			timeout = setTimeout(() => {
-				const dims = scrollToRef?.current?.getBoundingClientRect();
-				const bodyScrollHeight = document.body.scrollHeight;
+	// 	if (search.get('mailing') !== null && scrollToRef.current instanceof HTMLDivElement) {
+	// 		timeout = setTimeout(() => {
+	// 			const dims = scrollToRef?.current?.getBoundingClientRect();
+	// 			const bodyScrollHeight = document.body.scrollHeight;
 
-				window.scrollTo({ top: bodyScrollHeight + dims!.y, behavior: 'smooth' });
-			}, 400);
-		}
+	// 			window.scrollTo({ top: bodyScrollHeight + dims!.y, behavior: 'smooth' });
+	// 		}, 400);
+	// 	}
 
-		if (timeout) {
-			return () => clearTimeout(timeout);
-		}
-	}, [scrollToRef, search]);
+	// 	if (timeout) {
+	// 		return () => clearTimeout(timeout);
+	// 	}
+	// }, [scrollToRef, search]);
 
 	// VARS
 	const {
@@ -315,17 +315,17 @@ export default function Post(): React.ReactElement {
 						}}
 					/>
 
-					<hr className='jdg-post-break' />
+					{/* <hr className='jdg-post-break' /> */}
 
 					{/*  TODO: abstract to separate component */}
-					<div className='jdg-post-email-list-signup'>
+					{/* TODO: Set up magic link to confirm signups. */}
+					{/* <div className='jdg-post-email-list-signup'>
 						<Accordion heading='Sign up for my newsletter' name='mailing'>
 							<subscribe.Form action='/action/subscribe' method='post'>
 								{subscribe.type === 'done' && !subscribe.data && (
 									<div className='jdg-post-email-list-signup-confirmation'>
 										<h4>You've successfully signed up!</h4>
 										<p>Thank you for subscribing to the newsletter.</p>
-										{/* TODO: Set up magic link to confirm signups. */}
 									</div>
 								)}
 								{(subscribe.type !== 'done' || subscribe.data) && (
@@ -374,7 +374,7 @@ export default function Post(): React.ReactElement {
 							</subscribe.Form>
 						</Accordion>
 						<div className='jdg-post-signup-scroll-to' ref={scrollToRef} />
-					</div>
+					</div> */}
 				</ContainerCenter>
 			</main>
 
