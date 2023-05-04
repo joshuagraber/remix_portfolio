@@ -73,14 +73,14 @@ jobs:
           # Set success state in environment
           echo "STATE=success" >> "$GITHUB_ENV"
 
-      # - name: Set result in separate status
-      #   env:
-      #     GITHUB_TOKEN: ${{ github.token }}
-      #     sha: ${{ github.event.pull_request.head.sha }}
-      #     repo: ${{ github.repository }}
-      #     id: ${{ github.run_id }}
-      #   run: |
-      #     gh api "repos/$repo/statuses/$sha" \
-      #         --raw-field state="$STATE" \
-      #         --raw-field context='Non-admin PR approval' \
-      #         --raw-field target_url="https://github.com/$repo/actions/runs/$id"
+      - name: Set result in separate status
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          sha: ${{ github.event.pull_request.head.sha }}
+          repo: ${{ github.repository }}
+          id: ${{ github.run_id }}
+        run: |
+          gh api "repos/$repo/statuses/$sha" \
+              --raw-field state="$STATE" \
+              --raw-field context='Non-admin PR approval' \
+              --raw-field target_url="https://github.com/$repo/actions/runs/$id"
