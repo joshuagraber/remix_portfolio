@@ -10,9 +10,11 @@ import { SOCIAL_LINKS } from 'utils/constants';
 import React from 'react';
 
 // TYPES
+import { ClassValue, clsx } from 'clsx';
 import type { LinksFunction } from '@remix-run/node';
 import { Form } from '@remix-run/react';
 interface Props {
+	className: ClassValue;
 	path: string;
 }
 
@@ -21,9 +23,10 @@ export const links: LinksFunction = () => {
 	return [...containerCenterLinks(), { rel: 'stylesheet', href: styles }];
 };
 
-export const Footer: React.FC<Props> = ({ path = '/' }) => {
+export const Footer: React.FC<Props> = ({ className, path = '/' }) => {
+	const classes = clsx('jdg-footer', className);
 	return (
-		<div className='jdg-footer'>
+		<div className={classes}>
 			<ContainerCenter>
 				<div className='jdg-footer-attribution'>
 					&copy; Joshua D. Graber, {new Date().getFullYear()}

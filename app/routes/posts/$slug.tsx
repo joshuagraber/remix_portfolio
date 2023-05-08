@@ -378,7 +378,7 @@ export default function Post(): React.ReactElement {
 				</ContainerCenter>
 			</main>
 
-			<Footer path={location.pathname + location.search} />
+			<Footer className='jdg-footer-post' path={location.pathname + location.search} />
 		</div>
 	);
 }

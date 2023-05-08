@@ -264,6 +264,10 @@ $post-container-padding: 24px;
 		}
 	}
 
+	.jdg-footer.jdg-footer-post {
+		padding: 24px 12px;
+	}
+
 	// MEDIA QUERIES
 	@media (max-width: $mobile) {
 		.jdg-container-center-post-header {
@@ -345,13 +349,11 @@ $post-container-padding: 24px;
 					font: var(--font-heading-tertiary);
 					flex-direction: column;
 					font-size: 24px;
-
 					max-width: 60%;
 				}
 
 				&-sub-heading,
 				&-info {
-					font-size: 16px;
 					font-size: 16px;
 				}
 
@@ -379,6 +381,32 @@ $post-container-padding: 24px;
 			h5 {
 				font-size: 16px;
 				margin-bottom: 14px;
+			}
+		}
+	}
+
+	@media (max-width: 400px) {
+		.jdg-container-center-post-header {
+			.jdg-post-header-text {
+				&-heading {
+					font: var(--font-heading-tertiary);
+					flex-direction: column;
+					font-size: 18px;
+					max-width: 100%;
+				}
+
+				&-sub-heading,
+				&-info {
+					font-size: 12px;
+				}
+
+				&-date {
+					font-size: 10px;
+				}
+
+				&-icons-container {
+					margin-bottom: 6px;
+				}
 			}
 		}
 	}

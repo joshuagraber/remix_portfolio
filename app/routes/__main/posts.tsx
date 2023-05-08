@@ -59,7 +59,7 @@ export default function Posts() {
 	return (
 		<ContainerCenter className='jdg-posts-container-center'>
 			<div className='jdg-posts-heading'>
-				<h2>Recent Posts</h2>
+				<h2>Posts</h2>
 				<p>
 					Occasional fragments on books, technology, art, and whatever else might occur to me to
 					share here.
