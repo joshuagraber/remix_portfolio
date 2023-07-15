@@ -31,7 +31,7 @@
 		"lodash": "^4.17.21",
 		"nodemailer": "^6.9.1",
 		"npm": "^9.8.0",
-		"prisma": "^4.13.0",
+		"prisma": "^5.0.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-markdown": "^6.0.3",
@@ -43,7 +43,7 @@
 		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
-		"@prisma/client": "^4.13.0",
+		"@prisma/client": "^5.0.0",
 		"@remix-run/dev": "^1.16.0",
 		"@remix-run/eslint-config": "^1.16.0",
 		"@remix-run/serve": "^1.16.0",
