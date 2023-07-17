@@ -14,7 +14,7 @@ import { ClassValue, clsx } from 'clsx';
 import type { LinksFunction } from '@remix-run/node';
 import { Form } from '@remix-run/react';
 interface Props {
-	className: ClassValue;
+	className?: ClassValue;
 	path: string;
 }
 
