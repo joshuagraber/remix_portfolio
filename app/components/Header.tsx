@@ -3,12 +3,6 @@ import React from 'react';
 import styles from 'styles/header.css';
 import { Link } from '@remix-run/react';
 
-// EXT LIBS
-import clsx from 'clsx';
-
-// HOOKS
-import { useWindowDimensions } from 'hooks/useWindowDimensions';
-
 // COMPONENTS
 import { ContainerCenter, links as containerCenterLinks } from './ContainerCenter';
 import { Nav, links as navLinks } from './Nav';
@@ -28,26 +22,8 @@ export const links: LinksFunction = () => {
 };
 
 export const Header: React.FC = () => {
-	// UPDATING DIMS (essentially listening for resize)
-	const { innerWidth } = useWindowDimensions();
-
-	// HOOKS - STATE
-	const [isMobile, setIsMobile] = React.useState(innerWidth <= 750 ? true : false);
-
-	// HOOKS - EFFECTS
-	React.useEffect(() => {
-		if (innerWidth <= 750) {
-			setIsMobile(true);
-			return;
-		}
-		setIsMobile(false);
-	}, [innerWidth]);
-
-	// CLASSES
-	const classes = clsx('jdg-header');
-
 	return (
-		<div className={classes}>
+		<div className='jdg-header'>
 			<ContainerCenter>
 				<div className='jdg-header-name-container'>
 					<Link className='jdg-header-name-link' to='/'>
@@ -55,7 +31,7 @@ export const Header: React.FC = () => {
 						<p className='jdg-header-name-sub-heading'>Syntax: language and code</p>
 					</Link>
 				</div>
-				<Nav isMobile={isMobile} />
+				<Nav />
 				<ThemeToggle />
 			</ContainerCenter>
 		</div>

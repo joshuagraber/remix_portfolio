@@ -5,9 +5,7 @@ import styles from 'styles/nav.css';
 
 // TYPES
 import type { LinksFunction } from '@remix-run/node';
-interface Props {
-	isMobile: boolean;
-}
+
 // CONSTANTS
 import { NAV_ROUTES } from 'utils/constants';
 import clsx from 'clsx';
@@ -19,9 +17,7 @@ export const links: LinksFunction = () => {
 	return [{ rel: 'stylesheet', href: styles }];
 };
 
-export const Nav: React.FC<Props> = ({ isMobile }) => {
-	// HOOKS - GLOBAL
-
+export const Nav: React.FC = () => {
 	return (
 		<nav className='jdg-nav'>
 			<menu className='jdg-nav-menu'>
