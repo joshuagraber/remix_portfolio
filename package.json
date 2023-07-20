@@ -30,7 +30,6 @@
 		"focus-trap-react": "^10.1.1",
 		"lodash": "^4.17.21",
 		"nodemailer": "^6.9.1",
-		"npm": "^9.8.0",
 		"prisma": "^5.0.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
