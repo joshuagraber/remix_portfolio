@@ -14,6 +14,8 @@ const themeSessionStorage = createCookieSessionStorage({
 		secrets: [sessionSecret],
 		sameSite: 'lax',
 		path: '/',
+		// Cache for 99 years, because why unset it?
+		maxAge: 60 * 60 * 24 * 365 * 99,
 		httpOnly: true,
 	},
 });
