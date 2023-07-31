@@ -36,9 +36,10 @@ export const isTheme = (themeValueToSet: string): themeValueToSet is ThemeValues
 };
 
 // CONTEXT
-const ThemeContext: React.Context<ThemeContext | null> = React.createContext<ThemeContext | null>(
-	null
-);
+const ThemeContext = React.createContext<ThemeContext>({
+	theme: ThemeValues.UNSET,
+	toggleTheme: () => undefined,
+});
 
 export const ThemeProvider: React.FC<Props> = ({ children, userThemePreference }) => {
 	// HOOKS - GLOBAL
@@ -85,7 +86,9 @@ export const ThemeProvider: React.FC<Props> = ({ children, userThemePreference }
 	// Set both LS and root element
 	useLayoutEffect(() => {
 		document.documentElement.dataset.theme = theme;
-		themePersistence.submit({ theme }, { action: 'action/theme', method: 'post' });
+		if (theme !== ThemeValues.UNSET) {
+			themePersistence.submit({ theme }, { action: 'action/theme', method: 'post' });
+		}
 	}, [theme]);
 
 	const toggleTheme = () => {

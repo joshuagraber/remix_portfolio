@@ -26,11 +26,13 @@ export const ThemeToggle: React.FC = () => {
 	const lightIconContainerRef = React.useRef<HTMLDivElement>(null);
 
 	// HOOKS - CUSTOM
-	const { theme } = useTheme()!;
+	const { theme } = useTheme();
 
 	// VARS
 	const isDarkMode = theme === ThemeValues.DARK;
 	const iconContainerRef = isDarkMode ? darkIconContainerRef : lightIconContainerRef;
+
+	if (theme === ThemeValues.UNSET) return null;
 
 	return (
 		<div className='jdg-theme-toggle'>
@@ -47,7 +49,7 @@ export const ThemeToggle: React.FC = () => {
 						<SwitchTransition>
 							<CSSTransition
 								classNames='jdg-theme-toggle-button-icon-container'
-								key={isDarkMode ? 'dark mode' : 'light mode'}
+								key={theme}
 								nodeRef={iconContainerRef}
 								timeout={300}
 							>
