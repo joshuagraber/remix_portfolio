@@ -207,9 +207,9 @@ export default function Post(): React.ReactElement {
 	const data = useLoaderData();
 	const location = useLocation();
 	const transition = useTransition();
-	const subscribe = useFetcher();
-	const [search] = useSearchParams();
-	const document = getDocument();
+	// const subscribe = useFetcher();
+	// const [search] = useSearchParams();
+	// const document = getDocument();
 
 	// HOOKS - REF
 	// const scrollToRef = React.useRef<HTMLDivElement>(null);
