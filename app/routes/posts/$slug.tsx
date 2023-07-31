@@ -12,12 +12,12 @@ import {
 import styles from 'styles/post.css';
 
 // COMPONENTS
-import { Accordion, links as accordionLinks } from 'components/Accordion';
-import { Button, links as buttonLinks } from 'components/Button';
+// import { Accordion, links as accordionLinks } from 'components/Accordion';
+// import { Button, links as buttonLinks } from 'components/Button';
 import { ContainerCenter } from 'components/ContainerCenter';
 import { Footer, links as footerLinks } from 'components/Footer';
 import { Home } from 'components/SVG/Home';
-import { Input, links as inputLinks } from 'components/Input';
+// import { Input, links as inputLinks } from 'components/Input';
 import { LoadingSpinner, links as loadingSpinnerLinks } from 'components/Spinner';
 import ReactMarkdown from 'react-markdown';
 import { ThemeToggle, links as themeToggleLinks } from 'components/ThemeToggle';
@@ -75,15 +75,16 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 	return cachedLoaderResponse(request, data);
 };
 
+/* Not returning ContainerCenter or LoadingSpinner links here, it is still on the route from being used in /posts,
+ * and importing both places causes warnings on prefetch. */
 export const links: LinksFunction = () => {
 	return [
-		...accordionLinks(),
-		...buttonLinks(),
-		/* Not returning ContainerCenter links here, it is still on the route from being used in /posts,
-		 * and importing both places causes warnings on prefetch. */
+		// ...accordionLinks(),
+		// ...buttonLinks(),
+		// ...containerCenterLinks(),
 		...footerLinks(),
-		...inputLinks(),
-		...loadingSpinnerLinks(),
+		// ...inputLinks(),
+		// ...loadingSpinnerLinks(),
 		...themeToggleLinks(),
 		{ rel: 'stylesheet', href: styles },
 	];

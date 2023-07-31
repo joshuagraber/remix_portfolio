@@ -80,7 +80,12 @@ export default function HomePage(): React.ReactElement {
 					{posts.map(({ image_featured, published_at, slug, tagline, title }: Post) => {
 						const published = new Date(published_at).toLocaleDateString();
 						return (
-							<Link className='jdg-home-post-link' key={slug} to={`posts/${slug}`}>
+							<Link
+								className='jdg-home-post-link'
+								key={slug}
+								prefetch='intent'
+								to={`posts/${slug}`}
+							>
 								<div className='jdg-home-post-link-text'>
 									<h3 className='jdg-home-post-link-text-heading'>{title}</h3>
 									<div className='jdg-home-post-link-text-subheading'>
@@ -97,7 +102,7 @@ export default function HomePage(): React.ReactElement {
 						);
 					})}
 				</div>
-				<Link className='jdg-home-posts-link-all' to='posts'>
+				<Link className='jdg-home-posts-link-all' prefetch='intent' to='posts'>
 					All Posts
 					<Arrow direction='right' />
 				</Link>
