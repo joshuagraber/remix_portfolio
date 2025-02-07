@@ -15,7 +15,37 @@ permissions:
   contents: read
 
 jobs:
+  deps:
+    name: 📦 Dependencies
+    runs-on: ubuntu-22.04
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.9.0
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: 📥 Install dependencies
+        run: npm ci
+
+      - name: 📤 Cache build artifacts
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.npm
+            .next/cache
+            .cache
+            public/build
+            node_modules/.cache
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+
   lint:
+    needs: deps
     name: ⬣ ESLint
     runs-on: ubuntu-22.04
     steps:
@@ -27,8 +57,17 @@ jobs:
         with:
           node-version: 20.9.0
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+      - name: 📥 Restore cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.npm
+            .next/cache
+            .cache
+            public/build
+            node_modules/.cache
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: 🖼 Build icons
         run: npm run build:icons
@@ -37,6 +76,7 @@ jobs:
         run: npm run lint
 
   typecheck:
+    needs: deps
     name: ʦ TypeScript
     runs-on: ubuntu-22.04
     steps:
@@ -48,8 +88,17 @@ jobs:
         with:
           node-version: 20.9.0
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+      - name: 📥 Restore cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.npm
+            .next/cache
+            .cache
+            public/build
+            node_modules/.cache
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: 🖼 Build icons
         run: npm run build:icons
@@ -58,6 +107,7 @@ jobs:
         run: npm run typecheck
 
   vitest:
+    needs: deps
     name: ⚡ Vitest
     runs-on: ubuntu-22.04
     steps:
@@ -69,8 +119,17 @@ jobs:
         with:
           node-version: 20.9.0
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+      - name: 📥 Restore cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.npm
+            .next/cache
+            .cache
+            public/build
+            node_modules/.cache
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: 🏄 Copy test env vars
         run: cp .env.example .env
@@ -82,6 +141,7 @@ jobs:
         run: npm run test -- --coverage
 
   playwright:
+    needs: deps
     name: 🎭 Playwright
     runs-on: ubuntu-22.04
     timeout-minutes: 60
@@ -97,8 +157,17 @@ jobs:
         with:
           node-version: 20.9.0
 
-      - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+      - name: 📥 Restore cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.npm
+            .next/cache
+            .cache
+            public/build
+            node_modules/.cache
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: 📥 Install Playwright Browsers
         run: npm run test:e2e:install
@@ -112,9 +181,9 @@ jobs:
         with:
           path: prisma/data.db
           key:
-            db-cache-schema_${{ hashFiles('./prisma/schema.prisma')
-            }}-migrations_${{ hashFiles('./prisma/migrations/*/migration.sql')
-            }}
+            db-cache-schema_${{
+            hashFiles('./prisma/schema.prisma')}}-migrations_${{
+            hashFiles('./prisma/migrations/*/migration.sql')}}
 
       - name: 🌱 Seed Database
         if: steps.db-cache.outputs.cache-hit != 'true'
@@ -138,9 +207,7 @@ jobs:
     name: 🚀 Deploy
     runs-on: ubuntu-22.04
     needs: [lint, typecheck, vitest, playwright]
-    # only build/deploy branches on pushes
     if: ${{ github.event_name == 'push' }}
-
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
