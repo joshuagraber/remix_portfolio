@@ -31,7 +31,12 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'package-lock.json'
       - name: Install deps
-        run: npm ci
+        run: |
+          rm -rf node_modules
+          rm -f package.json
+          npm i
+          npm install @rollup/rollup-linux-x64-gnu
+
       - name: Cache node_modules
         uses: actions/cache/save@v3
         with:
@@ -76,8 +81,11 @@ jobs:
         with:
           node-version: 20.9.0
 
-      - name: 📥 Node modules
-        run: npm ci # test if it's this??
+      - name: 📥 Restore cache
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
 
       - name: 🖼 Build icons
         run: npm run build:icons

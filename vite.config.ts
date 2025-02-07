@@ -25,7 +25,7 @@ export default defineConfig({
 			}
 		},
 
-		sourcemap: true,
+		sourcemap: MODE === 'development',
 	},
 	server: {
 		watch: {
