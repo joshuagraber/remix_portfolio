@@ -25,7 +25,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20.9.0
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
@@ -46,7 +46,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20.9.0
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
@@ -55,7 +55,7 @@ jobs:
         run: npm run build:icons
 
       - name: 🔎 Type check
-        run: npm run typecheck --if-present
+        run: npm run typecheck
 
   vitest:
     name: ⚡ Vitest
@@ -67,7 +67,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20.9.0
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
@@ -95,7 +95,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20.9.0
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
