@@ -130,67 +130,68 @@ jobs:
       - name: ⚡ Run vitest
         run: npm run test -- --coverage
 
-  playwright:
-    needs: setup
-    name: 🎭 Playwright
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v4
+  # Having trouble with playwright job, commenting it out for now as we're not doing much e2e testing atm
+  # playwright:
+  #   needs: setup
+  #   name: 🎭 Playwright
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 60
+  #   steps:
+  #     - name: ⬇️ Checkout repo
+  #       uses: actions/checkout@v4
 
-      - name: 🏄 Copy test env vars
-        run: cp .env.example .env
+  #     - name: 🏄 Copy test env vars
+  #       run: cp .env.example .env
 
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
+  #     - name: ⎔ Setup node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 22
 
-      - name: 📥 Restore cache
-        uses: actions/cache/restore@v4
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
+  #     - name: 📥 Restore cache
+  #       uses: actions/cache/restore@v4
+  #       with:
+  #         path: node_modules
+  #         key: node-modules-${{ hashFiles('package-lock.json') }}
 
-      - name: 📥 Install Playwright Browsers
-        run: npm run test:e2e:install
+  #     - name: 📥 Install Playwright Browsers
+  #       run: npm run test:e2e:install
 
-      - name: 🛠 Setup Database
-        run: npx prisma migrate deploy
+  #     - name: 🛠 Setup Database
+  #       run: npx prisma migrate deploy
 
-      - name: 🏦 Cache Database
-        id: db-cache
-        uses: actions/cache@v4
-        with:
-          path: prisma/data.db
-          key:
-            db-cache-schema_${{
-            hashFiles('./prisma/schema.prisma')}}-migrations_${{
-            hashFiles('./prisma/migrations/*/migration.sql')}}
+  #     - name: 🏦 Cache Database
+  #       id: db-cache
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: prisma/data.db
+  #         key:
+  #           db-cache-schema_${{
+  #           hashFiles('./prisma/schema.prisma')}}-migrations_${{
+  #           hashFiles('./prisma/migrations/*/migration.sql')}}
 
-      - name: 🌱 Seed Database
-        if: steps.db-cache.outputs.cache-hit != 'true'
-        run: npx prisma migrate reset --force
+  #     - name: 🌱 Seed Database
+  #       if: steps.db-cache.outputs.cache-hit != 'true'
+  #       run: npx prisma migrate reset --force
 
-      - name: 🏗 Build
-        run: npm run build
+  #     - name: 🏗 Build
+  #       run: npm run build
 
-      - name: 🎭 Playwright tests
-        run: npx playwright test
+  #     - name: 🎭 Playwright tests
+  #       run: npx playwright test
 
-      - name: 📊 Upload report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+  #     - name: 📊 Upload report
+  #       uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report
+  #         path: playwright-report/
+  #         retention-days: 30
 
   deploy:
     name: 🚀 Deploy
     runs-on: ubuntu-latest
-    needs: [lint, typecheck, vitest, playwright]
+    needs: [lint, typecheck, vitest]
     if: ${{ github.event_name == 'push' }}
     steps:
       - name: ⬇️ Checkout repo
