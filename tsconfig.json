@@ -1,9 +1,24 @@
 {
-	"include": ["**/*.ts", "**/*.tsx"],
-	"extends": ["@epic-web/config/typescript"],
+	"include": [
+		"app/**/*.ts",
+		"tests/**/*.ts",
+		"config/**/*.ts",
+		"types/**/*.ts",
+		"server/**/*.ts",
+		"other/**/*.ts",
+		"prisma/**/*.ts",
+		"app/**/*.tsx",
+		"tests/**/*.tsx",
+		"config/**/*.tsx",
+		"types/**/*.tsx",
+		"server/**/*.tsx",
+		"./*.ts"
+	],
+	"extends": "@epic-web/config/typescript",
 	"compilerOptions": {
 		"jsx": "react-jsx",
 		"esModuleInterop": true,
+		"skipLibCheck": true,
 		"paths": {
 			"@prisma/client": ["./node_modules/@prisma/client"],
 			"#app/*": ["./app/*"],
@@ -13,5 +28,14 @@
 				"./types/icon-name.d.ts"
 			]
 		}
-	}
+	},
+	"exclude": [
+		"node_modules",
+		"**/node_modules/*",
+		"build",
+		"dist",
+		"public",
+		"coverage",
+		".cache"
+	]
 }
