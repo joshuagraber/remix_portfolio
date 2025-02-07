@@ -33,7 +33,7 @@ jobs:
       - name: Install deps
         run: |
           rm -rf node_modules
-          rm -f package.json
+          rm -f ./package-lock.json
           npm i
           npm install @rollup/rollup-linux-x64-gnu
 
