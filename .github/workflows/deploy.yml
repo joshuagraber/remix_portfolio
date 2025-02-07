@@ -54,13 +54,7 @@ jobs:
       - name: 📥 Restore cache
         uses: actions/cache/restore@v4
         with:
-          path: |
-            **/node_modules
-            ~/.npm
-            .next/cache
-            .cache
-            public/build
-            node_modules/.cache
+          path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
       - name: 🖼 Build icons
@@ -85,13 +79,7 @@ jobs:
       - name: 📥 Restore cache
         uses: actions/cache/restore@v4
         with:
-          path: |
-            **/node_modules
-            ~/.npm
-            .next/cache
-            .cache
-            public/build
-            node_modules/.cache
+          path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
       - name: 🖼 Build icons
@@ -116,13 +104,7 @@ jobs:
       - name: 📥 Restore cache
         uses: actions/cache/restore@v4
         with:
-          path: |
-            **/node_modules
-            ~/.npm
-            .next/cache
-            .cache
-            public/build
-            node_modules/.cache
+          path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
       - name: 🏄 Copy test env vars
@@ -154,13 +136,7 @@ jobs:
       - name: 📥 Restore cache
         uses: actions/cache/restore@v4
         with:
-          path: |
-            **/node_modules
-            ~/.npm
-            .next/cache
-            .cache
-            public/build
-            node_modules/.cache
+          path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
       - name: 📥 Install Playwright Browsers
