@@ -15,37 +15,31 @@ permissions:
   contents: read
 
 jobs:
-  deps:
-    name: 📦 Dependencies
-    runs-on: ubuntu-22.04
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
     steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v4
-
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v4
+      - name: Cancel previous
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
-          node-version: 20.9.0
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
           cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
-
-      - name: 📥 Install dependencies
+          cache-dependency-path: 'package-lock.json'
+      - name: Install deps
         run: npm ci
-
-      - name: 📤 Cache build artifacts
-        uses: actions/cache/save@v4
+      - name: Cache node_modules
+        uses: actions/cache/save@v3
         with:
-          path: |
-            **/node_modules
-            ~/.npm
-            .next/cache
-            .cache
-            public/build
-            node_modules/.cache
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
 
   lint:
-    needs: deps
+    needs: setup
     name: ⬣ ESLint
     runs-on: ubuntu-22.04
     steps:
@@ -67,7 +61,7 @@ jobs:
             .cache
             public/build
             node_modules/.cache
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+          key: node-modules-${{ hashFiles('package-lock.json') }}
 
       - name: 🖼 Build icons
         run: npm run build:icons
@@ -76,7 +70,7 @@ jobs:
         run: npm run lint
 
   typecheck:
-    needs: deps
+    needs: setup
     name: ʦ TypeScript
     runs-on: ubuntu-22.04
     steps:
@@ -98,7 +92,7 @@ jobs:
             .cache
             public/build
             node_modules/.cache
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+          key: node-modules-${{ hashFiles('package-lock.json') }}
 
       - name: 🖼 Build icons
         run: npm run build:icons
@@ -107,7 +101,7 @@ jobs:
         run: npm run typecheck
 
   vitest:
-    needs: deps
+    needs: setup
     name: ⚡ Vitest
     runs-on: ubuntu-22.04
     steps:
@@ -129,7 +123,7 @@ jobs:
             .cache
             public/build
             node_modules/.cache
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+          key: node-modules-${{ hashFiles('package-lock.json') }}
 
       - name: 🏄 Copy test env vars
         run: cp .env.example .env
@@ -141,7 +135,7 @@ jobs:
         run: npm run test -- --coverage
 
   playwright:
-    needs: deps
+    needs: setup
     name: 🎭 Playwright
     runs-on: ubuntu-22.04
     timeout-minutes: 60
@@ -167,7 +161,7 @@ jobs:
             .cache
             public/build
             node_modules/.cache
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+          key: node-modules-${{ hashFiles('package-lock.json') }}
 
       - name: 📥 Install Playwright Browsers
         run: npm run test:e2e:install
