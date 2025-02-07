@@ -1,0 +1,17 @@
+{
+	"include": ["**/*.ts", "**/*.tsx"],
+	"extends": ["@epic-web/config/typescript"],
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"esModuleInterop": true,
+		"paths": {
+			"@prisma/client": ["./node_modules/@prisma/client"],
+			"#app/*": ["./app/*"],
+			"#tests/*": ["./tests/*"],
+			"@/icon-name": [
+				"./app/components/ui/icons/name.d.ts",
+				"./types/icon-name.d.ts"
+			]
+		}
+	}
+}

@@ -1,0 +1,290 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+	font-family: 'Yantramanav';
+	src: url('/fonts/yantramanav/regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Antic Didone';
+	src: url('/fonts/antic_didone/regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: 'Space Mono';
+	src: url('/fonts/space_mono/regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@layer base {
+	:root {
+		/* Color defs - not integrated into TW system, and probably shouldn't be. Use the system defined, or extend it if need be. */
+		--theme-0: 281 50% 2%;
+		--theme-1: 281 45% 5%;
+		--theme-2: 281 35% 17%;
+		--theme-3: 281 30% 22%;
+		--theme-4: 281 30% 40%;
+		--theme-5: 281 25% 50%;
+		--theme-6: 281 20% 65%;
+		--theme-7: 281 15% 75%;
+		--theme-8: 281 10% 85%;
+		--theme-9: 281 5% 95%;
+
+		--neutral-0: 270 40% 5%;
+		--neutral-1: 270 20% 10%;
+		--neutral-2: 270 10% 60%;
+		--neutral-3: 270 5% 80%;
+		--neutral-4: 270 1% 95%;
+
+		/* Fonts */
+		--font-serif: 'Antic Didone', ui-serif, system-ui, -apple-system;
+		--font-sans: 'Yantramanav', ui-sans-serif, system-ui, -apple-system;
+		--font-mono: 'Space Mono', monospace;
+
+		/* prefixed with foreground because it should look good on the background */
+		--foreground-destructive: 345 82.7% 40.8%;
+
+		--background: var(--neutral-4);
+		--foreground: var(--neutral-0);
+
+		--muted: var(--neutral-3);
+		--muted-foreground: var(--neutral-1);
+
+		--popover: var(--neutral-4);
+		--popover-foreground: var(--neutral-0);
+
+		--card: var(--neutral-4);
+		--card-foreground: var(--neutral-0);
+
+		--border: var(--theme-3);
+		--input: var(--theme-2);
+		--input-invalid: 0 84.2% 60.2%;
+
+		--primary: var(--theme-1);
+		--primary-foreground: var(--theme-9);
+
+		--secondary: var(--theme-8);
+		--secondary-foreground: var(--theme-4);
+
+		--accent: var(--theme-7);
+		--accent-foreground: var(--theme-2);
+
+		--destructive: 0 70% 50%;
+		--destructive-foreground: 210 40% 98%;
+
+		--ring: var(--theme-2);
+
+		--radius: 0.25rem;
+	}
+
+	.dark {
+		--background: var(--neutral-0);
+		--foreground: var(--neutral-4);
+
+		--muted: var(--neutral-1);
+		--muted-foreground: var(--neutral-3);
+
+		--popover: var(--neutral-0);
+		--popover-foreground: var(--neutral-4);
+
+		--card: var(--neutral-0);
+		--card-foreground: var(--neutral-4);
+
+		--border: var(--theme-7);
+		--input: var(--theme-8);
+		--input-invalid: 0 62.8% 30.6%;
+
+		--primary: var(--theme-8);
+		--primary-foreground: var(--theme-1);
+
+		--secondary: var(--theme-2);
+		--secondary-foreground: var(--theme-9);
+
+		--accent: var(--theme-1);
+		--accent-foreground: var(--theme-7);
+
+		--destructive: 0 60% 40%;
+		--destructive-foreground: 0 85.7% 97.3%;
+
+		--ring: var(--theme-7);
+	}
+}
+
+/* Typography and color defaults */
+@layer components {
+	/* Body font defaults */
+	body {
+		@apply font-serif text-body-sm tracking-wider md:text-body-md xl:text-body-lg;
+	}
+	/* Font defaults */
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	input,
+	label,
+	button {
+		@apply font-sans tracking-normal;
+	}
+	h1 {
+		@apply text-h2 md:text-h1 xl:text-mega;
+	}
+
+	h2 {
+		@apply text-h3 md:text-h2 xl:text-h1;
+	}
+
+	h3 {
+		@apply text-h4 md:text-h3 xl:text-h2;
+	}
+
+	h4 {
+		@apply text-h5 md:text-h4 xl:text-h3;
+	}
+
+	h5 {
+		@apply text-h6 md:text-h5 xl:text-h4;
+	}
+
+	h6 {
+		@apply text-body-xs text-h6 xl:text-h5;
+	}
+
+	/* Mono fonts */
+	code,
+	pre {
+		@apply font-mono;
+	}
+
+	/* Links */
+	a {
+		@apply cursor-pointer text-accent-foreground underline underline-offset-4 visited:opacity-80 hover:text-secondary-foreground focus:text-secondary-foreground focus:outline-none;
+	}
+}
+
+.jdg_typography p:not(:first-of-type) {
+	@apply mt-3;
+}
+
+.jdg_typography blockquote {
+	@apply my-6 border-l-4 py-1 pl-4 italic;
+}
+
+.jdg_typography pre {
+	@apply my-4 overflow-x-auto rounded-md bg-muted p-4 font-mono text-sm leading-relaxed text-muted-foreground;
+}
+
+.jdg_typography code {
+	@apply rounded bg-muted px-1 py-0.5 font-mono text-sm text-muted-foreground;
+}
+
+.jdg_typography ol {
+	@apply my-4 list-decimal space-y-2 pl-6;
+}
+
+.jdg_typography ul {
+	@apply my-4 list-disc space-y-2 pl-6;
+}
+
+.jdg_typography li {
+	@apply leading-relaxed;
+}
+
+.jdg_typography strong {
+	@apply font-semibold;
+}
+
+.jdg_typography em {
+	@apply italic;
+}
+
+.jdg_typography u {
+	@apply underline underline-offset-2;
+}
+
+.jdg_typography del {
+	@apply line-through;
+}
+
+.jdg_typography sub {
+	@apply align-sub text-xs;
+}
+
+.jdg_typography sup {
+	@apply align-super text-xs;
+}
+
+.jdg_typography hr {
+	@apply my-8 border-0 border-t;
+}
+
+/* MDX Editor — TODO: update other vars as need be */
+.dark-editor {
+	color: var(--neutral-4);
+	--basePageBg: var(--neutral-0);
+	background: var(--neutral-0);
+	--baseTextContrast: var(var(--neutral-4));
+}
+
+/* MDX editor vars https://github.com/mdx-editor/editor/blob/main/src/examples/dark-editor.css */
+/* .dark {
+  --accentBase: var(--tomato-1);
+  --accentBgSubtle: var(--tomato-2);
+  --accentBg: var(--tomato-3);
+  --accentBgHover: var(--tomato-4);
+  --accentBgActive: var(--tomato-5);
+  --accentLine: var(--tomato-6);
+  --accentBorder: var(--tomato-7);
+  --accentBorderHover: var(--tomato-8);
+  --accentSolid: var(--tomato-9);
+  --accentSolidHover: var(--tomato-10);
+  --accentText: var(--tomato-11);
+  --accentTextContrast: var(--tomato-12);
+
+  --baseBase: var(--mauve-1);
+  --baseBgSubtle: var(--mauve-2);
+  --baseBg: var(--mauve-3);
+  --baseBgHover: var(--mauve-4);
+  --baseBgActive: var(--mauve-5);
+  --baseLine: var(--mauve-6);
+  --baseBorder: var(--mauve-7);
+  --baseBorderHover: var(--mauve-8);
+  --baseSolid: var(--mauve-9);
+  --baseSolidHover: var(--mauve-10);
+  --baseText: var(--mauve-11);
+  --baseTextContrast: var(--mauve-12);
+
+  --admonitionTipBg: var(--cyan4);
+  --admonitionTipBorder: var(--cyan8);
+  
+  --admonitionInfoBg: var(--grass4);
+  --admonitionInfoBorder: var(--grass8);
+
+  --admonitionCautionBg: var(--amber4);
+  --admonitionCautionBorder: var(--amber8);
+
+  --admonitionDangerBg: var(--red4);
+  --admonitionDangerBorder: var(--red8);
+
+  --admonitionNoteBg: var(--mauve-4);
+  --admonitionNoteBorder: var(--mauve-8);
+
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  color: var(--baseText);
+  --basePageBg: black;
+  background: var(--basePageBg);
+} */
