@@ -41,9 +41,7 @@ jobs:
       - name: Install deps
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: |
-          rm -rf node_modules
-          rm -f ./package-lock.json
-          npm i
+          npm ci
           npm install @rollup/rollup-linux-x64-gnu
 
       - name: Cache node_modules
