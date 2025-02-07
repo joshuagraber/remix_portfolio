@@ -40,9 +40,7 @@ jobs:
 
       - name: Install deps
         if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: |
-          npm ci
-          npm install @rollup/rollup-linux-x64-gnu
+        run: npm ci
 
       - name: Cache node_modules
         if: steps.cache-modules.outputs.cache-hit != 'true'
