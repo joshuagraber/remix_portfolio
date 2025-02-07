@@ -30,7 +30,16 @@ jobs:
           node-version: '20.x'
           cache: 'npm'
           cache-dependency-path: 'package-lock.json'
+
+      - name: Restore node_modules
+        id: cache-modules
+        uses: actions/cache/restore@v3
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+
       - name: Install deps
+        if: steps.cache-modules.outputs.cache-hit != 'true'
         run: |
           rm -rf node_modules
           rm -f ./package-lock.json
@@ -38,6 +47,7 @@ jobs:
           npm install @rollup/rollup-linux-x64-gnu
 
       - name: Cache node_modules
+        if: steps.cache-modules.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3
         with:
           path: node_modules
@@ -46,7 +56,7 @@ jobs:
   lint:
     needs: setup
     name: ⬣ ESLint
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
@@ -71,7 +81,7 @@ jobs:
   typecheck:
     needs: setup
     name: ʦ TypeScript
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
@@ -99,7 +109,7 @@ jobs:
   vitest:
     needs: setup
     name: ⚡ Vitest
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
@@ -127,7 +137,7 @@ jobs:
   playwright:
     needs: setup
     name: 🎭 Playwright
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - name: ⬇️ Checkout repo
@@ -183,7 +193,7 @@ jobs:
 
   deploy:
     name: 🚀 Deploy
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: [lint, typecheck, vitest, playwright]
     if: ${{ github.event_name == 'push' }}
     steps:
