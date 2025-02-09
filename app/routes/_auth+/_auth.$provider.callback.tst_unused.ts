@@ -1,6 +1,6 @@
 // TODO: update failing tests if/when we get back to working with the auth provider stuff
 
-
+export default () => null
 //LinkPreviewData import { invariant } from '@epic-web/invariant'
 // import { faker } from '@faker-js/faker'
 // import { http } from 'msw'
@@ -19,8 +19,6 @@
 // import { BASE_URL, convertSetCookieToCookie } from '#tests/utils.ts'
 // import { loader } from './auth.$provider.callback.ts'
 
-import { test } from 'vitest'
-test('foo', () => null)
 // const ROUTE_PATH = '/auth/github/callback'
 // const PARAMS = { provider: 'github' }
 
