@@ -1,5 +1,11 @@
-import { type LoaderFunctionArgs } from 'react-router';
+import { type LoaderFunctionArgs } from 'react-router'
 import { getOpenGraphData } from '#app/utils/link-preview.server'
+
+export const cache = () => ({
+	maxAge: 60 * 60 * 24, // 24 hours
+	staleWhileRevalidate: 60 * 60, // 1 hour
+	private: true,
+})
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	const url = new URL(request.url).searchParams.get('url')
