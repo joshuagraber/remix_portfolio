@@ -53,14 +53,13 @@ export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
 			name: 'description',
 			property: 'description',
 			content:
-				post.description || `Fragment: ${post.title}, ${post.description}`,
+				post.description || `Fragment: ${post.title}${post.description ? ', ' + post.description : ''}`,
 		},
 		{ property: 'og:title', name: 'og:title', content: post.title },
 		{
 			property: 'og:description',
 			name: 'og:description',
-			content:
-				post.description || `Fragment: ${post.title}, ${post.description}`,
+			content:				post.description || `Fragment: ${post.title}${post.description ? ', ' + post.description : ''}`,
 		},
 		{ property: 'og:type', name: 'og:type', content: 'article' },
 		{
