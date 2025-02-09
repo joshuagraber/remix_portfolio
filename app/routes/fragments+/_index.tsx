@@ -1,17 +1,13 @@
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
-import {
-	type LoaderFunctionArgs,
-	Link,
-	type MetaFunction,
-	useLoaderData,
-} from 'react-router'
+import { Link, useLoaderData } from 'react-router'
 import { serverOnly$ } from 'vite-env-only/macros'
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
 import { compileMDX } from '#app/utils/mdx.server'
 import { mergeMeta } from '#app/utils/merge-meta.ts'
+import { type Route } from './+types/_index'
 import { PaginationBar } from './__pagination-bar'
 import { Time } from './__time'
 
@@ -26,7 +22,7 @@ export const handle: SEOHandle = {
 	}),
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
 	const url = new URL(request.url)
 	const top = Number(url.searchParams.get('top')) || POSTS_PER_PAGE
 	const skip = Number(url.searchParams.get('skip')) || 0
@@ -71,7 +67,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	}
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
+export const meta: Route.MetaFunction = ({ data, matches }) => {
 	const parentMeta = matches[matches.length - 2]?.meta ?? []
 
 	return mergeMeta(parentMeta, [

@@ -1,10 +1,6 @@
 import { withSentry } from '@sentry/remix'
 import {
 	data,
-	type LoaderFunctionArgs,
-	type HeadersFunction,
-	type LinksFunction,
-	type MetaFunction,
 	Links,
 	Meta,
 	NavLink,
@@ -14,6 +10,7 @@ import {
 	useLoaderData,
 } from 'react-router'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
+import { type Route } from './+types/root'
 import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
 import faviconAssetUrl from './assets/favicons/favicon.svg'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
@@ -48,7 +45,7 @@ import '@mdxeditor/editor/style.css?url'
 	crossOrigin="anonymous"
 />
 
-export const links: LinksFunction = () => {
+export const links: Route.LinksFunction = () => {
 	return [
 		// Preload svg sprite as a resource to avoid render blocking
 		{ rel: 'preload', href: iconsHref, as: 'image' },
@@ -68,7 +65,7 @@ export const links: LinksFunction = () => {
 	].filter(Boolean)
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
 	const ogURL = new URL(request.url)
 	const timings = makeTimings('root loader')
 	const userId = await time(() => getUserId(request), {
@@ -134,7 +131,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	)
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: Route.MetaFunction = ({ data }) => {
 	const img =
 		data?.requestInfo.hints.theme === 'dark'
 			? '/img/jdg_primary_inverted.png'
@@ -194,7 +191,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	]
 }
 
-export const headers: HeadersFunction = ({ loaderHeaders }) => {
+export const headers: Route.HeadersFunction = ({ loaderHeaders }) => {
 	const headers = {
 		'Server-Timing': loaderHeaders.get('Server-Timing') ?? '',
 	}
@@ -245,6 +242,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 	const data = useLoaderData<typeof loader>()
 	const nonce = useNonce()
 	const theme = useOptionalTheme()
+
+	console.debug({ nonce })
 	return (
 		<Document nonce={nonce} theme={theme} env={data?.ENV}>
 			{children}

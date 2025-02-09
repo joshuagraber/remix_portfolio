@@ -1,18 +1,15 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
-import {
-	type LoaderFunctionArgs,
-	type MetaFunction,
-	useLoaderData,
-} from 'react-router'
+import { useLoaderData } from 'react-router'
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
 import { compileMDX } from '#app/utils/mdx.server'
 import { mergeMeta } from '#app/utils/merge-meta.ts'
+import { type Route } from './+types/$slug'
 import { Time } from './__time'
 
-export async function loader({ params, request }: LoaderFunctionArgs) {
+export async function loader({ params, request }: Route.LoaderArgs) {
 	const url = new URL(request.url)
 	const post = await prisma.post.findUnique({
 		where: {
@@ -35,7 +32,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 	return { post, code, frontmatter, ogURL: url }
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
+export const meta: Route.MetaFunction = ({ data, matches }) => {
 	const parentMeta = matches[matches.length - 2]?.meta ?? []
 
 	if (!data?.post) {
