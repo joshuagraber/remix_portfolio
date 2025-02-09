@@ -1,11 +1,13 @@
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
-import { type LoaderFunctionArgs, Link, type MetaFunction, useLoaderData  } from 'react-router'
+import { Link, useLoaderData } from 'react-router'
 import { serverOnly$ } from 'vite-env-only/macros'
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
 import { compileMDX } from '#app/utils/mdx.server'
+import { mergeMeta } from '#app/utils/merge-meta.ts'
+import { type Route } from './+types/_index'
 import { PaginationBar } from './__pagination-bar'
 import { Time } from './__time'
 
@@ -20,25 +22,7 @@ export const handle: SEOHandle = {
 	}),
 }
 
-export const meta: MetaFunction = () => {
-	return [
-		{ title: 'Fragments | Joshua D. Graber' },
-		{
-			name: 'description',
-			content: 'Collection of code fragments and short posts',
-		},
-		{ property: 'og:title', content: 'Fragments | Joshua D. Graber' },
-		{
-			property: 'og:description',
-			content: 'Collection of code fragments and short posts',
-		},
-		{ property: 'og:type', content: 'website' },
-		{ property: 'og:image', content: '/img/primary.png' },
-		{ property: 'og:url', content: 'https://joshuagraber.com/fragments' },
-	]
-}
-
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
 	const url = new URL(request.url)
 	const top = Number(url.searchParams.get('top')) || POSTS_PER_PAGE
 	const skip = Number(url.searchParams.get('skip')) || 0
@@ -79,7 +63,32 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	return {
 		posts: postsWithMDX,
 		total: totalPosts,
+		ogURL: url,
 	}
+}
+
+export const meta: Route.MetaFunction = ({ data, matches }) => {
+	const parentMeta = matches[matches.length - 2]?.meta ?? []
+
+	return mergeMeta(parentMeta, [
+		{ title: 'Fragments | Joshua D. Graber' },
+		{
+			name: 'description',
+			property: 'description',
+			content: 'Collection of fragments and short posts',
+		},
+		{
+			name: 'og:description',
+			property: 'og:description',
+			content: 'Collection of fragments and short posts',
+		},
+		{
+			property: 'og:title',
+			name: 'og:title',
+			content: 'Fragments | Joshua D. Graber',
+		},
+		{ property: 'og:url', content: data?.ogURL.toString() },
+	])
 }
 
 function PostContent({ code }: { code: string }) {

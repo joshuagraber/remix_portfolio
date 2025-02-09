@@ -1,12 +1,16 @@
 import { withSentry } from '@sentry/remix'
 import {
-    data,
-    type LoaderFunctionArgs,
-    type HeadersFunction,
-    type LinksFunction,
-    type MetaFunction, Links, Meta, NavLink, Outlet, Scripts, ScrollRestoration, useLoaderData 
-} from 'react-router';
+	data,
+	Links,
+	Meta,
+	NavLink,
+	Outlet,
+	Scripts,
+	ScrollRestoration,
+	useLoaderData,
+} from 'react-router'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
+import { type Route } from './+types/root'
 import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
 import faviconAssetUrl from './assets/favicons/favicon.svg'
 import { GeneralErrorBoundary } from './components/error-boundary.tsx'
@@ -41,7 +45,7 @@ import '@mdxeditor/editor/style.css?url'
 	crossOrigin="anonymous"
 />
 
-export const links: LinksFunction = () => {
+export const links: Route.LinksFunction = () => {
 	return [
 		// Preload svg sprite as a resource to avoid render blocking
 		{ rel: 'preload', href: iconsHref, as: 'image' },
@@ -61,7 +65,8 @@ export const links: LinksFunction = () => {
 	].filter(Boolean)
 }
 
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request }: Route.LoaderArgs) {
+	const ogURL = new URL(request.url)
 	const timings = makeTimings('root loader')
 	const userId = await time(() => getUserId(request), {
 		timings,
@@ -111,6 +116,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 				userPrefs: {
 					theme: getTheme(request),
 				},
+				ogURL,
 			},
 			ENV: getEnv(),
 			toast,
@@ -125,42 +131,67 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	)
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: Route.MetaFunction = ({ data }) => {
 	const img =
 		data?.requestInfo.hints.theme === 'dark'
-			? '/img/primary_inverted.png'
-			: '/img/primary.png'
+			? '/img/jdg_primary_inverted.png'
+			: '/img/jdg_primary.png'
+	const ogURL = data?.requestInfo.ogURL.toString()
+	const imgURL = new URL(img, ogURL).toString()
 
 	return [
 		{ title: 'Joshua D. Graber' },
-		{ name: 'description', content: 'Personal website of Joshua D. Graber' },
-		{ property: 'og:title', content: 'Joshua D. Graber' },
+		{
+			property: 'description',
+			name: 'description',
+			content: 'Joshua D. Graber: writing | programming | editing',
+		},
+		{ property: 'og:title', name: 'og:title', content: 'Joshua D. Graber' },
 		{
 			property: 'og:description',
-			content: 'Personal website of Joshua D. Graber',
+			name: 'og:description',
+			content: 'Joshua D. Graber: writing | programming | editing',
 		},
-		{ property: 'og:type', content: 'website' },
-		{ property: 'og:image', content: img },
-		{ property: 'og:image:alt', content: 'Joshua D. Graber' },
-		{ property: 'og:url', content: 'https://joshuagraber.com' },
-		{ name: 'twitter:card', content: 'summary_large_image' },
+		{ property: 'og:type', name: 'og:type', content: 'website' },
+		{ property: 'og:image', name: 'og:image', content: imgURL },
+		{
+			property: 'og:image:alt',
+			name: 'og:image:alt',
+			content: 'Joshua D. Graber',
+		},
+		{ property: 'og:url', name: 'og:url', content: ogURL },
+		{
+			property: 'twitter:card',
+			name: 'twitter:card',
+			content: 'summary_large_image',
+		},
 		// { name: 'twitter:creator', content: '@joshuagraber' },
 		// { name: 'twitter:site', content: '@joshuagraber' },
-		{ name: 'twitter:title', content: 'Joshua D. Graber' },
+		{
+			name: 'twitter:title',
+			property: 'twitter:title',
+			content: 'Joshua D. Graber',
+		},
 		{
 			name: 'twitter:description',
-			content: 'Personal website of Joshua D. Graber',
+			property: 'twitter:description',
+			content: 'Joshua D. Graber: writing | programming | editing',
 		},
-		{ name: 'twitter:image', content: img },
-		{ name: 'twitter:image:alt', content: 'Joshua D. Graber' },
+		{ property: 'twitter:image', name: 'twitter:image', content: imgURL },
 		{
+			property: 'twitter:image:alt',
+			name: 'twitter:image:alt',
+			content: 'Joshua D. Graber',
+		},
+		{
+			property: 'color-scheme',
 			name: 'color-scheme',
 			content: 'dark light',
 		},
 	]
 }
 
-export const headers: HeadersFunction = ({ loaderHeaders }) => {
+export const headers: Route.HeadersFunction = ({ loaderHeaders }) => {
 	const headers = {
 		'Server-Timing': loaderHeaders.get('Server-Timing') ?? '',
 	}
@@ -183,12 +214,12 @@ function Document({
 		<html lang="en" className={`${theme} h-full overflow-x-hidden`}>
 			<head>
 				<ClientHintCheck nonce={nonce} />
-				<Meta />
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width,initial-scale=1" />
 				{allowIndexing ? null : (
 					<meta name="robots" content="noindex, nofollow" />
 				)}
+				<Meta />
 				<Links />
 			</head>
 			<body className="bg-background text-foreground">
@@ -211,6 +242,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 	const data = useLoaderData<typeof loader>()
 	const nonce = useNonce()
 	const theme = useOptionalTheme()
+
 	return (
 		<Document nonce={nonce} theme={theme} env={data?.ENV}>
 			{children}

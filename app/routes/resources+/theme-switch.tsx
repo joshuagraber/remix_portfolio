@@ -2,7 +2,13 @@ import { useForm, getFormProps } from '@conform-to/react'
 import { parseWithZod } from '@conform-to/zod'
 import { invariantResponse } from '@epic-web/invariant'
 import { useEffect } from 'react'
-import { data, type ActionFunctionArgs, redirect, useFetcher, useFetchers  } from 'react-router';
+import {
+	data,
+	type ActionFunctionArgs,
+	redirect,
+	useFetcher,
+	useFetchers,
+} from 'react-router'
 import { ServerOnly } from 'remix-utils/server-only'
 import { z } from 'zod'
 import {
@@ -67,7 +73,6 @@ export function ThemeSwitch({
 			const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
 			const handleChange = (e: MediaQueryListEvent) => {
-				console.debug('MediaQuery changed:', e.matches)
 				document.documentElement.classList.toggle('dark', e.matches)
 				document.documentElement.classList.toggle('light', !e.matches)
 			}

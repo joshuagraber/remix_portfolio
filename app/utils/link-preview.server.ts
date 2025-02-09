@@ -6,6 +6,9 @@ const ogSchema = z.object({
 	description: z.string().optional(),
 	image: z.string().url().optional(),
 	site_name: z.string().optional(),
+	type: z.string().optional(),
+	url: z.string().url().optional(),
+	'image:alt': z.string().optional(), // If you want to capture image alt text
 })
 
 export type OpenGraphData = z.infer<typeof ogSchema>

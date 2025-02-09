@@ -1,13 +1,16 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
-import { type LoaderFunctionArgs, type MetaFunction, useLoaderData  } from 'react-router';
+import { useLoaderData } from 'react-router'
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
 import { compileMDX } from '#app/utils/mdx.server'
+import { mergeMeta } from '#app/utils/merge-meta.ts'
+import { type Route } from './+types/$slug'
 import { Time } from './__time'
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ params, request }: Route.LoaderArgs) {
+	const url = new URL(request.url)
 	const post = await prisma.post.findUnique({
 		where: {
 			slug: params.slug,
@@ -26,36 +29,41 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 	const { code, frontmatter } = await compileMDX(post.content)
 
-	return { post, code, frontmatter }
+	return { post, code, frontmatter, ogURL: url }
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: Route.MetaFunction = ({ data, matches }) => {
+	const parentMeta = matches[matches.length - 2]?.meta ?? []
+
 	if (!data?.post) {
-		return [
+		return mergeMeta(parentMeta, [
 			{ title: 'Fragment Not Found | Joshua D. Graber' },
 			{ description: 'No fragment found' },
-		]
+		])
 	}
 
 	const { post } = data
-	return [
+
+	return mergeMeta(parentMeta, [
 		{ title: `${post.title} | Joshua D. Graber` },
 		{
 			name: 'description',
-			content: post.description || `Fragment: ${post.title}`,
+			property: 'description',
+			content: `Fragment: ${post.title}${post.description ? ', ' + post.description : ''}`,
 		},
-		{ property: 'og:title', content: post.title },
+		{ property: 'og:title', name: 'og:title', content: post.title },
 		{
 			property: 'og:description',
-			content: post.description || `Fragment: ${post.title}`,
+			name: 'og:description',
+			content: `Fragment: ${post.title}${post.description ? ', ' + post.description : ''}`,
 		},
-		{ property: 'og:type', content: 'article' },
-		{ property: 'og:image', content: '/img/primary.png' },
+		{ property: 'og:type', name: 'og:type', content: 'article' },
 		{
 			property: 'og:url',
-			content: `https://joshuagraber.com/fragments/${post.slug}`,
+			name: 'og:url',
+			content: data?.ogURL.toString(),
 		},
-	]
+	])
 }
 
 export default function Fragment() {
