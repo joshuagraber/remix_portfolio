@@ -1,8 +1,7 @@
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
-import { json, type LoaderFunctionArgs } from '@remix-run/node'
-import { Link, type MetaFunction, useLoaderData } from '@remix-run/react'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
+import { type LoaderFunctionArgs, Link, type MetaFunction, useLoaderData  } from 'react-router'
 import { serverOnly$ } from 'vite-env-only/macros'
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
@@ -77,10 +76,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 		}),
 	)
 
-	return json({
+	return {
 		posts: postsWithMDX,
 		total: totalPosts,
-	})
+	}
 }
 
 function PostContent({ code }: { code: string }) {
@@ -103,7 +102,7 @@ export default function Fragments() {
 							<p className="mb-2 text-muted-foreground">{post.description}</p>
 						</Link>
 						<p className="text-sm text-neutral-500">
-							<Time time={post.publishAt!} />
+							<Time time={post.publishAt!.toDateString()} />
 						</p>
 						<div className="mb-4">
 							<PostContent code={post.code} />

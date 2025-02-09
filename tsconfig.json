@@ -12,15 +12,19 @@
 		"config/**/*.tsx",
 		"types/**/*.tsx",
 		"server/**/*.tsx",
-		"./*.ts"
+		"./*.ts",
+		".react-router/types/**/*"
 	],
 	"compilerOptions": {
+		"types": ["@react-router/node", "vite/client"],
+		"rootDirs": [".", "./.react-router/types"],
+		"skipLibCheck": true,
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
 		"isolatedModules": true,
 		"jsx": "react-jsx",
-		"module": "preserve",
 		"target": "ES2022",
 		"strict": true,
-		"skipLibCheck": true,
 		"allowImportingTsExtensions": true,
 		"noUncheckedIndexedAccess": true,
 		"noEmit": true,
@@ -34,19 +38,6 @@
 			]
 		}
 	},
-	// "compilerOptions": {
-	// 	"esModuleInterop": true,
-	// 	"skipLibCheck": true,
-	// 	"paths": {
-	// 		"@prisma/client": ["./node_modules/@prisma/client"],
-	// 		"#app/*": ["./app/*"],
-	// 		"#tests/*": ["./tests/*"],
-	// 		"@/icon-name": [
-	// 			"./app/components/ui/icons/name.d.ts",
-	// 			"./types/icon-name.d.ts"
-	// 		]
-	// 	}
-	// },
 	"exclude": [
 		"node_modules",
 		"**/node_modules/*",

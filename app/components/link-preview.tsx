@@ -1,9 +1,13 @@
-import { useFetcher } from '@remix-run/react'
 import { useEffect, useState } from 'react'
+import { useFetcher } from 'react-router'
+import {
+	getCachedPreview,
+	setCachedPreview,
+} from '#app/utils/link-preview-cache.ts'
 import { cn } from '#app/utils/misc.tsx'
 import { Icon } from './ui/icon'
 
-interface LinkPreviewData {
+export interface LinkPreviewData {
 	title?: string
 	description?: string
 	image?: string
@@ -20,20 +24,39 @@ export function LinkPreview({ url, className }: LinkPreviewProps) {
 	const previewFetcher = useFetcher<LinkPreviewData>()
 	// Track separate state to prevent image flicker
 	const [isImageLoaded, setIsImageLoaded] = useState(false)
+	const [cached, setCached] = useState<LinkPreviewData | null>(null)
 
 	useEffect(() => {
 		if (previewFetcher.state === 'idle' && !previewFetcher.data) {
-			previewFetcher.load(
-				`/resources/link-preview?url=${encodeURIComponent(url)}`,
-			)
+			// Check cache first
+			const cached = getCachedPreview(url)
+			if (cached) {
+				console.debug({ cached })
+				setCached(cached)
+				return
+			} else {
+				// Fetch if not cached
+				void (async () => {
+					await previewFetcher.load(
+						`/resources/link-preview?url=${encodeURIComponent(url)}`,
+					)
+				})()
+			}
 		}
 	}, [url, previewFetcher])
+
+	// Cache the response when we get it
+	useEffect(() => {
+		if (previewFetcher.data) {
+			setCachedPreview(url, previewFetcher.data)
+		}
+	}, [previewFetcher.data, url])
 
 	const isLoading =
 		previewFetcher.state === 'loading' ||
 		previewFetcher.state === 'submitting' ||
 		!isImageLoaded
-	const previewData = previewFetcher.data
+	const previewData = previewFetcher.data ?? cached
 
 	return (
 		<a

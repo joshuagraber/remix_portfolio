@@ -1,6 +1,6 @@
 // app/routes/admin+/fragments+/images.delete.tsx
 import { invariantResponse } from '@epic-web/invariant'
-import { json, type ActionFunctionArgs } from '@remix-run/node'
+import { type ActionFunctionArgs } from 'react-router'
 import { requireUserId } from '#app/utils/auth.server'
 import { prisma } from '#app/utils/db.server'
 
@@ -18,5 +18,5 @@ export async function action({ request }: ActionFunctionArgs) {
 		where: { id: imageId },
 	})
 
-	return json(deleted)
+	return deleted
 }

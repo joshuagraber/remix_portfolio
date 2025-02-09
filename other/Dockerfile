@@ -21,6 +21,7 @@ RUN npm ci --include=dev
 FROM base as production-deps
 
 WORKDIR /myapp
+RUN mkdir .uploads 
 
 COPY --from=deps /myapp/node_modules /myapp/node_modules
 ADD package.json package-lock.json .npmrc ./
