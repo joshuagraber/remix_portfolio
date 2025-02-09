@@ -21,7 +21,8 @@ RUN npm ci --include=dev
 FROM base as production-deps
 
 WORKDIR /myapp
-RUN mkdir .uploads 
+# Need to create a directory to temporarily store uploads. Remove any temp uploads stored since last build that haven't been cleaned up.
+RUN rm -rf .uploads && mkdir .uploads
 
 COPY --from=deps /myapp/node_modules /myapp/node_modules
 ADD package.json package-lock.json .npmrc ./

@@ -9,6 +9,7 @@ import {
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
 import { compileMDX } from '#app/utils/mdx.server'
+import { mergeMeta } from '#app/utils/merge-meta.ts'
 import { Time } from './__time'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
@@ -34,32 +35,40 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 	return { post, code, frontmatter, ogURL: url }
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
+	const parentMeta = matches[matches.length - 2]?.meta ?? []
+
 	if (!data?.post) {
-		return [
+		return mergeMeta(parentMeta, [
 			{ title: 'Fragment Not Found | Joshua D. Graber' },
 			{ description: 'No fragment found' },
-		]
+		])
 	}
 
 	const { post } = data
-	return [
+
+	return mergeMeta(parentMeta, [
 		{ title: `${post.title} | Joshua D. Graber` },
 		{
 			name: 'description',
-			content: post.description || `Fragment: ${post.title}`,
+			property: 'description',
+			content:
+				post.description || `Fragment: ${post.title}, ${post.description}`,
 		},
-		{ property: 'og:title', content: post.title },
+		{ property: 'og:title', name: 'og:title', content: post.title },
 		{
 			property: 'og:description',
-			content: post.description || `Fragment: ${post.title}`,
+			name: 'og:description',
+			content:
+				post.description || `Fragment: ${post.title}, ${post.description}`,
 		},
-		{ property: 'og:type', content: 'article' },
+		{ property: 'og:type', name: 'og:type', content: 'article' },
 		{
 			property: 'og:url',
+			name: 'og:url',
 			content: data?.ogURL.toString(),
 		},
-	]
+	])
 }
 
 export default function Fragment() {

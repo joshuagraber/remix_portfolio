@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs } from 'react-router';
+import { type LoaderFunctionArgs } from 'react-router'
 import { requireUserId } from '#app/utils/auth.server'
 import { prisma } from '#app/utils/db.server'
 import { getPostImageSource } from '#app/utils/misc.tsx'

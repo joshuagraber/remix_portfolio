@@ -11,6 +11,7 @@ import { serverOnly$ } from 'vite-env-only/macros'
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
 import { compileMDX } from '#app/utils/mdx.server'
+import { mergeMeta } from '#app/utils/merge-meta.ts'
 import { PaginationBar } from './__pagination-bar'
 import { Time } from './__time'
 
@@ -70,21 +71,28 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	}
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => {
-	return [
+export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
+	const parentMeta = matches[matches.length - 2]?.meta ?? []
+
+	return mergeMeta(parentMeta, [
 		{ title: 'Fragments | Joshua D. Graber' },
 		{
 			name: 'description',
-			content: 'Collection of code fragments and short posts',
+			property: 'description',
+			content: 'Collection of fragments and short posts',
 		},
-		{ property: 'og:title', content: 'Fragments | Joshua D. Graber' },
 		{
+			name: 'og:description',
 			property: 'og:description',
-			content: 'Collection of code fragments and short posts',
+			content: 'Collection of fragments and short posts',
 		},
-		// { property: 'og:image', content: '/img/primary.png' },
+		{
+			property: 'og:title',
+			name: 'og:title',
+			content: 'Fragments | Joshua D. Graber',
+		},
 		{ property: 'og:url', content: data?.ogURL.toString() },
-	]
+	])
 }
 
 function PostContent({ code }: { code: string }) {

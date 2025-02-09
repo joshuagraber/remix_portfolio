@@ -137,34 +137,57 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
 	const img =
 		data?.requestInfo.hints.theme === 'dark'
-			? '/img/primary_inverted.png'
-			: '/img/primary.png'
+			? '/img/jdg_primary_inverted.png'
+			: '/img/jdg_primary.png'
 	const ogURL = data?.requestInfo.ogURL.toString()
 	const imgURL = new URL(img, ogURL).toString()
 
 	return [
 		{ title: 'Joshua D. Graber' },
-		{ name: 'description', content: 'Personal website of Joshua D. Graber' },
-		{ property: 'og:title', content: 'Joshua D. Graber' },
+		{
+			property: 'description',
+			name: 'description',
+			content: 'Joshua D. Graber: writing | programming | editing',
+		},
+		{ property: 'og:title', name: 'og:title', content: 'Joshua D. Graber' },
 		{
 			property: 'og:description',
-			content: 'Personal website of Joshua D. Graber',
+			name: 'og:description',
+			content: 'Joshua D. Graber: writing | programming | editing',
 		},
-		{ property: 'og:type', content: 'website' },
-		{ property: 'og:image', content: imgURL },
-		{ property: 'og:image:alt', content: 'Joshua D. Graber' },
-		{ property: 'og:url', content: ogURL },
-		{ name: 'twitter:card', content: 'summary_large_image' },
+		{ property: 'og:type', name: 'og:type', content: 'website' },
+		{ property: 'og:image', name: 'og:image', content: imgURL },
+		{
+			property: 'og:image:alt',
+			name: 'og:image:alt',
+			content: 'Joshua D. Graber',
+		},
+		{ property: 'og:url', name: 'og:url', content: ogURL },
+		{
+			property: 'twitter:card',
+			name: 'twitter:card',
+			content: 'summary_large_image',
+		},
 		// { name: 'twitter:creator', content: '@joshuagraber' },
 		// { name: 'twitter:site', content: '@joshuagraber' },
-		{ name: 'twitter:title', content: 'Joshua D. Graber' },
+		{
+			name: 'twitter:title',
+			property: 'twitter:title',
+			content: 'Joshua D. Graber',
+		},
 		{
 			name: 'twitter:description',
-			content: 'Personal website of Joshua D. Graber',
+			property: 'twitter:description',
+			content: 'Joshua D. Graber: writing | programming | editing',
 		},
-		{ name: 'twitter:image', content: imgURL },
-		{ name: 'twitter:image:alt', content: 'Joshua D. Graber' },
+		{ property: 'twitter:image', name: 'twitter:image', content: imgURL },
 		{
+			property: 'twitter:image:alt',
+			name: 'twitter:image:alt',
+			content: 'Joshua D. Graber',
+		},
+		{
+			property: 'color-scheme',
 			name: 'color-scheme',
 			content: 'dark light',
 		},
@@ -194,12 +217,12 @@ function Document({
 		<html lang="en" className={`${theme} h-full overflow-x-hidden`}>
 			<head>
 				<ClientHintCheck nonce={nonce} />
-				<Meta />
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width,initial-scale=1" />
 				{allowIndexing ? null : (
 					<meta name="robots" content="noindex, nofollow" />
 				)}
+				<Meta />
 				<Links />
 			</head>
 			<body className="bg-background text-foreground">

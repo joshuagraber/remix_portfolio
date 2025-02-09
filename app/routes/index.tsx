@@ -1,10 +1,9 @@
-import { type MetaFunction, useLoaderData, Link } from 'react-router'
+import { useLoaderData, Link } from 'react-router'
 import { LinkPreview } from '#app/components/link-preview'
 import { Spacer } from '#app/components/spacer'
 import { prisma } from '#app/utils/db.server'
 import { Time } from './fragments+/__time'
 
-export const meta: MetaFunction = () => [{ title: 'Joshua D. Graber' }]
 export async function loader() {
 	const recentFragments = await prisma.post.findMany({
 		where: {
