@@ -1,5 +1,3 @@
-import { prisma } from './db.server'
-
 export async function fileToBlob({
 	file,
 	altText,

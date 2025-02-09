@@ -1,5 +1,5 @@
-import { useFetcher } from '@remix-run/react'
 import { useEffect, useState } from 'react'
+import { useFetcher } from 'react-router'
 import { cn } from '#app/utils/misc.tsx'
 import { Icon } from './ui/icon'
 
@@ -23,9 +23,11 @@ export function LinkPreview({ url, className }: LinkPreviewProps) {
 
 	useEffect(() => {
 		if (previewFetcher.state === 'idle' && !previewFetcher.data) {
-			previewFetcher.load(
-				`/resources/link-preview?url=${encodeURIComponent(url)}`,
-			)
+			void (async () => {
+				await previewFetcher.load(
+					`/resources/link-preview?url=${encodeURIComponent(url)}`,
+				)
+			})()
 		}
 	}, [url, previewFetcher])
 

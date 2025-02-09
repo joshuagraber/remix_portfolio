@@ -1,4 +1,4 @@
-import { useFetcher } from '@remix-run/react'
+import { useFetcher } from 'react-router'
 
 const DEFAULT_TIMEOUT = 1000 * 30 // 30-second timeout by default
 
@@ -17,8 +17,8 @@ export function useImageUploader(
 		formData.append('file', file)
 
 		// Create a promise that resolves when the upload is complete
-		const uploadPromise = new Promise<string>((resolve, reject) => {
-			imageFetcher.submit(formData, {
+		const uploadPromise = new Promise<string>(async (resolve, reject) => {
+			await imageFetcher.submit(formData, {
 				method: 'POST',
 				action: '/admin/fragments/images/create',
 				encType: 'multipart/form-data',

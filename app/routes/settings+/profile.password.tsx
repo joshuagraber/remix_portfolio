@@ -1,13 +1,7 @@
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
-import {
-	json,
-	redirect,
-	type LoaderFunctionArgs,
-	type ActionFunctionArgs,
-} from '@remix-run/node'
-import { Form, Link, useActionData } from '@remix-run/react'
+import { data, redirect, type LoaderFunctionArgs, type ActionFunctionArgs, Form, Link, useActionData  } from 'react-router';
 import { z } from 'zod'
 import { ErrorList, Field } from '#app/components/forms.tsx'
 import { Button } from '#app/components/ui/button.tsx'
@@ -58,7 +52,7 @@ async function requirePassword(userId: string) {
 export async function loader({ request }: LoaderFunctionArgs) {
 	const userId = await requireUserId(request)
 	await requirePassword(userId)
-	return json({})
+	return {}
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -83,7 +77,7 @@ export async function action({ request }: ActionFunctionArgs) {
 		),
 	})
 	if (submission.status !== 'success') {
-		return json(
+		return data(
 			{
 				result: submission.reply({
 					hideFields: ['currentPassword', 'newPassword', 'confirmNewPassword'],

@@ -1,6 +1,6 @@
 import { type Connection, type Password, type User } from '@prisma/client'
-import { redirect } from '@remix-run/node'
 import bcrypt from 'bcryptjs'
+import { redirect } from 'react-router'
 import { Authenticator } from 'remix-auth'
 import { safeRedirect } from 'remix-utils/safe-redirect'
 import { connectionSessionStorage, providers } from './connections.server.ts'
@@ -15,9 +15,7 @@ export const getSessionExpirationDate = () =>
 
 export const sessionKey = 'sessionId'
 
-export const authenticator = new Authenticator<ProviderUser>(
-	connectionSessionStorage,
-)
+export const authenticator = new Authenticator<ProviderUser>()
 
 for (const [providerName, provider] of Object.entries(providers)) {
 	authenticator.use(provider.getAuthStrategy(), providerName)

@@ -1,5 +1,4 @@
-// app/routes/resources+/post-images.tsx
-import { json, type LoaderFunctionArgs } from '@remix-run/node'
+import { type LoaderFunctionArgs } from 'react-router';
 import { requireUserId } from '#app/utils/auth.server'
 import { prisma } from '#app/utils/db.server'
 import { getPostImageSource } from '#app/utils/misc.tsx'
@@ -22,10 +21,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	// Don't return the actual blob data in the list
 	// Instead, the client can use the id to fetch individual images
 	// through the existing /resources/post-images/$imageId route
-	return json({
+	return {
 		images: images.map((image) => ({
 			...image,
 			url: getPostImageSource(image.id),
 		})),
-	})
+	}
 }

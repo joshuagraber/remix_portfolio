@@ -7,14 +7,8 @@ import {
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { invariantResponse } from '@epic-web/invariant'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
-import { json, type ActionFunctionArgs } from '@remix-run/node'
-import {
-	Form,
-	useActionData,
-	useLoaderData,
-	useNavigation,
-} from '@remix-run/react'
 import { type FormEvent, useEffect, useRef, useState } from 'react'
+import { data, type ActionFunctionArgs, Form, useActionData, useLoaderData, useNavigation  } from 'react-router';
 import { type z } from 'zod'
 import { Field, ErrorList } from '#app/components/forms'
 import { MDXEditorComponent } from '#app/components/mdx/editor.tsx'
@@ -44,7 +38,7 @@ export async function loader() {
 
 	invariantResponse(images, 'Error fetching images', { status: 404 })
 
-	return json({ images })
+	return { images }
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -57,7 +51,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	})
 
 	if (submission.status !== 'success') {
-		return json(
+		return data(
 			{ result: submission.reply() },
 			{ status: submission.status === 'error' ? 400 : 200 },
 		)
@@ -82,7 +76,7 @@ export async function action({ request }: ActionFunctionArgs) {
 			description: `Post "${title}" created successfully.`,
 		})
 	} catch {
-		return json(
+		return data(
 			{ result: submission.reply({ formErrors: ['Failed to create post'] }) },
 			{ status: 500 },
 		)
