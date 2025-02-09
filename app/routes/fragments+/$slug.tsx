@@ -1,13 +1,18 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
-import { type LoaderFunctionArgs, type MetaFunction, useLoaderData  } from 'react-router';
+import {
+	type LoaderFunctionArgs,
+	type MetaFunction,
+	useLoaderData,
+} from 'react-router'
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
 import { compileMDX } from '#app/utils/mdx.server'
 import { Time } from './__time'
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ params, request }: LoaderFunctionArgs) {
+	const url = new URL(request.url)
 	const post = await prisma.post.findUnique({
 		where: {
 			slug: params.slug,
@@ -26,7 +31,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 	const { code, frontmatter } = await compileMDX(post.content)
 
-	return { post, code, frontmatter }
+	return { post, code, frontmatter, ogURL: url }
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -50,10 +55,9 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 			content: post.description || `Fragment: ${post.title}`,
 		},
 		{ property: 'og:type', content: 'article' },
-		{ property: 'og:image', content: '/img/primary.png' },
 		{
 			property: 'og:url',
-			content: `https://joshuagraber.com/fragments/${post.slug}`,
+			content: data?.ogURL.toString(),
 		},
 	]
 }

@@ -1,11 +1,18 @@
 import { withSentry } from '@sentry/remix'
 import {
-    data,
-    type LoaderFunctionArgs,
-    type HeadersFunction,
-    type LinksFunction,
-    type MetaFunction, Links, Meta, NavLink, Outlet, Scripts, ScrollRestoration, useLoaderData 
-} from 'react-router';
+	data,
+	type LoaderFunctionArgs,
+	type HeadersFunction,
+	type LinksFunction,
+	type MetaFunction,
+	Links,
+	Meta,
+	NavLink,
+	Outlet,
+	Scripts,
+	ScrollRestoration,
+	useLoaderData,
+} from 'react-router'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
 import faviconAssetUrl from './assets/favicons/favicon.svg'
@@ -62,6 +69,7 @@ export const links: LinksFunction = () => {
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
+	const ogURL = new URL(request.url)
 	const timings = makeTimings('root loader')
 	const userId = await time(() => getUserId(request), {
 		timings,
@@ -111,6 +119,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 				userPrefs: {
 					theme: getTheme(request),
 				},
+				ogURL,
 			},
 			ENV: getEnv(),
 			toast,
@@ -130,6 +139,8 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 		data?.requestInfo.hints.theme === 'dark'
 			? '/img/primary_inverted.png'
 			: '/img/primary.png'
+	const ogURL = data?.requestInfo.ogURL.toString()
+	const imgURL = new URL(img, ogURL).toString()
 
 	return [
 		{ title: 'Joshua D. Graber' },
@@ -140,9 +151,9 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 			content: 'Personal website of Joshua D. Graber',
 		},
 		{ property: 'og:type', content: 'website' },
-		{ property: 'og:image', content: img },
+		{ property: 'og:image', content: imgURL },
 		{ property: 'og:image:alt', content: 'Joshua D. Graber' },
-		{ property: 'og:url', content: 'https://joshuagraber.com' },
+		{ property: 'og:url', content: ogURL },
 		{ name: 'twitter:card', content: 'summary_large_image' },
 		// { name: 'twitter:creator', content: '@joshuagraber' },
 		// { name: 'twitter:site', content: '@joshuagraber' },
@@ -151,7 +162,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 			name: 'twitter:description',
 			content: 'Personal website of Joshua D. Graber',
 		},
-		{ name: 'twitter:image', content: img },
+		{ name: 'twitter:image', content: imgURL },
 		{ name: 'twitter:image:alt', content: 'Joshua D. Graber' },
 		{
 			name: 'color-scheme',

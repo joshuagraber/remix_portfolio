@@ -1,7 +1,12 @@
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
-import { type LoaderFunctionArgs, Link, type MetaFunction, useLoaderData  } from 'react-router'
+import {
+	type LoaderFunctionArgs,
+	Link,
+	type MetaFunction,
+	useLoaderData,
+} from 'react-router'
 import { serverOnly$ } from 'vite-env-only/macros'
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
@@ -18,24 +23,6 @@ export const handle: SEOHandle = {
 			return { route: `/fragments/${post.slug}`, priority: 0.7 }
 		})
 	}),
-}
-
-export const meta: MetaFunction = () => {
-	return [
-		{ title: 'Fragments | Joshua D. Graber' },
-		{
-			name: 'description',
-			content: 'Collection of code fragments and short posts',
-		},
-		{ property: 'og:title', content: 'Fragments | Joshua D. Graber' },
-		{
-			property: 'og:description',
-			content: 'Collection of code fragments and short posts',
-		},
-		{ property: 'og:type', content: 'website' },
-		{ property: 'og:image', content: '/img/primary.png' },
-		{ property: 'og:url', content: 'https://joshuagraber.com/fragments' },
-	]
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -79,7 +66,25 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	return {
 		posts: postsWithMDX,
 		total: totalPosts,
+		ogURL: url,
 	}
+}
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+	return [
+		{ title: 'Fragments | Joshua D. Graber' },
+		{
+			name: 'description',
+			content: 'Collection of code fragments and short posts',
+		},
+		{ property: 'og:title', content: 'Fragments | Joshua D. Graber' },
+		{
+			property: 'og:description',
+			content: 'Collection of code fragments and short posts',
+		},
+		// { property: 'og:image', content: '/img/primary.png' },
+		{ property: 'og:url', content: data?.ogURL.toString() },
+	]
 }
 
 function PostContent({ code }: { code: string }) {

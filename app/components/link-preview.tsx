@@ -31,7 +31,6 @@ export function LinkPreview({ url, className }: LinkPreviewProps) {
 			// Check cache first
 			const cached = getCachedPreview(url)
 			if (cached) {
-				console.debug({ cached })
 				setCached(cached)
 				return
 			} else {
