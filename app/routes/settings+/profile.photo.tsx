@@ -4,19 +4,17 @@ import { invariantResponse } from '@epic-web/invariant'
 import { LocalFileStorage } from '@mjackson/file-storage/local'
 import { type FileUpload, parseFormData } from '@mjackson/form-data-parser'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
+import { useState } from 'react'
 import {
 	data,
 	redirect,
 	type LoaderFunctionArgs,
 	type ActionFunctionArgs,
-} from '@remix-run/node'
-import {
 	Form,
 	useActionData,
 	useLoaderData,
 	useNavigation,
-} from '@remix-run/react'
-import { useState } from 'react'
+} from 'react-router'
 import { z } from 'zod'
 import { ErrorList } from '#app/components/forms.tsx'
 import { Button } from '#app/components/ui/button.tsx'
@@ -31,7 +29,7 @@ import {
 } from '#app/utils/misc.tsx'
 import { type BreadcrumbHandle } from './profile.tsx'
 
-const fileStorage = new LocalFileStorage('.uploads/post-images')
+const fileStorage = new LocalFileStorage('.uploads/user-images')
 
 export const handle: BreadcrumbHandle & SEOHandle = {
 	breadcrumb: <Icon name="avatar">Photo</Icon>,

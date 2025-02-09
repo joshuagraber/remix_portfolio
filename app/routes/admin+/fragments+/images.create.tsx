@@ -1,6 +1,6 @@
 import { LocalFileStorage } from '@mjackson/file-storage/local'
 import { type FileUpload, parseFormData } from '@mjackson/form-data-parser'
-import { data, type ActionFunctionArgs } from '@remix-run/node'
+import { data, type ActionFunctionArgs } from 'react-router';
 import { requireUserId } from '#app/utils/auth.server.ts'
 import { prisma } from '#app/utils/db.server'
 import { getPostImageSource } from '#app/utils/misc.tsx'

@@ -1,8 +1,7 @@
 import { invariantResponse } from '@epic-web/invariant'
-import { type LoaderFunctionArgs } from '@remix-run/node'
-import { type MetaFunction, useLoaderData } from '@remix-run/react'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
+import { type LoaderFunctionArgs, type MetaFunction, useLoaderData  } from 'react-router';
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
 import { compileMDX } from '#app/utils/mdx.server'

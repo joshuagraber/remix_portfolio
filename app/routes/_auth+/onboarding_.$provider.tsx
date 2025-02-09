@@ -11,14 +11,12 @@ import {
 	type ActionFunctionArgs,
 	type LoaderFunctionArgs,
 	type MetaFunction,
-} from '@remix-run/node'
-import {
 	type Params,
 	Form,
 	useActionData,
 	useLoaderData,
 	useSearchParams,
-} from '@remix-run/react'
+} from 'react-router'
 import { safeRedirect } from 'remix-utils/safe-redirect'
 import { z } from 'zod'
 import { CheckboxField, ErrorList, Field } from '#app/components/forms.tsx'
@@ -92,6 +90,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 	)
 	const prefilledProfile = verifySession.get(prefilledProfileKey)
 
+	// @ts-expect-error Not using, figure it out later when we need auth
 	const formError = connectionSession.get(authenticator.sessionErrorKey)
 	const hasError = typeof formError === 'string'
 

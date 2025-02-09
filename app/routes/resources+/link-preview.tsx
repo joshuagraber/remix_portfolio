@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs } from '@remix-run/node'
+import { type LoaderFunctionArgs } from 'react-router';
 import { getOpenGraphData } from '#app/utils/link-preview.server'
 
 export async function loader({ request }: LoaderFunctionArgs) {

@@ -1,7 +1,7 @@
-import { remixRoutesOptionAdapter } from '@remix-run/routes-option-adapter'
+import { remixRoutesOptionAdapter } from '@react-router/remix-routes-option-adapter'
 import { flatRoutes } from 'remix-flat-routes'
 
-export const routes = remixRoutesOptionAdapter((defineRoutes) => {
+export default remixRoutesOptionAdapter((defineRoutes) => {
 	return flatRoutes('routes', defineRoutes, {
 		ignoredRouteFiles: [
 			'**/.*',

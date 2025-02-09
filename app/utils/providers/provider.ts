@@ -1,4 +1,4 @@
-import { type Strategy } from 'remix-auth'
+import { type GitHubStrategy } from 'remix-auth-github'
 import { type Timings } from '../timing.server.ts'
 
 // Define a user type for cleaner typing
@@ -11,7 +11,7 @@ export type ProviderUser = {
 }
 
 export interface AuthProvider {
-	getAuthStrategy(): Strategy<ProviderUser, any>
+	getAuthStrategy(): GitHubStrategy<ProviderUser>
 	handleMockAction(request: Request): Promise<void>
 	resolveConnectionData(
 		providerId: string,

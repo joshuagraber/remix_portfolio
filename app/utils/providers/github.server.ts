@@ -1,5 +1,5 @@
 import { createId as cuid } from '@paralleldrive/cuid2'
-import { redirect } from '@remix-run/node'
+import { redirect } from 'react-router'
 import { GitHubStrategy } from 'remix-auth-github'
 import { z } from 'zod'
 import { cache, cachified } from '../cache.server.ts'
@@ -28,23 +28,21 @@ export class GitHubProvider implements AuthProvider {
 	getAuthStrategy() {
 		return new GitHubStrategy(
 			{
-				clientID: process.env.GITHUB_CLIENT_ID,
-				clientSecret: process.env.GITHUB_CLIENT_SECRET,
-				callbackURL: '/auth/github/callback',
+				clientId: process.env.GITHUB_CLIENT_ID ?? '',
+				clientSecret: process.env.GITHUB_CLIENT_SECRET ?? '',
+				redirectURI: new URL(
+					'/auth/github/callback',
+					process.env.SITE_URL ?? 'http://localhost:3000',
+				).toString(),
 			},
+			// @ts-expect-error - TODO: figure this out when needed.
 			async ({ profile }) => {
-				const email = profile.emails[0]?.value.trim().toLowerCase()
-				if (!email) {
-					throw new Error('Email not found')
-				}
-				const username = profile.displayName
-				const imageUrl = profile.photos[0]?.value
+				// TODO: figure this new api out when needed
 				return {
-					email,
 					id: profile.id,
-					username,
-					name: profile.name.givenName,
-					imageUrl,
+					email: profile.emails?.[0]?.value,
+					username: profile.displayName || profile.username,
+					// ... other user fields
 				}
 			},
 		)

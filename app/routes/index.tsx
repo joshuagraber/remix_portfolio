@@ -1,5 +1,4 @@
-import { json, type MetaFunction } from '@remix-run/node'
-import { useLoaderData, Link } from '@remix-run/react'
+import { type MetaFunction, useLoaderData, Link } from 'react-router'
 import { LinkPreview } from '#app/components/link-preview'
 import { Spacer } from '#app/components/spacer'
 import { prisma } from '#app/utils/db.server'

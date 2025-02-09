@@ -1,5 +1,5 @@
 import { invariantResponse } from '@epic-web/invariant'
-import { type LoaderFunctionArgs } from '@remix-run/node'
+import { type LoaderFunctionArgs } from 'react-router';
 import { prisma } from '#app/utils/db.server'
 
 export async function loader({ params }: LoaderFunctionArgs) {

@@ -1,6 +1,6 @@
 import { type PostImage } from '@prisma/client'
-import { useFetcher } from '@remix-run/react'
 import React, { useState } from 'react'
+import { useFetcher } from 'react-router';
 import { toast } from 'sonner'
 import { z } from 'zod'
 import { Field } from '#app/components/forms.tsx'

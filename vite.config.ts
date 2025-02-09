@@ -1,20 +1,12 @@
 import mdx from '@mdx-js/rollup'
-import { vitePlugin as remix } from '@remix-run/dev'
+import { reactRouter } from '@react-router/dev/vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import { glob } from 'glob'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
-import { flatRoutes } from 'remix-flat-routes'
 import { defineConfig } from 'vite'
 import { envOnlyMacros } from 'vite-env-only'
 import tsconfigPaths from 'vite-tsconfig-paths'
-
-declare module "@remix-run/node" {
-  // or cloudflare, deno, etc.
-  interface Future {
-    v3_singleFetch: true;
-  }
-}
 
 const MODE = process.env.NODE_ENV
 
@@ -23,7 +15,7 @@ export default defineConfig({
 		cssMinify: MODE === 'production',
 
 		rollupOptions: {
-			external: [/node:.*/, 'fsevents', '.prisma/client/index-browser'],
+			external: [/node:.*/, 'fsevents', '@prisma/client'],
 		},
 
 		assetsInlineLimit: (source: string) => {
@@ -50,32 +42,7 @@ export default defineConfig({
 		envOnlyMacros(),
 		// it would be really nice to have this enabled in tests, but we'll have to
 		// wait until https://github.com/remix-run/remix/issues/9871 is fixed
-		process.env.NODE_ENV === 'test'
-			? null
-			: remix({
-					ignoredRouteFiles: ['**/*'],
-					serverModuleFormat: 'esm',
-					future: {
-						unstable_optimizeDeps: true,
-						v3_fetcherPersist: true,
-						v3_lazyRouteDiscovery: true,
-						v3_relativeSplatPath: true,
-						v3_throwAbortReason: true,
-            v3_singleFetch: true,
-					},
-					routes: async (defineRoutes) => {
-						return flatRoutes('routes', defineRoutes, {
-							ignoredRouteFiles: [
-								'.*',
-								'**/*.css',
-								'**/*.test.{js,jsx,ts,tsx}',
-								'**/__*.*',
-								'**/*.server.*',
-								'**/*.client.*',
-							],
-						})
-					},
-				}),
+		process.env.NODE_ENV === 'test' ? null : reactRouter(),
 		process.env.SENTRY_AUTH_TOKEN
 			? sentryVitePlugin({
 					disable: MODE !== 'production',
@@ -98,9 +65,9 @@ export default defineConfig({
 			: null,
 		tsconfigPaths(),
 	],
-	optimizeDeps: {
-		exclude: ['@prisma/client'],
-	},
+	// optimizeDeps: {
+	// 	exclude: ['@prisma/client'],
+	// },
 	test: {
 		include: ['./app/**/*.test.{ts,tsx}'],
 		setupFiles: ['./tests/setup/setup-test-env.ts'],

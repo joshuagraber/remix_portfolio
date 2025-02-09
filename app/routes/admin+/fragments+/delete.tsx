@@ -1,6 +1,6 @@
 // app/routes/admin.posts.tsx
 import { invariantResponse } from '@epic-web/invariant'
-import { json, type ActionFunctionArgs } from '@remix-run/node'
+import { type ActionFunctionArgs } from 'react-router'
 import { prisma } from '#app/utils/db.server.ts'
 import { redirectWithToast } from '#app/utils/toast.server.ts'
 

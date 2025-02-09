@@ -1,20 +1,11 @@
-import {
-	data,
-	type LoaderFunctionArgs,
-	type HeadersFunction,
-	type LinksFunction,
-	type MetaFunction,
-} from '@remix-run/node'
-import {
-	Links,
-	Meta,
-	NavLink,
-	Outlet,
-	Scripts,
-	ScrollRestoration,
-	useLoaderData,
-} from '@remix-run/react'
 import { withSentry } from '@sentry/remix'
+import {
+    data,
+    type LoaderFunctionArgs,
+    type HeadersFunction,
+    type LinksFunction,
+    type MetaFunction, Links, Meta, NavLink, Outlet, Scripts, ScrollRestoration, useLoaderData 
+} from 'react-router';
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import appleTouchIconAssetUrl from './assets/favicons/apple-touch-icon.png'
 import faviconAssetUrl from './assets/favicons/favicon.svg'
