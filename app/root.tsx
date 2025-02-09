@@ -243,7 +243,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
 	const nonce = useNonce()
 	const theme = useOptionalTheme()
 
-	console.debug({ nonce })
 	return (
 		<Document nonce={nonce} theme={theme} env={data?.ENV}>
 			{children}
