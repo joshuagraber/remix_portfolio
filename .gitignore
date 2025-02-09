@@ -28,3 +28,4 @@ node_modules
 
 # react router v7 generated types
 .react-router
+.uploads

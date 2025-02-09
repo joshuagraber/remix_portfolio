@@ -1,9 +1,20 @@
+import mdx from '@mdx-js/rollup'
 import { vitePlugin as remix } from '@remix-run/dev'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import { glob } from 'glob'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 import { flatRoutes } from 'remix-flat-routes'
 import { defineConfig } from 'vite'
 import { envOnlyMacros } from 'vite-env-only'
+import tsconfigPaths from 'vite-tsconfig-paths'
+
+declare module "@remix-run/node" {
+  // or cloudflare, deno, etc.
+  interface Future {
+    v3_singleFetch: true;
+  }
+}
 
 const MODE = process.env.NODE_ENV
 
@@ -33,6 +44,9 @@ export default defineConfig({
 		},
 	},
 	plugins: [
+		mdx({
+			remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+		}),
 		envOnlyMacros(),
 		// it would be really nice to have this enabled in tests, but we'll have to
 		// wait until https://github.com/remix-run/remix/issues/9871 is fixed
@@ -47,6 +61,7 @@ export default defineConfig({
 						v3_lazyRouteDiscovery: true,
 						v3_relativeSplatPath: true,
 						v3_throwAbortReason: true,
+            v3_singleFetch: true,
 					},
 					routes: async (defineRoutes) => {
 						return flatRoutes('routes', defineRoutes, {
@@ -81,6 +96,7 @@ export default defineConfig({
 					},
 				})
 			: null,
+		tsconfigPaths(),
 	],
 	optimizeDeps: {
 		exclude: ['@prisma/client'],

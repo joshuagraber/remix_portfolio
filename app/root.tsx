@@ -1,5 +1,5 @@
 import {
-	json,
+	data,
 	type LoaderFunctionArgs,
 	type HeadersFunction,
 	type LinksFunction,
@@ -41,7 +41,7 @@ import { type Theme, getTheme } from './utils/theme.server.ts'
 import { makeTimings, time } from './utils/timing.server.ts'
 import { getToast } from './utils/toast.server.ts'
 import { useOptionalUser } from './utils/user.ts'
-import '@mdxeditor/editor/style.css'
+import '@mdxeditor/editor/style.css?url'
 ;<link
 	rel="preload"
 	href="/fonts/Inter-Regular.woff2"
@@ -110,7 +110,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 	const { toast, headers: toastHeaders } = await getToast(request)
 	const honeyProps = honeypot.getInputProps()
 
-	return json(
+	return data(
 		{
 			user,
 			requestInfo: {
@@ -217,7 +217,7 @@ function Document({
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	// if there was an error running the loader, data could be missing
-	const data = useLoaderData<typeof loader | null>()
+	const data = useLoaderData<typeof loader>()
 	const nonce = useNonce()
 	const theme = useOptionalTheme()
 	return (

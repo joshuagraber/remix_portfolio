@@ -16,5 +16,5 @@ export async function action({ request }: ActionFunctionArgs) {
 
 	invariantResponse(deleted, 'Not found', { status: 404 })
 
-	return json(deleted)
+	return deleted
 }

@@ -18,5 +18,5 @@ export async function action({ request }: ActionFunctionArgs) {
 		where: { id: imageId },
 	})
 
-	return json(deleted)
+	return deleted
 }

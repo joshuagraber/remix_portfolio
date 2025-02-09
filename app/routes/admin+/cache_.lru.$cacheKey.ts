@@ -19,7 +19,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
 	const { cacheKey } = params
 	invariantResponse(cacheKey, 'cacheKey is required')
-	return json({
+	return {
 		instance: {
 			hostname: instance,
 			region: allInstances[instance],
@@ -27,5 +27,5 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 		},
 		cacheKey,
 		value: lruCache.get(cacheKey),
-	})
+	}
 }

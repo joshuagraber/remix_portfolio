@@ -44,7 +44,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 		}),
 	])
 
-	return json({ posts, images })
+	return { posts, images }
 }
 
 export default function AdminPosts() {
@@ -75,12 +75,15 @@ export default function AdminPosts() {
 								<h2 className="text-xl font-semibold">{post.title}</h2>
 								<div className="flex gap-2 text-sm text-muted-foreground">
 									<span>
-										Created {formatDateStringForPostDefault(post.createdAt)}
+										Created{' '}
+										{formatDateStringForPostDefault(
+											post.createdAt.toDateString(),
+										)}
 									</span>
 									<span>•</span>
 									<span>
 										{post.publishAt
-											? `Published ${formatDateStringForPostDefault(post.publishAt)}`
+											? `Published ${formatDateStringForPostDefault(post.publishAt.toDateString())}`
 											: 'Draft'}
 									</span>
 									<span>•</span>

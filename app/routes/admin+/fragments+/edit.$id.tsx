@@ -7,7 +7,7 @@ import {
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { invariantResponse } from '@epic-web/invariant'
 import {
-	json,
+	data,
 	type ActionFunctionArgs,
 	type LoaderFunctionArgs,
 } from '@remix-run/node'
@@ -62,8 +62,8 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 	invariantResponse(post, 'Not found', { status: 404 })
 	invariantResponse(images, 'Error fetching images', { status: 404 })
 
-	return json({ post, images })
-	// return json({post: { title: '', description: '', publishAt: new Date().toLocaleDateString(), content: '', slug: '' }});
+	return { post, images }
+	// return data({post: { title: '', description: '', publishAt: new Date().toLocaleDateString(), content: '', slug: '' }});
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
@@ -76,7 +76,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 	})
 
 	if (submission.status !== 'success') {
-		return json(
+		return data(
 			{ result: submission.reply() },
 			{ status: submission.status === 'error' ? 400 : 200 },
 		)
@@ -101,7 +101,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 			description: `Post "${title}" updated successfully.`,
 		})
 	} catch {
-		return json(
+		return data(
 			{ result: submission.reply({ formErrors: ['Failed to update post'] }) },
 			{ status: 500 },
 		)
@@ -129,7 +129,9 @@ export default function EditPost() {
 			content: post.content,
 			description: post.description,
 			slug: post.slug,
-			publishAt: formatDateStringForPostDefault(post.publishAt),
+			publishAt: formatDateStringForPostDefault(
+				(post.publishAt ?? new Date()).toDateString(),
+			),
 		},
 	})
 

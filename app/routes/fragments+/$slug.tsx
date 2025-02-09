@@ -1,5 +1,5 @@
 import { invariantResponse } from '@epic-web/invariant'
-import { json, type LoaderFunctionArgs } from '@remix-run/node'
+import { type LoaderFunctionArgs } from '@remix-run/node'
 import { type MetaFunction, useLoaderData } from '@remix-run/react'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
@@ -27,7 +27,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 	const { code, frontmatter } = await compileMDX(post.content)
 
-	return json({ post, code, frontmatter })
+	return { post, code, frontmatter }
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -69,7 +69,7 @@ export default function Fragment() {
 			<p>{frontmatter.description}</p>
 			<p className="text-sm text-neutral-500">
 				{/* Non-null assertion okay here. If the post is returned here, that means it's published */}
-				<Time time={post.publishAt!} />
+				<Time time={post.publishAt!.toDateString()} />
 			</p>
 			<div>
 				<Component components={mdxComponents} />

@@ -7,7 +7,7 @@ import {
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import {
-	json,
+	data,
 	type ActionFunctionArgs,
 	type MetaFunction,
 } from '@remix-run/node'
@@ -53,14 +53,14 @@ export async function action({ request }: ActionFunctionArgs) {
 	try {
 		console.log('form action', { submission })
 		if (submission.status !== 'success') {
-			return json(
+			return data(
 				{ result: submission.reply() },
 				{ status: submission.status === 'error' ? 400 : 200 },
 			)
 		}
-		return json({ result: submission.reply() })
+		return { result: submission.reply() }
 	} catch (response: any) {
-		return json(
+		return data(
 			{
 				result: submission.reply({ formErrors: [response.error.message] }),
 			},

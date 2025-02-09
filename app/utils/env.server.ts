@@ -50,8 +50,8 @@ export function init() {
 export function getEnv() {
 	return {
 		MODE: process.env.NODE_ENV,
-		SENTRY_DSN: process.env.SENTRY_DSN,
-		ALLOW_INDEXING: process.env.ALLOW_INDEXING,
+		SENTRY_DSN: process.env.SENTRY_DSN ?? '',
+		ALLOW_INDEXING: process.env.ALLOW_INDEXING ?? 'true',
 	}
 }
 

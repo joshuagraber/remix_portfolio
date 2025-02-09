@@ -54,5 +54,5 @@ export async function action({ request }: ActionFunctionArgs) {
 		// @ts-expect-error - we don't reliably know the type of cacheValue
 		await cache.set(key, cacheValue)
 	}
-	return json({ success: true })
+	return { success: true }
 }

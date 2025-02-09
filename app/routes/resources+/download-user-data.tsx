@@ -42,7 +42,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 	const domain = getDomainUrl(request)
 
-	return json({
+	return {
 		user: {
 			...user,
 			image: user.image
@@ -59,5 +59,5 @@ export async function loader({ request }: LoaderFunctionArgs) {
 			// 	})),
 			// })),
 		},
-	})
+	}
 }

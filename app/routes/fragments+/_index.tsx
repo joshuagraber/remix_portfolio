@@ -77,10 +77,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 		}),
 	)
 
-	return json({
+	return {
 		posts: postsWithMDX,
 		total: totalPosts,
-	})
+	}
 }
 
 function PostContent({ code }: { code: string }) {
@@ -103,7 +103,7 @@ export default function Fragments() {
 							<p className="mb-2 text-muted-foreground">{post.description}</p>
 						</Link>
 						<p className="text-sm text-neutral-500">
-							<Time time={post.publishAt!} />
+							<Time time={post.publishAt!.toDateString()} />
 						</p>
 						<div className="mb-4">
 							<PostContent code={post.code} />

@@ -3,7 +3,7 @@ import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { invariantResponse } from '@epic-web/invariant'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import {
-	json,
+	data,
 	type LoaderFunctionArgs,
 	type ActionFunctionArgs,
 } from '@remix-run/node'
@@ -64,11 +64,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
 		where: { userId },
 	})
 
-	return json({
+	return {
 		user,
 		hasPassword: Boolean(password),
 		isTwoFactorEnabled: Boolean(twoFactorVerification),
-	})
+	}
 }
 
 type ProfileActionArgs = {
@@ -101,15 +101,15 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function EditUserProfile() {
-	const data = useLoaderData<typeof loader>()
+	const loaderData = useLoaderData<typeof loader>()
 
 	return (
 		<div className="flex flex-col gap-12">
 			<div className="flex justify-center">
 				<div className="relative h-52 w-52">
 					<img
-						src={getUserImgSrc(data.user.image?.id)}
-						alt={data.user.username}
+						src={getUserImgSrc(loaderData.user.image?.id)}
+						alt={loaderData.user.username}
 						className="h-full w-full rounded-full object-cover"
 					/>
 					<Button
@@ -135,13 +135,13 @@ export default function EditUserProfile() {
 				<div>
 					<Link to="change-email">
 						<Icon name="envelope-closed">
-							Change email from {data.user.email}
+							Change email from {loaderData.user.email}
 						</Icon>
 					</Link>
 				</div>
 				<div>
 					<Link to="two-factor">
-						{data.isTwoFactorEnabled ? (
+						{loaderData.isTwoFactorEnabled ? (
 							<Icon name="lock-closed">2FA is enabled</Icon>
 						) : (
 							<Icon name="lock-open-1">Enable 2FA</Icon>
@@ -149,9 +149,9 @@ export default function EditUserProfile() {
 					</Link>
 				</div>
 				<div>
-					<Link to={data.hasPassword ? 'password' : 'password/create'}>
+					<Link to={loaderData.hasPassword ? 'password' : 'password/create'}>
 						<Icon name="dots-horizontal">
-							{data.hasPassword ? 'Change Password' : 'Create a Password'}
+							{loaderData.hasPassword ? 'Change Password' : 'Create a Password'}
 						</Icon>
 					</Link>
 				</div>
@@ -163,7 +163,7 @@ export default function EditUserProfile() {
 				<div>
 					<Link
 						reloadDocument
-						download="my-epic-notes-data.json"
+						download="my-epic-notes-data.data"
 						to="/resources/download-user-data"
 					>
 						<Icon name="download">Download your data</Icon>
@@ -194,26 +194,26 @@ async function profileUpdateAction({ userId, formData }: ProfileActionArgs) {
 		}),
 	})
 	if (submission.status !== 'success') {
-		return json(
+		return data(
 			{ result: submission.reply() },
 			{ status: submission.status === 'error' ? 400 : 200 },
 		)
 	}
 
-	const data = submission.value
+	const submissionData = submission.value
 
 	await prisma.user.update({
 		select: { username: true },
 		where: { id: userId },
 		data: {
-			name: data.name,
-			username: data.username,
+			name: submissionData.name,
+			username: submissionData.username,
 		},
 	})
 
-	return json({
+	return {
 		result: submission.reply(),
-	})
+	}
 }
 
 function UpdateProfile() {
@@ -288,7 +288,7 @@ async function signOutOfSessionsAction({ request, userId }: ProfileActionArgs) {
 			id: { not: sessionId },
 		},
 	})
-	return json({ status: 'success' } as const)
+	return data({ status: 'success' } as const)
 }
 
 function SignOutOfSessions() {

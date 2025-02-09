@@ -1,7 +1,7 @@
 import { useForm, getFormProps } from '@conform-to/react'
 import { parseWithZod } from '@conform-to/zod'
 import { invariantResponse } from '@epic-web/invariant'
-import { json, type ActionFunctionArgs } from '@remix-run/node'
+import { data, type ActionFunctionArgs } from '@remix-run/node'
 import { redirect, useFetcher, useFetchers } from '@remix-run/react'
 import { useEffect } from 'react'
 import { ServerOnly } from 'remix-utils/server-only'
@@ -42,7 +42,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	if (redirectTo) {
 		return redirect(redirectTo, responseInit)
 	} else {
-		return json({ result: submission.reply() }, responseInit)
+		return data({ result: submission.reply() }, responseInit)
 	}
 }
 
@@ -53,7 +53,6 @@ export function ThemeSwitch({
 }) {
 	const fetcher = useFetcher<typeof action>()
 	const requestInfo = useRequestInfo()
-	const hints = useHints()
 
 	const [form] = useForm({
 		id: 'theme-switch',

@@ -15,7 +15,7 @@ import { getInstanceInfo } from './utils/litefs.server.ts'
 import { NonceProvider } from './utils/nonce-provider.ts'
 import { makeTimings } from './utils/timing.server.ts'
 
-const ABORT_DELAY = 5000
+export const streamTimeout = 5000
 
 init()
 global.ENV = getEnv()
@@ -78,7 +78,9 @@ export default async function handleRequest(...args: DocRequestArgs) {
 			},
 		)
 
-		setTimeout(abort, ABORT_DELAY)
+		// Automatically timeout the React renderer after 6 seconds, which ensures
+		// React has enough time to flush down the rejected boundary contents
+		setTimeout(abort, streamTimeout + 1000)
 	})
 }
 

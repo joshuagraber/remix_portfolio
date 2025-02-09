@@ -1,6 +1,5 @@
 import { json, type MetaFunction } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
-import { Link } from 'react-router-dom'
+import { useLoaderData, Link } from '@remix-run/react'
 import { LinkPreview } from '#app/components/link-preview'
 import { Spacer } from '#app/components/spacer'
 import { prisma } from '#app/utils/db.server'
@@ -21,7 +20,7 @@ export async function loader() {
 		take: 3,
 	})
 
-	return json({ fragments: recentFragments })
+	return { fragments: recentFragments }
 }
 
 export default function Index() {
@@ -69,7 +68,7 @@ export default function Index() {
 							{publishAt && (
 								<Time
 									className="no-underline hover:underline"
-									time={publishAt}
+									time={publishAt.toDateString()}
 								/>
 							)}
 						</li>
