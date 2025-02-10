@@ -124,7 +124,7 @@
 @layer components {
 	/* Body font defaults */
 	body {
-		@apply font-serif text-body-sm tracking-wider md:text-body-md xl:text-body-lg;
+		@apply font-serif text-body-sm tracking-wider md:text-body-md;
 	}
 	/* Font defaults */
 	h1,
