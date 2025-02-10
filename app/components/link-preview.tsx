@@ -63,7 +63,8 @@ export function LinkPreview({ url, className }: LinkPreviewProps) {
 			target="_blank"
 			rel="noopener noreferrer"
 			className={cn(
-				'group my-2 block cursor-pointer overflow-hidden rounded-md border border-primary no-underline transition-shadow focus:border-secondary-foreground',
+				'jdg-link-preview',
+				'group block cursor-pointer overflow-hidden rounded-md border border-primary no-underline transition-shadow focus:border-secondary-foreground',
 				className,
 				isLoading && 'h-80 sm:h-44',
 			)}
