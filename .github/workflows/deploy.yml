@@ -38,6 +38,10 @@ jobs:
           path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
+      - name: Generate client
+        if: steps.cache-modules.outputs.cache-hit == 'true'
+        run: npx prisma generate
+
       - name: Install deps
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: npm ci && npx prisma generate
