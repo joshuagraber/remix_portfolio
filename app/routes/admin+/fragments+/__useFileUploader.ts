@@ -5,11 +5,13 @@ const DEFAULT_TIMEOUT = 1000 * 30 // 30-second timeout by default
 /**
  * This is useful for creating an image upload handler for the MDX editor. It's not actually the best way of doing things.
  */
-export function useImageUploader(
-	{ uploadTimeout }: { uploadTimeout: number } = {
-		uploadTimeout: DEFAULT_TIMEOUT,
-	},
-) {
+export function useFileUploader({
+	uploadTimeout = DEFAULT_TIMEOUT,
+	path,
+}: {
+	uploadTimeout?: number
+	path: string
+}) {
 	const imageFetcher = useFetcher<string>()
 
 	return async (file: File) => {
@@ -20,7 +22,7 @@ export function useImageUploader(
 		const uploadPromise = new Promise<string>(async (resolve, reject) => {
 			await imageFetcher.submit(formData, {
 				method: 'POST',
-				action: '/admin/fragments/images/create',
+				action: path,
 				encType: 'multipart/form-data',
 			})
 

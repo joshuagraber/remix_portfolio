@@ -1,8 +1,6 @@
-import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
 import { Link, useLoaderData } from 'react-router'
-import { serverOnly$ } from 'vite-env-only/macros'
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
 import { compileMDX } from '#app/utils/mdx.server'
@@ -12,15 +10,6 @@ import { PaginationBar } from './__pagination-bar'
 import { Time } from './__time'
 
 export const POSTS_PER_PAGE = 5
-
-export const handle: SEOHandle = {
-	getSitemapEntries: serverOnly$(async (request) => {
-		const fragments = await prisma.post.findMany()
-		return fragments.map((post) => {
-			return { route: `/fragments/${post.slug}`, priority: 0.7 }
-		})
-	}),
-}
 
 export async function loader({ request }: Route.LoaderArgs) {
 	const url = new URL(request.url)

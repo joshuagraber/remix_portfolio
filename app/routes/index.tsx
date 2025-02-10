@@ -71,11 +71,14 @@ export default function Index() {
 			</p>
 			<Spacer size="3xs" />
 			<h3>Recent fragments</h3>
+			<Link to="fragments">View all fragments</Link>
+
 			<ol className="my-4 grid list-decimal grid-cols-1 gap-x-2 space-y-2 pl-6 md:grid-cols-2 md:gap-x-8 lg:grid-cols-3">
 				{data.fragments.map(({ title, description, slug, publishAt }) => {
 					return (
 						<li key={title + slug} className="display-list-item">
 							<Link
+								prefetch="intent"
 								to={`/fragments/${slug}`}
 								className="flex flex-col no-underline hover:underline"
 							>
@@ -87,10 +90,9 @@ export default function Index() {
 					)
 				})}
 			</ol>
-			<Link to="fragments">View all fragments</Link>
 			<Spacer size="3xs" />
 			<h3>Some recent publications</h3>
-			<ul>
+			<ul className="[&>*]:shrink-1 flex flex-wrap gap-4 [&>*]:grow [&>*]:basis-[450px] [&>*]:sm:shrink-0">
 				{/* TODO: add to DB, create admin route to update these without needing to trigger a new build. Also update the link preview logic. Fetch in the loader so that we don't have to cache */}
 				<li>
 					<LinkPreview

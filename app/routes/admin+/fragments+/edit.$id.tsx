@@ -7,7 +7,15 @@ import {
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { invariantResponse } from '@epic-web/invariant'
 import React, { type FormEvent, useEffect, useRef, useState } from 'react'
-import { data, type ActionFunctionArgs, type LoaderFunctionArgs, Form, useActionData, useLoaderData, useNavigation  } from 'react-router';
+import {
+	data,
+	type ActionFunctionArgs,
+	type LoaderFunctionArgs,
+	Form,
+	useActionData,
+	useLoaderData,
+	useNavigation,
+} from 'react-router'
 import { type z } from 'zod'
 import { Field, ErrorList } from '#app/components/forms'
 import { MDXEditorComponent } from '#app/components/mdx/editor.tsx'
@@ -22,12 +30,13 @@ import { getPostImageSource } from '#app/utils/misc.tsx'
 import { redirectWithToast } from '#app/utils/toast.server.ts'
 import { PostImageManager } from './__image-manager'
 import { PostSchemaUpdate as PostSchema } from './__types'
-import { useImageUploader } from './__useImageUploader'
+import { useFileUploader } from './__useFileUploader'
+import { PostVideoManager } from './__video-manager'
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
 	await requireUserId(request)
 
-	const [post, images] = await Promise.all([
+	const [post, images, videos] = await Promise.all([
 		prisma.post.findUnique({
 			where: { id: params.id },
 			select: {
@@ -47,12 +56,21 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 			},
 			orderBy: { createdAt: 'desc' },
 		}),
+		await prisma.postVideo.findMany({
+			select: {
+				id: true,
+				altText: true,
+				title: true,
+			},
+			orderBy: { createdAt: 'desc' },
+		}),
 	])
 
 	invariantResponse(post, 'Not found', { status: 404 })
 	invariantResponse(images, 'Error fetching images', { status: 404 })
+	invariantResponse(videos, 'Error fetching videos', { status: 404 })
 
-	return { post, images }
+	return { post, images, videos }
 	// return data({post: { title: '', description: '', publishAt: new Date().toLocaleDateString(), content: '', slug: '' }});
 }
 
@@ -99,12 +117,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function EditPost() {
-	const { post, images } = useLoaderData<typeof loader>()
+	const { post, images, videos } = useLoaderData<typeof loader>()
 	const actionData = useActionData<typeof action>()
 	const navigation = useNavigation()
 	const isPending = navigation.state === 'submitting'
 
-	const handleImageUpload = useImageUploader()
+	const handleImageUpload = useFileUploader({
+		path: '/admin/fragments/images/create',
+	})
 
 	const [form, fields] = useForm({
 		id: 'edit-post-form',
@@ -247,6 +267,9 @@ export default function EditPost() {
 
 			<h2>Manage post images</h2>
 			<PostImageManager images={images} />
+
+			<h2>Manage post videos</h2>
+			<PostVideoManager videos={videos} />
 		</div>
 	)
 }

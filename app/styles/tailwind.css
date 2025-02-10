@@ -230,6 +230,10 @@
 	@apply my-8 border-0 border-t;
 }
 
+.jdg_typography .jdg-link-preview {
+	@apply my-2;
+}
+
 /* MDX Editor — TODO: update other vars as need be */
 .dark-editor {
 	color: var(--neutral-4);

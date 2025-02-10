@@ -1,8 +1,7 @@
 import { type PostImage } from '@prisma/client'
 import React, { useState } from 'react'
-import { useFetcher } from 'react-router';
+import { useFetcher } from 'react-router'
 import { toast } from 'sonner'
-import { z } from 'zod'
 import { Field } from '#app/components/forms.tsx'
 import { Button } from '#app/components/ui/button'
 import { Icon } from '#app/components/ui/icon.tsx'
@@ -62,7 +61,7 @@ export function PostImageManager({ images }: PostImageManagerProps) {
 	}, [imageCreateFetcher.data])
 
 	return (
-		<div className="max-h-[700px] overflow-y-scroll">
+		<div>
 			<h4>Upload new image</h4>
 			<imageCreateFetcher.Form
 				method="POST"
@@ -110,8 +109,8 @@ export function PostImageManager({ images }: PostImageManagerProps) {
 				</Button>
 			</imageCreateFetcher.Form>
 
-			<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				<h4 className="col-span-1 sm:col-span-2 lg:col-span-3">
+			<div className="grid max-h-[700px] gap-6 overflow-y-scroll sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+				<h4 className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4">
 					Update current images
 				</h4>
 				{images.map((image) => (

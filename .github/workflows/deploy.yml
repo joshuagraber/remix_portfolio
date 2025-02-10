@@ -35,19 +35,28 @@ jobs:
         id: cache-modules
         uses: actions/cache/restore@v3
         with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
+          path: |
+            node_modules
+            node_modules/.prisma
+          # Include prisma schema in hash to invalidate cache when schema changes
+          key:
+            node-modules-${{ hashFiles('package-lock.json',
+            'prisma/schema.prisma') }}
 
       - name: Install deps
         if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: npm ci
+        run: npm ci && npx prisma generate
 
       - name: Cache node_modules
         if: steps.cache-modules.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3
         with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
+          path: |
+            node_modules
+            node_modules/.prisma
+          key:
+            node-modules-${{ hashFiles('package-lock.json',
+            'prisma/schema.prisma') }}
 
   lint:
     needs: setup
@@ -65,8 +74,12 @@ jobs:
       - name: 📥 Restore cache
         uses: actions/cache/restore@v4
         with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
+          path: |
+            node_modules
+            node_modules/.prisma
+          key:
+            node-modules-${{ hashFiles('package-lock.json',
+            'prisma/schema.prisma') }}
 
       - name: 🖼 Build icons
         run: npm run build:icons
@@ -90,8 +103,12 @@ jobs:
       - name: 📥 Restore cache
         uses: actions/cache/restore@v4
         with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
+          path: |
+            node_modules
+            node_modules/.prisma
+          key:
+            node-modules-${{ hashFiles('package-lock.json',
+            'prisma/schema.prisma') }}
 
       - name: 🖼 Build icons
         run: npm run build:icons
@@ -118,8 +135,12 @@ jobs:
       - name: 📥 Restore cache
         uses: actions/cache/restore@v4
         with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
+          path: |
+            node_modules
+            node_modules/.prisma
+          key:
+            node-modules-${{ hashFiles('package-lock.json',
+            'prisma/schema.prisma') }}
 
       - name: 🏄 Copy test env vars
         run: cp .env.example .env
