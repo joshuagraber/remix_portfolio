@@ -12,7 +12,7 @@ import { type Route } from './+types/$slug'
 import { Time } from './__time'
 
 export const handle: SEOHandle = {
-	getSitemapEntries: serverOnly$(async (request) => {
+	getSitemapEntries: serverOnly$(async (_request) => {
 		const fragments = await prisma.post.findMany()
 		return fragments.map((post) => {
 			return { route: `/fragments/${post.slug}`, priority: 0.7 }

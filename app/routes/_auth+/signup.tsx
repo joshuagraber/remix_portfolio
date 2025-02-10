@@ -1,135 +1,136 @@
-import { getFormProps, getInputProps, useForm } from '@conform-to/react'
-import { getZodConstraint, parseWithZod } from '@conform-to/zod'
-import { type SEOHandle } from '@nasa-gcn/remix-seo'
-import * as E from '@react-email/components'
-import { data, redirect, type ActionFunctionArgs, type MetaFunction, Form, Navigate, useActionData, useSearchParams  } from 'react-router';
-import { HoneypotInputs } from 'remix-utils/honeypot/react'
-import { z } from 'zod'
-import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
-import { ErrorList, Field } from '#app/components/forms.tsx'
-import { StatusButton } from '#app/components/ui/status-button.tsx'
-import {
-	ProviderConnectionForm,
-	providerNames,
-} from '#app/utils/connections.tsx'
-import { prisma } from '#app/utils/db.server.ts'
-import { sendEmail } from '#app/utils/email.server.ts'
-import { checkHoneypot } from '#app/utils/honeypot.server.ts'
-import { useIsPending } from '#app/utils/misc.tsx'
-import { EmailSchema } from '#app/utils/user-validation.ts'
-import { prepareVerification } from './verify.server.ts'
+// import { getFormProps, getInputProps, useForm } from '@conform-to/react'
+// import { getZodConstraint, parseWithZod } from '@conform-to/zod'
+// import { type SEOHandle } from '@nasa-gcn/remix-seo'
+// import * as E from '@react-email/components'
+// import { data, redirect, type ActionFunctionArgs, type MetaFunction, Form, Navigate, useActionData, useSearchParams  } from 'react-router';
+import { Navigate } from 'react-router'
+// import { HoneypotInputs } from 'remix-utils/honeypot/react'
+// import { z } from 'zod'
+// import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
+// import { ErrorList, Field } from '#app/components/forms.tsx'
+// import { StatusButton } from '#app/components/ui/status-button.tsx'
+// import {
+// 	ProviderConnectionForm,
+// 	providerNames,
+// } from '#app/utils/connections.tsx'
+// import { prisma } from '#app/utils/db.server.ts'
+// import { sendEmail } from '#app/utils/email.server.ts'
+// import { checkHoneypot } from '#app/utils/honeypot.server.ts'
+// import { useIsPending } from '#app/utils/misc.tsx'
+// import { EmailSchema } from '#app/utils/user-validation.ts'
+// import { prepareVerification } from './verify.server.ts'
 
-export const handle: SEOHandle = {
-	getSitemapEntries: () => null,
-}
+// export const handle: SEOHandle = {
+// 	getSitemapEntries: () => null,
+// }
 
-const SignupSchema = z.object({
-	email: EmailSchema,
-})
+// const SignupSchema = z.object({
+// 	email: EmailSchema,
+// })
 
-export async function action({ request }: ActionFunctionArgs) {
-	const formData = await request.formData()
+// export async function action({ request }: ActionFunctionArgs) {
+// 	const formData = await request.formData()
 
-	checkHoneypot(formData)
+// 	checkHoneypot(formData)
 
-	const submission = await parseWithZod(formData, {
-		schema: SignupSchema.superRefine(async (data, ctx) => {
-			const existingUser = await prisma.user.findUnique({
-				where: { email: data.email },
-				select: { id: true },
-			})
-			if (existingUser) {
-				ctx.addIssue({
-					path: ['email'],
-					code: z.ZodIssueCode.custom,
-					message: 'A user already exists with this email',
-				})
-				return
-			}
-		}),
-		async: true,
-	})
-	if (submission.status !== 'success') {
-		return data(
-			{ result: submission.reply() },
-			{ status: submission.status === 'error' ? 400 : 200 },
-		)
-	}
-	const { email } = submission.value
-	const { verifyUrl, redirectTo, otp } = await prepareVerification({
-		period: 10 * 60,
-		request,
-		type: 'onboarding',
-		target: email,
-	})
+// 	const submission = await parseWithZod(formData, {
+// 		schema: SignupSchema.superRefine(async (data, ctx) => {
+// 			const existingUser = await prisma.user.findUnique({
+// 				where: { email: data.email },
+// 				select: { id: true },
+// 			})
+// 			if (existingUser) {
+// 				ctx.addIssue({
+// 					path: ['email'],
+// 					code: z.ZodIssueCode.custom,
+// 					message: 'A user already exists with this email',
+// 				})
+// 				return
+// 			}
+// 		}),
+// 		async: true,
+// 	})
+// 	if (submission.status !== 'success') {
+// 		return data(
+// 			{ result: submission.reply() },
+// 			{ status: submission.status === 'error' ? 400 : 200 },
+// 		)
+// 	}
+// 	const { email } = submission.value
+// 	const { verifyUrl, redirectTo, otp } = await prepareVerification({
+// 		period: 10 * 60,
+// 		request,
+// 		type: 'onboarding',
+// 		target: email,
+// 	})
 
-	const response = await sendEmail({
-		to: email,
-		subject: `Welcome to JDG!`,
-		react: <SignupEmail onboardingUrl={verifyUrl.toString()} otp={otp} />,
-	})
+// 	const response = await sendEmail({
+// 		to: email,
+// 		subject: `Welcome to JDG!`,
+// 		react: <SignupEmail onboardingUrl={verifyUrl.toString()} otp={otp} />,
+// 	})
 
-	if (response.status === 'success') {
-		return redirect(redirectTo.toString())
-	} else {
-		return data(
-			{
-				result: submission.reply({ formErrors: [response.error.message] }),
-			},
-			{
-				status: 500,
-			},
-		)
-	}
-}
+// 	if (response.status === 'success') {
+// 		return redirect(redirectTo.toString())
+// 	} else {
+// 		return data(
+// 			{
+// 				result: submission.reply({ formErrors: [response.error.message] }),
+// 			},
+// 			{
+// 				status: 500,
+// 			},
+// 		)
+// 	}
+// }
 
-export function SignupEmail({
-	onboardingUrl,
-	otp,
-}: {
-	onboardingUrl: string
-	otp: string
-}) {
-	return (
-		<E.Html lang="en" dir="ltr">
-			<E.Container>
-				<h1>
-					<E.Text>Welcome to JDG!</E.Text>
-				</h1>
-				<p>
-					<E.Text>
-						Here's your verification code: <strong>{otp}</strong>
-					</E.Text>
-				</p>
-				<p>
-					<E.Text>Or click the link to get started:</E.Text>
-				</p>
-				<E.Link href={onboardingUrl}>{onboardingUrl}</E.Link>
-			</E.Container>
-		</E.Html>
-	)
-}
+// export function SignupEmail({
+// 	onboardingUrl,
+// 	otp,
+// }: {
+// 	onboardingUrl: string
+// 	otp: string
+// }) {
+// 	return (
+// 		<E.Html lang="en" dir="ltr">
+// 			<E.Container>
+// 				<h1>
+// 					<E.Text>Welcome to JDG!</E.Text>
+// 				</h1>
+// 				<p>
+// 					<E.Text>
+// 						Here's your verification code: <strong>{otp}</strong>
+// 					</E.Text>
+// 				</p>
+// 				<p>
+// 					<E.Text>Or click the link to get started:</E.Text>
+// 				</p>
+// 				<E.Link href={onboardingUrl}>{onboardingUrl}</E.Link>
+// 			</E.Container>
+// 		</E.Html>
+// 	)
+// }
 
-export const meta: MetaFunction = () => {
-	return [{ title: 'Sign Up | JDG' }]
-}
+// export const meta: MetaFunction = () => {
+// 	return [{ title: 'Sign Up | JDG' }]
+// }
 
 export default function SignupRoute() {
-	const actionData = useActionData<typeof action>()
-	const isPending = useIsPending()
-	const [searchParams] = useSearchParams()
-	const redirectTo = searchParams.get('redirectTo')
+	// const actionData = useActionData<typeof action>()
+	// const isPending = useIsPending()
+	// const [searchParams] = useSearchParams()
+	// const redirectTo = searchParams.get('redirectTo')
 
-	const [form, fields] = useForm({
-		id: 'signup-form',
-		constraint: getZodConstraint(SignupSchema),
-		lastResult: actionData?.result,
-		onValidate({ formData }) {
-			const result = parseWithZod(formData, { schema: SignupSchema })
-			return result
-		},
-		shouldRevalidate: 'onBlur',
-	})
+	// const [form, fields] = useForm({
+	// 	id: 'signup-form',
+	// 	constraint: getZodConstraint(SignupSchema),
+	// 	lastResult: actionData?.result,
+	// 	onValidate({ formData }) {
+	// 		const result = parseWithZod(formData, { schema: SignupSchema })
+	// 		return result
+	// 	},
+	// 	shouldRevalidate: 'onBlur',
+	// })
 
 	// For now don't allow this route. We'll implement later.
 	return <Navigate to="/" />
@@ -183,6 +184,6 @@ export default function SignupRoute() {
 	// )
 }
 
-export function ErrorBoundary() {
-	return <GeneralErrorBoundary />
-}
+// export function ErrorBoundary() {
+// 	return <GeneralErrorBoundary />
+// }
