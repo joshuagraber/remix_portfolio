@@ -76,7 +76,7 @@
     "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.25.0",
     "execa": "^9.4.1",
     "express": "^4.21.1",
     "express-rate-limit": "^7.4.1",
