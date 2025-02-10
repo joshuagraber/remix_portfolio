@@ -71,22 +71,18 @@ export default function Index() {
 			</p>
 			<Spacer size="3xs" />
 			<h3>Recent fragments</h3>
-			<ol className="my-4 list-decimal space-y-2 pl-6">
+			<ol className="my-4 grid list-decimal grid-cols-1 gap-x-2 space-y-2 pl-6 md:grid-cols-2 md:gap-x-8 lg:grid-cols-3">
 				{data.fragments.map(({ title, description, slug, publishAt }) => {
 					return (
 						<li key={title + slug} className="display-list-item">
-							<Link to={`/fragments/${slug}`} className="block">
+							<Link
+								to={`/fragments/${slug}`}
+								className="flex flex-col no-underline hover:underline"
+							>
 								<h4>{title}</h4>
-								{description && (
-									<p className="no-underline hover:underline">{description}</p>
-								)}
+								{description && <p>{description}</p>}
+								{publishAt && <Time time={publishAt.toDateString()} />}
 							</Link>
-							{publishAt && (
-								<Time
-									className="no-underline hover:underline"
-									time={publishAt.toDateString()}
-								/>
-							)}
 						</li>
 					)
 				})}
@@ -101,14 +97,20 @@ export default function Index() {
 						className="max-w-3xl"
 						url="https://www.post-gazette.com/ae/books/2025/02/02/review-dose-effect-optimize-dopamine-oxytocin-serotonin-endorphins-tj-power/stories/202502020045"
 					/>
+				</li>
+				<li>
 					<LinkPreview
 						className="max-w-3xl"
 						url="https://www.post-gazette.com/ae/books/2024/04/27/review-mara-van-der-lugt-begetting-what-does-it-mean-to-create-a-child/stories/202404280037"
 					/>
+				</li>
+				<li>
 					<LinkPreview
 						className="max-w-3xl"
 						url="https://artreview.com/genre-and-the-newer-newness-danielle-dutton-prairie-dresses-art-other-review/"
 					/>
+				</li>
+				<li>
 					<LinkPreview
 						className="max-w-3xl"
 						url="https://mrbullbull.com/newbull/fiction/metaphors-toward-__________________"

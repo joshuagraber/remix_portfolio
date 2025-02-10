@@ -1,8 +1,9 @@
 import { LocalFileStorage } from '@mjackson/file-storage/local'
 import { type FileUpload, parseFormData } from '@mjackson/form-data-parser'
-import { data, type ActionFunctionArgs } from 'react-router';
+import { data, type ActionFunctionArgs } from 'react-router'
 import { requireUserId } from '#app/utils/auth.server.ts'
 import { prisma } from '#app/utils/db.server'
+import { resizeImage } from '#app/utils/image-processing.server.ts'
 import { getPostImageSource } from '#app/utils/misc.tsx'
 import { fileToBlob } from '#app/utils/post-images.server'
 
@@ -14,8 +15,18 @@ export async function action({ request }: ActionFunctionArgs) {
 
 	const uploadHandler = async (fileUpload: FileUpload) => {
 		if (fileUpload.fieldName === 'file') {
+			// Convert upload to buffer for processing
+			const buffer = await fileUpload.arrayBuffer()
+			// Resize to max 800px (post container max width)
+			const resizedImageBuffer = await resizeImage(Buffer.from(buffer))
 			const storageKey = `post-image-${Date.now()}-${fileUpload.name}`
-			await fileStorage.set(storageKey, fileUpload)
+
+			// Create a new File object with the resized image
+			const resizedFile = new File([resizedImageBuffer], fileUpload.name, {
+				type: fileUpload.type,
+			})
+
+			await fileStorage.set(storageKey, resizedFile)
 			return fileStorage.get(storageKey)
 		}
 	}
