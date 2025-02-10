@@ -91,11 +91,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: 📥 Restore cache
-        uses: actions/cache/restore@v4
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - name: Install deps
+        run: npm ci && npx prisma generate
 
       - name: 🖼 Build icons
         run: npm run build:icons
