@@ -58,17 +58,6 @@ jobs:
             node-modules-${{ hashFiles('package-lock.json',
             'prisma/schema.prisma') }}
 
-      - name: Install deps
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: npm ci && npx prisma generate
-
-      - name: Cache node_modules
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v3
-        with:
-          path: node_modules
-          key: node-modules-${{ hashFiles('package-lock.json') }}
-
   lint:
     needs: setup
     name: ⬣ ESLint
