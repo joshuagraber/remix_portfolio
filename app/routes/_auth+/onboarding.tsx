@@ -1,12 +1,17 @@
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
+import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import {
-    data,
-    redirect,
-    type LoaderFunctionArgs,
-    type ActionFunctionArgs,
-    type MetaFunction, Form, useActionData, useLoaderData, useSearchParams 
-} from 'react-router';
+	data,
+	redirect,
+	type LoaderFunctionArgs,
+	type ActionFunctionArgs,
+	type MetaFunction,
+	Form,
+	useActionData,
+	useLoaderData,
+	useSearchParams,
+} from 'react-router'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import { safeRedirect } from 'remix-utils/safe-redirect'
 import { z } from 'zod'
@@ -51,6 +56,11 @@ async function requireOnboardingEmail(request: Request) {
 		throw redirect('/signup')
 	}
 	return email
+}
+
+/** TODO: remove this if ever using onboarding in the app */
+export const handle: SEOHandle = {
+	getSitemapEntries: () => null,
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {

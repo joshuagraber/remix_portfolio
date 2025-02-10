@@ -1,13 +1,24 @@
 import { invariantResponse } from '@epic-web/invariant'
+import { type SEOHandle } from '@nasa-gcn/remix-seo'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
 import { useLoaderData } from 'react-router'
+import { serverOnly$ } from 'vite-env-only/macros'
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
 import { compileMDX } from '#app/utils/mdx.server'
 import { mergeMeta } from '#app/utils/merge-meta.ts'
 import { type Route } from './+types/$slug'
 import { Time } from './__time'
+
+export const handle: SEOHandle = {
+	getSitemapEntries: serverOnly$(async (request) => {
+		const fragments = await prisma.post.findMany()
+		return fragments.map((post) => {
+			return { route: `/fragments/${post.slug}`, priority: 0.7 }
+		})
+	}),
+}
 
 export async function loader({ params, request }: Route.LoaderArgs) {
 	const url = new URL(request.url)
