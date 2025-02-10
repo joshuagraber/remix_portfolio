@@ -35,25 +35,18 @@ jobs:
         id: cache-modules
         uses: actions/cache/restore@v3
         with:
-          path: |
-            node_modules
-            node_modules/.prisma
+          path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
       - name: Install deps
-        run: |
-          rm -rf node_modules/.prisma
-          rm -rf node_modules/@prisma/client
-          npm ci
-          npx prisma migrate deploy
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: npm ci && npx prisma generate
 
       - name: Cache node_modules
         if: steps.cache-modules.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3
         with:
-          path: |
-            node_modules
-            node_modules/.prisma
+          path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
   lint:
@@ -107,7 +100,7 @@ jobs:
         run: npx tsc --version
 
       - name: 🔎 Type check
-        run: npm run typecheck
+        run: npm run typecheck -- --pretty
 
   vitest:
     needs: setup
