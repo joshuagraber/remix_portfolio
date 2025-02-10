@@ -38,6 +38,9 @@ jobs:
           path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
 
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
       - name: Install deps
         if: steps.cache-modules.outputs.cache-hit != 'true'
         run: npm ci
@@ -74,6 +77,28 @@ jobs:
       - name: 🔬 Lint
         run: npm run lint
 
+  build:
+    needs: setup
+    name: ⬣ ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 📥 Restore cache
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+
+      - name: 🔨 Build
+        run: npm run build
+
   typecheck:
     needs: setup
     name: ʦ TypeScript
@@ -100,7 +125,7 @@ jobs:
         run: npx tsc --version
 
       - name: 🔎 Type check
-        run: npm run typecheck -- --pretty
+        run: npm run build && npm run typecheck
 
   vitest:
     needs: setup
