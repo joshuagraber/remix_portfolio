@@ -1,10 +1,7 @@
 import { invariantResponse } from '@epic-web/invariant'
-import {
-	json,
-	unstable_parseMultipartFormData as parseMultipartFormData,
-	unstable_createMemoryUploadHandler as createMemoryUploadHandler,
-	type ActionFunctionArgs,
-} from '@remix-run/node'
+import { LocalFileStorage } from '@mjackson/file-storage/local'
+import { type FileUpload, parseFormData } from '@mjackson/form-data-parser'
+import { data, type ActionFunctionArgs } from 'react-router'
 import { requireUserId } from '#app/utils/auth.server'
 import { prisma } from '#app/utils/db.server'
 import { getPostImageSource } from '#app/utils/misc.tsx'
@@ -12,16 +9,29 @@ import { fileToBlob } from '#app/utils/post-images.server'
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5 // 5MB
 
+const fileStorage = new LocalFileStorage('.uploads/post-images')
+
 export async function action({ request }: ActionFunctionArgs) {
 	await requireUserId(request)
 
-	const formData = await parseMultipartFormData(
+	let storageKey
+	const uploadHandler = async (fileUpload: FileUpload) => {
+		if (fileUpload.fieldName === 'file') {
+			storageKey = `post-image-${Date.now()}-${fileUpload.name}`
+			await fileStorage.set(storageKey, fileUpload)
+			return fileStorage.get(storageKey)
+		}
+	}
+
+	const formData = await parseFormData(
 		request,
-		createMemoryUploadHandler({ maxPartSize: MAX_UPLOAD_SIZE }),
+		{
+			maxFileSize: MAX_UPLOAD_SIZE,
+		},
+		uploadHandler,
 	)
 
 	const file = formData.get('file') as File
-	const postId = formData.get('postId') as string | null
 
 	invariantResponse(file, 'No file provided', { status: 404 })
 
@@ -31,13 +41,18 @@ export async function action({ request }: ActionFunctionArgs) {
 		const image = await prisma.postImage.create({
 			data: {
 				...imageData,
-				// Only include postId if it exists
-				...(postId ? { posts: { connect: { id: postId } } } : {}),
 			},
 		})
 
-		return json(getPostImageSource(image.id))
+		return getPostImageSource(image.id)
 	} catch {
-		return json({ error: 'Error uploading image' }, { status: 500 })
+		return data({ error: 'Error uploading image' }, { status: 500 })
+	} finally {
+		// Clean up storage. We clear it on new builds anyway, so this is okay to go in 'finally' and swallow any error.
+		try {
+			if (storageKey) await fileStorage.remove(storageKey)
+		} catch (e) {
+			console.error('Error removing file from storage', { e })
+		}
 	}
 }

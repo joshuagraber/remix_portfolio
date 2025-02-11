@@ -1,5 +1,5 @@
 import { invariantResponse } from '@epic-web/invariant'
-import { json, type ActionFunctionArgs } from '@remix-run/node'
+import { data, type ActionFunctionArgs } from 'react-router';
 import { requireUserId } from '#app/utils/auth.server'
 import { prisma } from '#app/utils/db.server'
 
@@ -22,7 +22,7 @@ export async function action({ request }: ActionFunctionArgs) {
 		data: { altText, title },
 	})
 
-	return json(
+	return data(
 		{ success: true, image: updatedImage },
 		{
 			status: 200,

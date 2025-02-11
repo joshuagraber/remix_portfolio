@@ -1,19 +1,17 @@
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
-import { json, type LoaderFunctionArgs } from '@remix-run/node'
 import {
+	type LoaderFunctionArgs,
 	Link,
 	Outlet,
-	useFetcher,
 	useLoaderData,
-	useMatch,
-} from '@remix-run/react'
-import { Field } from '#app/components/forms.tsx'
+} from 'react-router'
 import { Button } from '#app/components/ui/button.tsx'
 import { requireUserId } from '#app/utils/auth.server'
 import { prisma } from '#app/utils/db.server'
 import { formatDateStringForPostDefault } from '#app/utils/mdx.ts'
 import { DeletePost } from './__deleters'
 import { PostImageManager } from './__image-manager'
+import { PostVideoManager } from './__video-manager'
 
 export const handle: SEOHandle = {
 	getSitemapEntries: () => null,
@@ -22,7 +20,7 @@ export const handle: SEOHandle = {
 export async function loader({ request }: LoaderFunctionArgs) {
 	await requireUserId(request)
 
-	const [posts, images] = await Promise.all([
+	const [posts, images, videos] = await Promise.all([
 		prisma.post.findMany({
 			select: {
 				id: true,
@@ -42,13 +40,21 @@ export async function loader({ request }: LoaderFunctionArgs) {
 			},
 			orderBy: { createdAt: 'desc' },
 		}),
+		await prisma.postVideo.findMany({
+			select: {
+				id: true,
+				altText: true,
+				title: true,
+			},
+			orderBy: { createdAt: 'desc' },
+		}),
 	])
 
-	return json({ posts, images })
+	return { posts, images, videos }
 }
 
 export default function AdminPosts() {
-	const { posts, images } = useLoaderData<typeof loader>()
+	const { posts, images, videos } = useLoaderData<typeof loader>()
 
 	return (
 		<div className="p-8">
@@ -75,12 +81,15 @@ export default function AdminPosts() {
 								<h2 className="text-xl font-semibold">{post.title}</h2>
 								<div className="flex gap-2 text-sm text-muted-foreground">
 									<span>
-										Created {formatDateStringForPostDefault(post.createdAt)}
+										Created{' '}
+										{formatDateStringForPostDefault(
+											post.createdAt.toDateString(),
+										)}
 									</span>
 									<span>•</span>
 									<span>
 										{post.publishAt
-											? `Published ${formatDateStringForPostDefault(post.publishAt)}`
+											? `Published ${formatDateStringForPostDefault(post.publishAt.toDateString())}`
 											: 'Draft'}
 									</span>
 									<span>•</span>
@@ -106,6 +115,9 @@ export default function AdminPosts() {
 			<div>
 				<h2>Manage post images</h2>
 				<PostImageManager images={images} />
+
+				<h2>Manage post videos</h2>
+				<PostVideoManager videos={videos} />
 			</div>
 		</div>
 	)

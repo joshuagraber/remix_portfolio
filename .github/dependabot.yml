@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    target-branch: 'dev'
+    schedule:
+      interval: 'daily'
+    ignore:
+      # Ignore remix and react packages, we'll bump those manually
+      - dependency-name: '*remix*'
+      - dependency-name: '*react*'
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    target-branch: 'dev'
+    schedule:
+      interval: 'weekly'

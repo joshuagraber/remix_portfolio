@@ -1,4 +1,4 @@
-import { json, type LoaderFunctionArgs } from '@remix-run/node'
+import { type LoaderFunctionArgs, data } from 'react-router'
 import { getOpenGraphData } from '#app/utils/link-preview.server'
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -9,10 +9,17 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 	try {
 		const ogData = await getOpenGraphData(url)
-		return json({
-			...ogData,
-			domain: new URL(url).hostname,
-		})
+		return data(
+			{
+				...ogData,
+				domain: new URL(url).hostname,
+			},
+			{
+				headers: {
+					'Cache-Control': 'public, max-age=600', // Cache for 10 minutes
+				},
+			},
+		)
 	} catch (error) {
 		console.error('Failed to fetch metadata:', error)
 		throw new Response('Failed to fetch metadata', { status: 500 })

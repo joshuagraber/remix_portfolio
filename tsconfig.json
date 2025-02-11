@@ -12,13 +12,22 @@
 		"config/**/*.tsx",
 		"types/**/*.tsx",
 		"server/**/*.tsx",
-		"./*.ts"
+		"./*.ts",
+		".react-router/types/**/*"
 	],
-	"extends": "@epic-web/config/typescript",
 	"compilerOptions": {
-		"jsx": "react-jsx",
-		"esModuleInterop": true,
+		"types": ["@react-router/node", "vite/client"],
+		"rootDirs": [".", "./.react-router/types"],
 		"skipLibCheck": true,
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"isolatedModules": true,
+		"jsx": "react-jsx",
+		"target": "ES2022",
+		"strict": true,
+		"allowImportingTsExtensions": true,
+		"noUncheckedIndexedAccess": true,
+		"noEmit": true,
 		"paths": {
 			"@prisma/client": ["./node_modules/@prisma/client"],
 			"#app/*": ["./app/*"],

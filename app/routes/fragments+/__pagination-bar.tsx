@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from '@remix-run/react'
+import { Link, useSearchParams } from 'react-router';
 import { Icon } from '#app/components/ui/icon.tsx'
 import { cn } from '#app/utils/misc.tsx'
 import { setSearchParamsString } from './__util'

@@ -2,7 +2,7 @@ import { type MdxJsxFlowElement } from 'mdast-util-mdx'
 import { bundleMDX } from 'mdx-bundler'
 import remarkDirective from 'remark-directive'
 import remarkGfm from 'remark-gfm'
-import { type Plugin } from 'unified'
+import { type Plugin, type Data } from 'unified'
 import { type Node } from 'unist'
 import { visit } from 'unist-util-visit'
 
@@ -35,9 +35,8 @@ export async function compileMDX(source: string) {
 
 const remarkYoutube: Plugin = () => {
 	return (tree) => {
-		visit(tree, (node: Node) => {
+		visit(tree, (node: Node<Data>) => {
 			if (isDirectiveNode(node) && node.name === 'youtube') {
-				// Extract the ID from either the # syntax or id= syntax
 				const id =
 					node.attributes?.id ||
 					(node.attributes?.['#'] ? node.attributes['#'] : null)
@@ -61,7 +60,7 @@ const remarkYoutube: Plugin = () => {
 
 const remarkPreview: Plugin = () => {
 	return (tree) => {
-		visit(tree, (node: Node) => {
+		visit(tree, (node: Node<Data>) => {
 			if (isDirectiveNode(node) && node.name === 'preview') {
 				const url = node.attributes?.url || node.attributes?.['#']
 
@@ -82,7 +81,7 @@ const remarkPreview: Plugin = () => {
 	}
 }
 
-function isDirectiveNode(node: Node): node is DirectiveNode {
+function isDirectiveNode(node: Node<Data>): node is DirectiveNode {
 	return (
 		node.type === 'leafDirective' &&
 		'name' in node &&

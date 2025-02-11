@@ -124,7 +124,7 @@
 @layer components {
 	/* Body font defaults */
 	body {
-		@apply font-serif text-body-sm tracking-wider md:text-body-md xl:text-body-lg;
+		@apply font-serif text-body-sm tracking-wider md:text-body-md;
 	}
 	/* Font defaults */
 	h1,
@@ -228,6 +228,10 @@
 
 .jdg_typography hr {
 	@apply my-8 border-0 border-t;
+}
+
+.jdg_typography .jdg-link-preview {
+	@apply my-2;
 }
 
 /* MDX Editor — TODO: update other vars as need be */

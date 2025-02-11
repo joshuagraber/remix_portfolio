@@ -1,6 +1,6 @@
-import { useFormAction, useNavigation } from '@remix-run/react'
 import { clsx, type ClassValue } from 'clsx'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useFormAction, useNavigation } from 'react-router'
 import { useSpinDelay } from 'spin-delay'
 import { extendTailwindMerge } from 'tailwind-merge'
 import { extendedTheme } from './extended-theme.ts'
@@ -11,6 +11,10 @@ export function getUserImgSrc(imageId?: string | null) {
 
 export function getPostImageSource(imageId: string) {
 	return `/resources/post-images/${imageId}`
+}
+
+export function getPostVideoSource(videoId: string) {
+	return `/resources/post-videos/${videoId}`
 }
 
 export function getErrorMessage(error: unknown) {

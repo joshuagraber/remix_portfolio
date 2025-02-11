@@ -6,13 +6,15 @@ import {
 } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
+import React from 'react'
 import {
-	json,
+	data,
 	type ActionFunctionArgs,
 	type MetaFunction,
-} from '@remix-run/node'
-import { Form, Link, useActionData, useSearchParams } from '@remix-run/react'
-import React from 'react'
+	Form,
+	Link,
+	useActionData,
+} from 'react-router'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import { toast as showToast } from 'sonner'
 import { z } from 'zod'
@@ -53,14 +55,14 @@ export async function action({ request }: ActionFunctionArgs) {
 	try {
 		console.log('form action', { submission })
 		if (submission.status !== 'success') {
-			return json(
+			return data(
 				{ result: submission.reply() },
 				{ status: submission.status === 'error' ? 400 : 200 },
 			)
 		}
-		return json({ result: submission.reply() })
+		return { result: submission.reply() }
 	} catch (response: any) {
-		return json(
+		return data(
 			{
 				result: submission.reply({ formErrors: [response.error.message] }),
 			},

@@ -7,14 +7,15 @@ import {
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { invariantResponse } from '@epic-web/invariant'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
-import { json, type ActionFunctionArgs } from '@remix-run/node'
+import { type FormEvent, useEffect, useRef, useState } from 'react'
 import {
+	data,
+	type ActionFunctionArgs,
 	Form,
 	useActionData,
 	useLoaderData,
 	useNavigation,
-} from '@remix-run/react'
-import { type FormEvent, useEffect, useRef, useState } from 'react'
+} from 'react-router'
 import { type z } from 'zod'
 import { Field, ErrorList } from '#app/components/forms'
 import { MDXEditorComponent } from '#app/components/mdx/editor.tsx'
@@ -26,25 +27,37 @@ import { getPostImageSource } from '#app/utils/misc.tsx'
 import { redirectWithToast } from '#app/utils/toast.server.ts'
 import { PostImageManager } from './__image-manager'
 import { PostSchemaCreate as PostSchema } from './__types'
-import { useImageUploader } from './__useImageUploader'
+import { useFileUploader } from './__useFileUploader'
+import { PostVideoManager } from './__video-manager'
 
 export const handle: SEOHandle = {
 	getSitemapEntries: () => null,
 }
 
 export async function loader() {
-	const images = await prisma.postImage.findMany({
-		select: {
-			id: true,
-			altText: true,
-			title: true,
-		},
-		orderBy: { createdAt: 'desc' },
-	})
+	const [images, videos] = await Promise.all([
+		await prisma.postImage.findMany({
+			select: {
+				id: true,
+				altText: true,
+				title: true,
+			},
+			orderBy: { createdAt: 'desc' },
+		}),
+		await prisma.postVideo.findMany({
+			select: {
+				id: true,
+				altText: true,
+				title: true,
+			},
+			orderBy: { createdAt: 'desc' },
+		}),
+	])
 
 	invariantResponse(images, 'Error fetching images', { status: 404 })
+	invariantResponse(videos, 'Error fetching videos', { status: 404 })
 
-	return json({ images })
+	return { images, videos }
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -57,7 +70,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	})
 
 	if (submission.status !== 'success') {
-		return json(
+		return data(
 			{ result: submission.reply() },
 			{ status: submission.status === 'error' ? 400 : 200 },
 		)
@@ -82,7 +95,7 @@ export async function action({ request }: ActionFunctionArgs) {
 			description: `Post "${title}" created successfully.`,
 		})
 	} catch {
-		return json(
+		return data(
 			{ result: submission.reply({ formErrors: ['Failed to create post'] }) },
 			{ status: 500 },
 		)
@@ -93,9 +106,11 @@ export default function NewPost() {
 	const actionData = useActionData<typeof action>()
 	const navigation = useNavigation()
 	const isPending = navigation.state === 'submitting'
-	const { images } = useLoaderData<typeof loader>()
+	const { images, videos } = useLoaderData<typeof loader>()
 
-	const handleImageUpload = useImageUploader()
+	const handleImageUpload = useFileUploader({
+		path: '/admin/fragments/images/create',
+	})
 
 	const [form, fields] = useForm({
 		id: 'new-post-form',
@@ -225,6 +240,9 @@ export default function NewPost() {
 
 			<h2>Manage post images</h2>
 			<PostImageManager images={images} />
+
+			<h2>Manage post videos</h2>
+			<PostVideoManager videos={videos} />
 		</div>
 	)
 }

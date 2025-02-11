@@ -1,5 +1,5 @@
-import { useFetcher } from '@remix-run/react'
 import React, { useState } from 'react'
+import { useFetcher } from 'react-router'
 import { toast } from 'sonner'
 import { Button } from '#app/components/ui/button.tsx'
 import { Icon } from '#app/components/ui/icon.tsx'
@@ -102,5 +102,46 @@ export function DeleteImage({ imageId }: { imageId: string }) {
 				</div>
 			)}
 		</deleteFetcher.Form>
+	)
+}
+
+export function DeleteVideo({ id }: { id: string }) {
+	const fetcher = useFetcher()
+	const [showConfirmation, setShowConfirmation] = useState(false)
+
+	return (
+		<fetcher.Form action="/admin/fragments/videos/delete" method="POST">
+			{!showConfirmation && (
+				<Button
+					onClick={() => setShowConfirmation(true)}
+					variant="destructive"
+					type="button"
+					className="w-full"
+				>
+					<Icon name="trash" /> Delete
+				</Button>
+			)}
+			{showConfirmation && (
+				<div className="flex items-center gap-4 [&>*]:flex-1">
+					<StatusButton
+						variant="destructive"
+						type="submit"
+						name="postId"
+						value={id}
+						status={fetcher.state === 'submitting' ? 'pending' : 'idle'}
+					>
+						<Icon name="trash" />
+						Confirm
+					</StatusButton>
+					<Button
+						variant="default"
+						type="button"
+						onClick={() => setShowConfirmation(false)}
+					>
+						No, cancel
+					</Button>
+				</div>
+			)}
+		</fetcher.Form>
 	)
 }

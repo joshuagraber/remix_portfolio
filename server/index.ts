@@ -1,6 +1,5 @@
 import crypto from 'node:crypto'
-import { createRequestHandler } from '@remix-run/express'
-import { type ServerBuild } from '@remix-run/node'
+import { createRequestHandler } from '@react-router/express'
 import Sentry from '@sentry/remix'
 import { ip as ipAddress } from 'address'
 import chalk from 'chalk'
@@ -11,6 +10,7 @@ import rateLimit from 'express-rate-limit'
 import getPort, { portNumbers } from 'get-port'
 import helmet from 'helmet'
 import morgan from 'morgan'
+import { type ServerBuild } from 'react-router'
 
 const MODE = process.env.NODE_ENV ?? 'development'
 const IS_PROD = MODE === 'production'
@@ -201,7 +201,7 @@ app.use((req, res, next) => {
 async function getBuild() {
 	try {
 		const build = viteDevServer
-			? await viteDevServer.ssrLoadModule('virtual:remix/server-build')
+			? await viteDevServer.ssrLoadModule('virtual:react-router/server-build')
 			: // @ts-expect-error - the file might not exist yet but it will
 				await import('../build/server/index.js')
 

@@ -22,13 +22,10 @@ model User {
   image    UserImage?
   password Password?
 
-  // TODO: remove
-  // notes       Note[]
   roles       Role[]
   sessions    Session[]
   connections Connection[]
   posts       Post[]
-  // Note        Note[]
 }
 
 model Post {
@@ -60,42 +57,16 @@ model PostImage {
   updatedAt DateTime @updatedAt
 }
 
-// TODO: remove
-// model Note {
-//   id      String @id @default(cuid())
-//   title   String
-//   content String
+model PostVideo {
+  id          String  @id @default(cuid())
+  altText     String?
+  title       String?
+  contentType String
+  blob        Bytes
 
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-
-//   owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-//   ownerId String
-
-//   images NoteImage[]
-
-//   // non-unique foreign key
-//   @@index([ownerId])
-//   // This helps our order by in the user search a LOT
-//   @@index([ownerId, updatedAt])
-// }
-
-// TODO: remove
-// model NoteImage {
-//   id          String  @id @default(cuid())
-//   altText     String?
-//   contentType String
-//   blob        Bytes
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-
-//   note   Note   @relation(fields: [noteId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-//   noteId String
-
-//   // non-unique foreign key
-//   @@index([noteId])
-// }
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
 model UserImage {
   id          String  @id @default(cuid())

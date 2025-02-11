@@ -1,22 +1,20 @@
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { invariantResponse } from '@epic-web/invariant'
+import { LocalFileStorage } from '@mjackson/file-storage/local'
+import { type FileUpload, parseFormData } from '@mjackson/form-data-parser'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
+import { useState } from 'react'
 import {
-	json,
+	data,
 	redirect,
-	unstable_createMemoryUploadHandler,
-	unstable_parseMultipartFormData,
 	type LoaderFunctionArgs,
 	type ActionFunctionArgs,
-} from '@remix-run/node'
-import {
 	Form,
 	useActionData,
 	useLoaderData,
 	useNavigation,
-} from '@remix-run/react'
-import { useState } from 'react'
+} from 'react-router'
 import { z } from 'zod'
 import { ErrorList } from '#app/components/forms.tsx'
 import { Button } from '#app/components/ui/button.tsx'
@@ -30,6 +28,8 @@ import {
 	useIsPending,
 } from '#app/utils/misc.tsx'
 import { type BreadcrumbHandle } from './profile.tsx'
+
+const fileStorage = new LocalFileStorage('.uploads/user-images')
 
 export const handle: BreadcrumbHandle & SEOHandle = {
 	breadcrumb: <Icon name="avatar">Photo</Icon>,
@@ -70,14 +70,25 @@ export async function loader({ request }: LoaderFunctionArgs) {
 		},
 	})
 	invariantResponse(user, 'User not found', { status: 404 })
-	return json({ user })
+	return { user }
 }
 
 export async function action({ request }: ActionFunctionArgs) {
 	const userId = await requireUserId(request)
-	const formData = await unstable_parseMultipartFormData(
+	const uploadHandler = async (fileUpload: FileUpload) => {
+		if (fileUpload.fieldName === 'file') {
+			const storageKey = `post-image-${Date.now()}-${fileUpload.name}`
+			await fileStorage.set(storageKey, fileUpload)
+			return fileStorage.get(storageKey)
+		}
+	}
+
+	const formData = await parseFormData(
 		request,
-		unstable_createMemoryUploadHandler({ maxPartSize: MAX_SIZE }),
+		{
+			maxFileSize: MAX_SIZE,
+		},
+		uploadHandler,
 	)
 
 	const submission = await parseWithZod(formData, {
@@ -96,7 +107,7 @@ export async function action({ request }: ActionFunctionArgs) {
 	})
 
 	if (submission.status !== 'success') {
-		return json(
+		return data(
 			{ result: submission.reply() },
 			{ status: submission.status === 'error' ? 400 : 200 },
 		)
