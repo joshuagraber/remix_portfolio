@@ -1,4 +1,5 @@
 // import { faker } from '@faker-js/faker'
+import { addDays, format } from 'date-fns'
 import { promiseHash } from 'remix-utils/promise'
 import { prisma } from '#app/utils/db.server.ts'
 import { MOCK_CODE_GITHUB } from '#app/utils/providers/constants'
@@ -21,90 +22,48 @@ async function seed() {
 	})
 	console.timeEnd('👑 Creating roles...')
 
-	// No need to seed users at the moment, but if it becomes necessary later on, leaving commented out in case.
+	// Create post images
+	console.time('🖼️ Creating post images...')
+	const postImagesHash = await promiseHash({
+		birthdayCat: img({
+			filepath: './tests/fixtures/images/post/cat_birthday.png',
+			altText: 'Grey cat with birthday hat licking its lips',
+			title: 'Birthday cat',
+		}),
+		hammockCat: img({
+			filepath: './tests/fixtures/images/post/cat_hammock.png',
+			altText: 'A cat in a hammock',
+			title: 'Hammock cat',
+		}),
+		hipsterCat: img({
+			filepath: './tests/fixtures/images/post/cat_hipster.png',
+			altText: 'Hipster cat looking pensively into the distance',
+			title: 'Hipster cat',
+		}),
+	})
 
-	// const totalUsers = 5
-	// console.time(`👤 Created ${totalUsers} users...`)
-	// const noteImages = await getNoteImages()
-	// const userImages = await getUserImages()
-
-	// for (let index = 0; index < totalUsers; index++) {
-	// 	const userData = createUser()
-	// 	await prisma.user
-	// 		.create({
-	// 			select: { id: true },
-	// 			data: {
-	// 				...userData,
-	// 				password: { create: createPassword(userData.username) },
-	// 				image: { create: userImages[index % userImages.length] },
-	// 				roles: { connect: { name: 'user' } },
-	// 				notes: {
-	// 					create: Array.from({
-	// 						length: faker.number.int({ min: 1, max: 3 }),
-	// 					}).map(() => ({
-	// 						title: faker.lorem.sentence(),
-	// 						content: faker.lorem.paragraphs(),
-	// 						images: {
-	// 							create: Array.from({
-	// 								length: faker.number.int({ min: 1, max: 3 }),
-	// 							}).map(() => {
-	// 								const imgNumber = faker.number.int({ min: 0, max: 9 })
-	// 								const img = noteImages[imgNumber]
-	// 								if (!img) {
-	// 									throw new Error(`Could not find image #${imgNumber}`)
-	// 								}
-	// 								return img
-	// 							}),
-	// 						},
-	// 					})),
-	// 				},
-	// 			},
-	// 		})
-	// 		.catch((e) => {
-	// 			console.error('Error creating a user:', e)
-	// 			return null
-	// 		})
-	// }
-	// console.timeEnd(`👤 Created ${totalUsers} users...`)
+	const [birthdayCatImage, hammockCatImage, hipsterCatImage] =
+		await Promise.all([
+			prisma.postImage.create({
+				data: postImagesHash.birthdayCat,
+			}),
+			prisma.postImage.create({
+				data: postImagesHash.hammockCat,
+			}),
+			prisma.postImage.create({
+				data: postImagesHash.hipsterCat,
+			}),
+		])
+	console.timeEnd('🖼️ Creating post images...')
 
 	console.time(`🐨 Created admin user "kody"`)
-
 	const kodyImages = await promiseHash({
 		kodyUser: img({ filepath: './tests/fixtures/images/user/kody.png' }),
-		// cuteKoala: img({
-		// 	altText: 'an adorable koala cartoon illustration',
-		// 	filepath: './tests/fixtures/images/kody-notes/cute-koala.png',
-		// }),
-		// koalaEating: img({
-		// 	altText: 'a cartoon illustration of a koala in a tree eating',
-		// 	filepath: './tests/fixtures/images/kody-notes/koala-eating.png',
-		// }),
-		// koalaCuddle: img({
-		// 	altText: 'a cartoon illustration of koalas cuddling',
-		// 	filepath: './tests/fixtures/images/kody-notes/koala-cuddle.png',
-		// }),
-		// mountain: img({
-		// 	altText: 'a beautiful mountain covered in snow',
-		// 	filepath: './tests/fixtures/images/kody-notes/mountain.png',
-		// }),
-		// koalaCoder: img({
-		// 	altText: 'a koala coding at the computer',
-		// 	filepath: './tests/fixtures/images/kody-notes/koala-coder.png',
-		// }),
-		// koalaMentor: img({
-		// 	altText:
-		// 		'a koala in a friendly and helpful posture. The Koala is standing next to and teaching a woman who is coding on a computer and shows positive signs of learning and understanding what is being explained.',
-		// 	filepath: './tests/fixtures/images/kody-notes/koala-mentor.png',
-		// }),
-		// koalaSoccer: img({
-		// 	altText: 'a cute cartoon koala kicking a soccer ball on a soccer field ',
-		// 	filepath: './tests/fixtures/images/kody-notes/koala-soccer.png',
-		// }),
 	})
 
 	const githubUser = await insertGitHubUser(MOCK_CODE_GITHUB)
 
-	await prisma.user.create({
+	const kody = await prisma.user.create({
 		select: { id: true },
 		data: {
 			email: 'kody@example.com',
@@ -119,6 +78,84 @@ async function seed() {
 		},
 	})
 	console.timeEnd(`🐨 Created admin user "kody"`)
+
+	console.time('📝 Creating posts...')
+	await prisma.post.createMany({
+		data: [
+			{
+				authorId: kody.id,
+				publishAt: new Date().toISOString(),
+				slug: 'birthday-cat',
+				title: 'Birthday cat',
+				description: 'About to eat some cake',
+				content: `---
+title: Birthday cat
+slug: birthday-cat
+description: About to eat some cake
+published: ${format(new Date().toISOString(), 'yyyy-MM-dd')}
+---
+
+***
+
+## It's this cat's birthday today
+
+![${birthdayCatImage.altText}](/resources/post-images/${birthdayCatImage.id} "${birthdayCatImage.title}")
+
+Everybody raise your glass to the kitty of the hour.`,
+			},
+			{
+				authorId: kody.id,
+				publishAt: addDays(new Date(), -1).toISOString(),
+				slug: 'hammock-cat',
+				title: 'Hammock Cat',
+				description: 'Have you ever seen a cat in a hammock?',
+				content: `---
+title: Hammock Cat
+slug: hammock-cat
+description: Have you ever seen a cat in a hammock?
+published: ${format(addDays(new Date(), -1).toISOString(), 'yyyy-MM-dd')}
+---
+
+***
+
+## Lounging
+
+![${hammockCatImage.altText}](/resources/post-images/${hammockCatImage.id} "${hammockCatImage.title}")
+
+Ever had a lounge in a hammock? Above the dogs. Below the birds. Heaven
+#### You can check out a few more crazy cats here
+
+::preview{url=https://www.nyrb.com/products/on-cats}`,
+			},
+			{
+				authorId: kody.id,
+				publishAt: addDays(new Date(), -2).toISOString(),
+				slug: 'hipster-cat',
+				title: 'Hipster cat is pensive',
+				description: 'What even is life, man?',
+				content: `---
+title: Hipster cat is pensive
+slug: hipster-cat
+description: What even is life, man?
+published: ${format(addDays(new Date(), -2).toISOString(), 'yyyy-MM-dd')}
+---
+
+***
+
+
+## Here's the hippest cat in the world 
+![${hipsterCatImage.altText}](/resources/post-images/${hipsterCatImage.id} "${hipsterCatImage.title}")
+
+Hipster cat has a cool exterior, but he just wants to be loved. 
+
+### Here's another hipster cat who's grouchy:
+
+::youtube{#M_35puAKcKc}`,
+			},
+		],
+	})
+
+	console.timeEnd('📝 Creating posts...')
 
 	console.timeEnd(`🌱 Database has been seeded`)
 }

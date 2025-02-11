@@ -1,5 +1,10 @@
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
-import { Link } from 'react-router';
+import { Link } from 'react-router'
+import { requireUserId } from '#app/utils/auth.server.ts'
+
+export async function loader({ request }: LoaderFunctionArgs) {
+	await requireUserId(request)
+}
 
 export const handle: SEOHandle = {
 	getSitemapEntries: () => null,
