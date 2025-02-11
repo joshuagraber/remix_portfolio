@@ -16,7 +16,7 @@ permissions:
 jobs:
   validate:
     name: Validate
-    uses: joshuagraber/jdg/.github/workflows/validate.yml
+    uses: joshuagraber/jdg/.github/workflows/validate.yml@dev # TODO: switch to `main`
 
   deploy:
     name: 🚀 Deploy

@@ -89,7 +89,7 @@ jobs:
 
   build:
     needs: setup
-    name: ⬣ ESLint
+    name: 🔨 Build
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
@@ -110,7 +110,7 @@ jobs:
             node-modules-${{ hashFiles('package-lock.json',
             'prisma/schema.prisma') }}
 
-      - name: 🔨 Build
+      - name: Build
         run: npm run build
 
   typecheck:
