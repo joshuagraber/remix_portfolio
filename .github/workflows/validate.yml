@@ -28,35 +28,23 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'package-lock.json'
 
+      - name: Cache dependencies
+        id: deps-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            node_modules/.prisma
+          key: node-deps-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            node-deps-
+
+      - name: Install dependencies
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: npm ci
+
       - name: Generate prisma client
         run: npx prisma generate
-
-      - name: Restore node_modules
-        id: cache-modules
-        uses: actions/cache/restore@v3
-        with:
-          path: |
-            node_modules
-            node_modules/.prisma
-          # Include prisma schema in hash to invalidate cache when schema changes
-          key:
-            node-modules-${{ hashFiles('package-lock.json',
-            'prisma/schema.prisma') }}
-
-      - name: Install deps
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        run: npm ci && npx prisma generate
-
-      - name: Cache node_modules
-        if: steps.cache-modules.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v3
-        with:
-          path: |
-            node_modules
-            node_modules/.prisma
-          key:
-            node-modules-${{ hashFiles('package-lock.json',
-            'prisma/schema.prisma') }}
 
   lint:
     needs: setup
@@ -77,9 +65,7 @@ jobs:
           path: |
             node_modules
             node_modules/.prisma
-          key:
-            node-modules-${{ hashFiles('package-lock.json',
-            'prisma/schema.prisma') }}
+          key: node-deps-${{ hashFiles('package-lock.json') }}
 
       - name: 🖼 Build icons
         run: npm run build:icons
@@ -106,9 +92,7 @@ jobs:
           path: |
             node_modules
             node_modules/.prisma
-          key:
-            node-modules-${{ hashFiles('package-lock.json',
-            'prisma/schema.prisma') }}
+          key: node-deps-${{ hashFiles('package-lock.json') }}
 
       - name: Build
         run: npm run build
@@ -132,9 +116,7 @@ jobs:
           path: |
             node_modules
             node_modules/.prisma
-          key:
-            node-modules-${{ hashFiles('package-lock.json',
-            'prisma/schema.prisma') }}
+          key: node-deps-${{ hashFiles('package-lock.json') }}
 
       - name: 🖼 Build icons
         run: npm run build:icons
@@ -164,9 +146,7 @@ jobs:
           path: |
             node_modules
             node_modules/.prisma
-          key:
-            node-modules-${{ hashFiles('package-lock.json',
-            'prisma/schema.prisma') }}
+          key: node-deps-${{ hashFiles('package-lock.json') }}
 
       - name: 🏄 Copy test env vars
         run: cp .env.example .env
@@ -201,9 +181,7 @@ jobs:
   #         path: |
   #           node_modules
   #           node_modules/.prisma
-  #         key:
-  #           node-modules-${{ hashFiles('package-lock.json',
-  #           'prisma/schema.prisma') }}
+  #         key: node-deps-${{ hashFiles('package-lock.json') }}
 
   #     - name: 📥 Install Playwright Browsers
   #       run: npm run test:e2e:install
