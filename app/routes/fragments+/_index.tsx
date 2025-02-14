@@ -1,3 +1,4 @@
+import { addHours } from 'date-fns'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
 import { Link, useLoaderData } from 'react-router'
@@ -100,7 +101,9 @@ export default function Fragments() {
 							<p className="mb-2 text-muted-foreground">{post.description}</p>
 						</Link>
 						<p className="text-sm text-neutral-500">
-							<Time time={post.publishAt!.toDateString()} />
+							{/* Non-null assertion okay here. If the post is returned here, that means it's published */}
+							{/* Adding seven hours to ensure that posts are reflected by the day in EST. This wouldn't work with greater than 1 user, but it's just me so who cares for now?*/}
+							<Time time={addHours(post.publishAt!, 8).toDateString()} />
 						</p>
 						<div className="mb-4">
 							<PostContent code={post.code} />

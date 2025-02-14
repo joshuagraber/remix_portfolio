@@ -1,33 +1,26 @@
-'use client'
-
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { ClientOnly } from 'remix-utils/client-only'
 import { Icon } from '../ui/icon'
 
 export const YouTubeEmbed = ({ id }: { id: string }) => {
 	const [isLoading, setIsLoading] = React.useState(true)
-	const [hasMounted, setHasMounted] = useState(false)
-
-	useEffect(() => {
-		setHasMounted(true)
-	}, [])
-
-	// Separate return for pre-hydration
-	if (!hasMounted) {
-		return <YouTubeLoading />
-	}
 
 	return (
 		<div className="relative my-2 aspect-video md:my-4">
 			{isLoading && <YouTubeLoading />}
-			<iframe
-				rel="preload"
-				className="aspect-video w-full"
-				src={`https://www.youtube.com/embed/${id}?origin=${window.location.origin}`}
-				title="YouTube video player"
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-				allowFullScreen
-				onLoad={() => setIsLoading(false)}
-			/>
+			<ClientOnly fallback={<YouTubeLoading />}>
+				{() => (
+					<iframe
+						rel="preload"
+						className="aspect-video w-full"
+						src={`https://www.youtube.com/embed/${id}?origin=${window.location.origin}`}
+						title="YouTube video player"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowFullScreen
+						onLoad={() => setIsLoading(false)}
+					/>
+				)}
+			</ClientOnly>
 		</div>
 	)
 }
