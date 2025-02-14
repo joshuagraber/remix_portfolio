@@ -1,8 +1,10 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
+import { addHours } from 'date-fns'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
 import { useLoaderData } from 'react-router'
+import { ClientOnly } from 'remix-utils/client-only'
 import { serverOnly$ } from 'vite-env-only/macros'
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
@@ -87,7 +89,8 @@ export default function Fragment() {
 			<p>{frontmatter.description}</p>
 			<p className="text-sm text-neutral-500">
 				{/* Non-null assertion okay here. If the post is returned here, that means it's published */}
-				<Time time={post.publishAt!.toDateString()} />
+				{/* Adding 8 hours to ensure that posts are reflected by the day in the US. This wouldn't work with greater than 1 user, but it's just me so who cares for now? */}
+				<Time time={addHours(post.publishAt!, 8).toDateString()} />
 			</p>
 			<div>
 				<Component components={mdxComponents} />
