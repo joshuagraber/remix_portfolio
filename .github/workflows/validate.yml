@@ -30,7 +30,7 @@ jobs:
 
       - name: Restore dependencies from cache
         id: deps-cache
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           path: |
             node_modules
@@ -45,7 +45,7 @@ jobs:
 
       - name: Save dependencies to cache
         if: steps.deps-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: |
             node_modules
