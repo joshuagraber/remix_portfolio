@@ -57,4 +57,5 @@ jobs:
 
   release:
     name: Release
+    needs: [validate, deploy]
     uses: ./.github/workflows/release.yml
