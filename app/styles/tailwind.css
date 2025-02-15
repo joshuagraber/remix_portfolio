@@ -174,12 +174,21 @@
 	}
 }
 
+/* TODO: find a more "tailwindy" way of doing this */
 .jdg_typography p:not(:first-of-type) {
 	@apply mt-3;
 }
 
+/* .jdg_typography h1, */
+.jdg_typography h2,
+.jdg_typography h3,
+.jdg_typography h4,
+.jdg_typography h5,
+.jdg_typography h6 {
+  @apply mb-3;
+}
 .jdg_typography blockquote {
-	@apply my-6 border-l-4 py-1 pl-4 italic;
+	@apply my-6 border-l-4 py-1 pl-4;
 }
 
 .jdg_typography pre {
@@ -231,11 +240,17 @@
 }
 
 .jdg_typography .jdg-link-preview {
-	@apply my-2;
+  @apply my-2 md:my-4 lg:my-6;
+}
+
+
+.jdg_typography p:has(video),
+.jdg_typography p:has(img) {
+	@apply mb-4 md:mb-6 lg:mb-8;
 }
 
 /* MDX Editor — TODO: update other vars as need be */
-.dark-editor {
+.dark-editor { 
 	color: var(--neutral-4);
 	--basePageBg: var(--neutral-0);
 	background: var(--neutral-0);
