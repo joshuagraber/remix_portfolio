@@ -9,6 +9,7 @@ import { mergeMeta } from '#app/utils/merge-meta.ts'
 import { type Route } from './+types/_index'
 import { PaginationBar } from './__pagination-bar'
 import { Time } from './__time'
+import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 
 export const POSTS_PER_PAGE = 5
 
@@ -116,3 +117,5 @@ export default function Fragments() {
 		</div>
 	)
 }
+
+export const ErrorBoundary = GeneralErrorBoundary
