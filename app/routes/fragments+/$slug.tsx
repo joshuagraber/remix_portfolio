@@ -11,6 +11,7 @@ import { compileMDX } from '#app/utils/mdx.server'
 import { mergeMeta } from '#app/utils/merge-meta.ts'
 import { type Route } from './+types/$slug'
 import { Time } from './__time'
+import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 
 export const handle: SEOHandle = {
 	getSitemapEntries: serverOnly$(async (_request) => {
@@ -97,3 +98,5 @@ export default function Fragment() {
 		</div>
 	)
 }
+
+export const ErrorBoundary = GeneralErrorBoundary
