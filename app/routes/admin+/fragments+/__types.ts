@@ -6,6 +6,7 @@ export const PostSchemaCreate = z.object({
 	content: z.string().min(1),
 	slug: z.string().min(1).optional(),
 	publishAt: z.date().optional().optional(),
+	timezone: z.string().min(1, 'Timezone is required'),
 })
 
 export const PostSchemaUpdate = z.object({
@@ -14,4 +15,5 @@ export const PostSchemaUpdate = z.object({
 	content: z.string().min(1),
 	slug: z.string().min(1),
 	publishAt: z.date().optional(),
+	timezone: z.string().optional(),
 })

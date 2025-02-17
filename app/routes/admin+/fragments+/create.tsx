@@ -7,6 +7,7 @@ import {
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { invariantResponse } from '@epic-web/invariant'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
+import { DateTime } from 'luxon'
 import { type FormEvent, useEffect, useRef, useState } from 'react'
 import {
 	data,
@@ -76,7 +77,12 @@ export async function action({ request }: ActionFunctionArgs) {
 		)
 	}
 
-	const { title, content, description, publishAt, slug } = submission.value
+	const { title, content, description, publishAt, slug, timezone } =
+		submission.value
+
+	const publishAtWithTimezone = publishAt
+		? DateTime.fromISO(publishAt.toISOString(), { zone: timezone }).toISO()
+		: null
 
 	try {
 		await prisma.post.create({
@@ -85,7 +91,7 @@ export async function action({ request }: ActionFunctionArgs) {
 				content,
 				description,
 				slug: makePostSlug(title, slug),
-				publishAt,
+				publishAt: publishAtWithTimezone,
 				authorId,
 			},
 		})
@@ -101,7 +107,6 @@ export async function action({ request }: ActionFunctionArgs) {
 		)
 	}
 }
-
 export default function NewPost() {
 	const actionData = useActionData<typeof action>()
 	const navigation = useNavigation()
@@ -133,6 +138,19 @@ export default function NewPost() {
 			contentRef.current.dispatchEvent(new Event('change'))
 		}
 	}, [content])
+
+	useEffect(() => {
+		const timezoneField = document.getElementById(
+			'timezone',
+		) as HTMLInputElement
+		if (timezoneField) {
+			console.log('timezone field being set', {
+				intl: Intl.DateTimeFormat().resolvedOptions().timeZone,
+			})
+			timezoneField.value =
+				Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York'
+		}
+	}, [])
 
 	return (
 		<div className="p-8">
@@ -198,10 +216,24 @@ export default function NewPost() {
 							'When should this post be published? (optional - defaults to now)',
 					}}
 					inputProps={{
-						...getInputProps(fields.publishAt, { type: 'date' }),
+						...getInputProps(fields.publishAt, { type: 'datetime-local' }),
 					}}
 					errors={fields.publishAt.errors}
 				/>
+				<Field
+					labelProps={{
+						htmlFor: 'timezone',
+						children: 'Timezone',
+					}}
+					inputProps={{
+						id: 'timezone',
+						name: 'timezone',
+						type: 'text',
+						defaultValue: 'America/New_York',
+					}}
+					errors={fields.timezone.errors}
+				/>
+
 				<div>
 					<label className="mb-1 block text-sm font-medium">Content</label>
 					<div className="rounded-md border">
