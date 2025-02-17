@@ -30,7 +30,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 				createdAt: true,
 				updatedAt: true,
 			},
-			orderBy: { createdAt: 'desc' },
+			orderBy: { publishAt: 'desc' },
 		}),
 		prisma.postImage.findMany({
 			select: {
