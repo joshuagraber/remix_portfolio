@@ -1,17 +1,16 @@
 import { invariantResponse } from '@epic-web/invariant'
 import { type SEOHandle } from '@nasa-gcn/remix-seo'
-import { addHours } from 'date-fns'
 import { getMDXComponent } from 'mdx-bundler/client'
 import { useMemo } from 'react'
 import { useLoaderData } from 'react-router'
 import { serverOnly$ } from 'vite-env-only/macros'
+import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 import { mdxComponents } from '#app/components/mdx/index.tsx'
 import { prisma } from '#app/utils/db.server'
 import { compileMDX } from '#app/utils/mdx.server'
 import { mergeMeta } from '#app/utils/merge-meta.ts'
 import { type Route } from './+types/$slug'
 import { Time } from './__time'
-import { GeneralErrorBoundary } from '#app/components/error-boundary.tsx'
 
 export const handle: SEOHandle = {
 	getSitemapEntries: serverOnly$(async (_request) => {
@@ -89,8 +88,7 @@ export default function Fragment() {
 			<p>{frontmatter.description}</p>
 			<p className="text-sm text-neutral-500">
 				{/* Non-null assertion okay here. If the post is returned here, that means it's published */}
-				{/* Adding 8 hours to ensure that posts are reflected by the day in the US. This wouldn't work with greater than 1 user, but it's just me so who cares for now? */}
-				<Time time={addHours(post.publishAt!, 8).toDateString()} />
+				<Time time={post.publishAt!.toDateString()} />
 			</p>
 			<div>
 				<Component components={mdxComponents} />

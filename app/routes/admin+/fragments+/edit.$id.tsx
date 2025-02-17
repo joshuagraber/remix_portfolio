@@ -6,6 +6,7 @@ import {
 } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { invariantResponse } from '@epic-web/invariant'
+import { DateTime } from 'luxon'
 import React, { type FormEvent, useEffect, useRef, useState } from 'react'
 import {
 	data,
@@ -89,20 +90,33 @@ export async function action({ request, params }: ActionFunctionArgs) {
 			{ status: submission.status === 'error' ? 400 : 200 },
 		)
 	}
+	const postId = request.url.split('edit/')[1]
+	const existingPost = postId
+		? await prisma.post.findFirst({
+				where: { id: postId },
+			})
+		: undefined
 
-	const { title, content, description, publishAt, slug } = submission.value
+	const { title, content, description, publishAt, slug, timezone } =
+		submission.value
+	const published = publishAt ?? existingPost?.publishAt ?? null
+	const publishAtWithTimezone = published
+		? DateTime.fromISO(published.toISOString(), { zone: timezone }).toISO()
+		: null
 
 	try {
-		await prisma.post.update({
+		const post = await prisma.post.update({
 			where: { id: params.id },
 			data: {
 				title,
 				content,
-				slug,
 				description,
-				publishAt,
+				slug,
+				publishAt: publishAtWithTimezone,
 			},
 		})
+
+		console.debug({ stored: post.publishAt })
 
 		return redirectWithToast('/admin/fragments', {
 			title: 'Post updated',
@@ -115,7 +129,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
 		)
 	}
 }
-
 export default function EditPost() {
 	const { post, images, videos } = useLoaderData<typeof loader>()
 	const actionData = useActionData<typeof action>()
@@ -222,9 +235,22 @@ export default function EditPost() {
 							: 'This post is not yet published. When would you like to publish it?',
 					}}
 					inputProps={{
-						...getInputProps(fields.publishAt, { type: 'date' }),
+						...getInputProps(fields.publishAt, { type: 'datetime-local' }),
 					}}
 					errors={fields.publishAt.errors}
+				/>
+				<Field
+					labelProps={{
+						htmlFor: 'timezone',
+						children: 'Timezone',
+					}}
+					inputProps={{
+						id: 'timezone',
+						name: 'timezone',
+						type: 'text',
+						defaultValue: 'America/New_York',
+					}}
+					errors={fields.timezone.errors}
 				/>
 
 				<div>
