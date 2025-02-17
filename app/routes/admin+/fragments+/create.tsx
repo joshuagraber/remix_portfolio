@@ -84,10 +84,8 @@ export async function action({ request }: ActionFunctionArgs) {
 		? DateTime.fromISO(publishAt.toISOString(), { zone: timezone }).toISO()
 		: null
 
-	console.debug({ publishAt, publishAtWithTimezone })
-
 	try {
-		const post = await prisma.post.create({
+		await prisma.post.create({
 			data: {
 				title,
 				content,
@@ -97,8 +95,6 @@ export async function action({ request }: ActionFunctionArgs) {
 				authorId,
 			},
 		})
-
-		console.debug({ stored: post.publishAt })
 
 		return redirectWithToast('/admin/fragments', {
 			title: 'Post created',

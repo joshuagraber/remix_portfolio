@@ -105,7 +105,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 		: null
 
 	try {
-		const post = await prisma.post.update({
+		await prisma.post.update({
 			where: { id: params.id },
 			data: {
 				title,
@@ -115,8 +115,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
 				publishAt: publishAtWithTimezone,
 			},
 		})
-
-		console.debug({ stored: post.publishAt })
 
 		return redirectWithToast('/admin/fragments', {
 			title: 'Post updated',
