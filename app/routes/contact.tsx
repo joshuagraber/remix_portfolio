@@ -42,7 +42,6 @@ export async function action({ request }: Route.ActionArgs) {
 
   await sendEmail({
     to,
-    replyTo: `${name} <${email}>`,
     subject: `New Contact Form Submission from ${name}`,
     react: <ContactEmail name={name} email={email} message={message}/>
   })
