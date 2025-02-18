@@ -30,7 +30,7 @@ export default function Index() {
       <h1>Joshua D. Graber</h1>
       <Spacer size="4xs" />
       <p>
-        👋 Hi I&apos;m Joshua. I currently work as a writer, editor, and
+        Hi I&apos;m Joshua. I currently work as a writer, editor, and
         software engineer, with a career that spans storytelling, tech, and education. Along the way, I&apos;ve also
         worked as a professor, activist, tutor, bartender, landscaper, farmhand,
         and dishwasher, amongst other things. I like to think all of this experience informs the work
@@ -39,7 +39,7 @@ export default function Index() {
       </p>
       <Spacer size="2xs" />
       {/* Writing */}
-      <h2 id="writing">✏️ Writing</h2>
+      <h2 id="writing">Writing</h2>
       <Spacer size="4xs" />
       <p>
         I&apos;m trained as a fiction writer (M.F.A.,{' '}
@@ -118,7 +118,7 @@ export default function Index() {
       </ul>
       <Spacer size="2xs" />
       {/* Software */}
-      <h2 id="software">💾 Software</h2>
+      <h2 id="software">Software</h2>
       <Spacer size="4xs" />
       <p>
         I currently work as a software engineer for{' '}
@@ -144,7 +144,7 @@ export default function Index() {
       </p>
       <Spacer size="2xs" />
       {/* Editing */}
-      <h2 id="editing">📝 Editing</h2>
+      <h2 id="editing">Editing</h2>
       <Spacer size="4xs" />
       <p>
         For nearly 15 years, I’ve worked as a literary editor of prose and
