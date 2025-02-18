@@ -14,7 +14,7 @@ export const handle: SEOHandle = {
 
 export default function Admin() {
   return (
-    <div>
+    <div className="container">
       <h1>Admin</h1>
       <p>This is the admin page.</p>
 

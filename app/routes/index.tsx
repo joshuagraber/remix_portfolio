@@ -30,16 +30,8 @@ export default function Index() {
       <h1>Joshua D. Graber</h1>
       <Spacer size="4xs" />
       <p>
-<<<<<<< Updated upstream
-        👋 Hi I&apos;m Joshua. I currently work as a writer, editor, and
-        computer scientist.
-        <Spacer size="4xs" />
-        I'm a writer, editor, and software engineer with a career that spans
-        storytelling, tech, and education. Along the way, I&apos;ve also
-=======
         Hi I&apos;m Joshua. I currently work as a writer, editor, and
         software engineer, with a career that spans storytelling, tech, and education. Along the way, I&apos;ve also
->>>>>>> Stashed changes
         worked as a professor, activist, tutor, bartender, landscaper, farmhand,
         and dishwasher, amongst other things. I like to think all of this experience informs the work
         I do today.
@@ -143,13 +135,11 @@ export default function Index() {
         journalists, and communities impacted by policing.
         <Spacer size="4xs" />I am occasionally available for engineering
         projects on a freelance basis. Please{' '}
-        <a
-          href="mailto:joshua.d.graber@gmail.com"
-          rel="noreferrer noopener"
-          target="blank"
+        <Link
+					to="contact"
         >
           get in touch
-        </a>{' '}
+        </Link>{' '}
         if you are interested in collaborating.
       </p>
       <Spacer size="2xs" />
@@ -190,13 +180,11 @@ export default function Index() {
         , working on an array of remarkable books across styles and genres.
         <Spacer size="4xs" />
         I&apos;m available for freelance editorial work&mdash;
-        <a
-          href="mailto:joshua.d.graber@gmail.com"
-          rel="noreferrer noopener"
-          target="blank"
+        <Link
+          to="contact"
         >
           say hello
-        </a>{' '}
+        </Link>{' '}
         or check out{' '}
         <a
           href="https://reedsy.com/joshua-graber"
@@ -215,13 +203,11 @@ export default function Index() {
         Every now and then, I put my professor hat back on and teach writing
         workshops or programming courses. If you’re looking for an engaging,
         improvisational speaker,{' '}
-        <a
-          href="mailto:joshua.d.graber@gmail.com"
-          rel="noreferrer noopener"
-          target="blank"
+        <Link
+					to="contact"
         >
           let&apos;s chat
-        </a>
+        </Link>
         .
       </p>
       <Spacer size="lg" />
