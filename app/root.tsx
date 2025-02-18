@@ -304,6 +304,18 @@ function App() {
 								to="fragments"
 							>
 								fragments
+							</NavLink>{' '}
+							|{' '}
+							<NavLink
+								className={({ isActive }) =>
+									cn(
+										'no-underline hover:underline focus:underline md:text-body-md',
+										isActive && 'text-secondary-foreground',
+									)
+								}
+								to="contact"
+							>
+								contact
 							</NavLink>
 							{user?.roles.some(({ name }) => name === 'admin') && (
 								<>
