@@ -1,6 +1,8 @@
-export function formatDateStringForPostDefault(dateString: string | null) {
-	if (!dateString) return dateString
-	return dateString.split('T')[0]
+import { format } from 'date-fns';
+
+export function formatDateStringForPostDefault(date: Date | null) {
+	if (!date) return null;
+	return format(date, "yyyy-MM-dd'T'HH:mm");
 }
 
 export function stripFrontmatter(content: string) {
