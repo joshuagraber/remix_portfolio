@@ -83,13 +83,13 @@ export default function AdminPosts() {
 									<span>
 										Created{' '}
 										{formatDateStringForPostDefault(
-											post.createdAt.toDateString(),
+											post.createdAt
 										)}
 									</span>
 									<span>•</span>
 									<span>
 										{post.publishAt
-											? `Published ${formatDateStringForPostDefault(post.publishAt.toDateString())}`
+											? `Published ${formatDateStringForPostDefault(post.publishAt)}`
 											: 'Draft'}
 									</span>
 									<span>•</span>
