@@ -150,9 +150,7 @@ export default function EditPost() {
 			content: post.content,
 			description: post.description,
 			slug: post.slug,
-			publishAt: formatDateStringForPostDefault(
-				(post.publishAt ?? new Date()).toDateString(),
-			),
+			publishAt: formatDateStringForPostDefault(post.publishAt),
 		},
 	})
 

@@ -220,6 +220,13 @@ if (!ALLOW_INDEXING) {
 	})
 }
 
+app.use(
+	'/fonts',
+	// Can aggressively cache fonts as they don't change often
+	express.static('public/fonts', { immutable: true, maxAge: '1y' }),
+)
+
+
 app.all(
 	'*',
 	createRequestHandler({
