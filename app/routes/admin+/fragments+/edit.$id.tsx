@@ -22,6 +22,7 @@ import { Field, ErrorList } from '#app/components/forms'
 import { MDXEditorComponent } from '#app/components/mdx/editor.tsx'
 import { StatusButton } from '#app/components/ui/status-button'
 import { requireUserId } from '#app/utils/auth.server'
+import { getHints, useHints } from '#app/utils/client-hints.tsx'
 import { prisma } from '#app/utils/db.server'
 import {
 	formatDateStringForPostDefault,
@@ -29,12 +30,13 @@ import {
 } from '#app/utils/mdx.ts'
 import { getPostImageSource } from '#app/utils/misc.tsx'
 import { redirectWithToast } from '#app/utils/toast.server.ts'
+import { type Route } from './+types/edit.$id'
 import { PostImageManager } from './__image-manager'
 import { PostSchemaUpdate as PostSchema } from './__types'
 import { useFileUploader } from './__useFileUploader'
 import { PostVideoManager } from './__video-manager'
 
-export async function loader({ params, request }: LoaderFunctionArgs) {
+export async function loader({ params, request }: Route.LoaderArgs) {
 	await requireUserId(request)
 
 	const [post, images, videos] = await Promise.all([
@@ -75,8 +77,9 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 	// return data({post: { title: '', description: '', publishAt: new Date().toLocaleDateString(), content: '', slug: '' }});
 }
 
-export async function action({ request, params }: ActionFunctionArgs) {
+export async function action({ request, params }: Route.ActionArgs) {
 	await requireUserId(request)
+	const { timeZone } = getHints(request);
 	const formData = await request.formData()
 
 	const submission = await parseWithZod(formData, {
@@ -97,14 +100,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
 			})
 		: undefined
 
-	const { title, content, description, publishAt, slug, timezone } =
+	const { title, content, description, publishAt, slug } =
 		submission.value
 	const published = publishAt ?? existingPost?.publishAt ?? null
-	const publishAtWithTimezone = published
-		? DateTime.fromISO(published.toISOString(), { zone: timezone }).toISO()
+	const publishAtWithTimeZone = published
+		? DateTime.fromISO(published.toISOString(), { zone: timeZone }).toISO()
 		: null
 
-	try {
+		try {
 		await prisma.post.update({
 			where: { id: params.id },
 			data: {
@@ -112,7 +115,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 				content,
 				description,
 				slug,
-				publishAt: publishAtWithTimezone,
+				publishAt: publishAtWithTimeZone,
 			},
 		})
 
@@ -132,6 +135,7 @@ export default function EditPost() {
 	const actionData = useActionData<typeof action>()
 	const navigation = useNavigation()
 	const isPending = navigation.state === 'submitting'
+  const hints = useHints();
 
 	const handleImageUpload = useFileUploader({
 		path: '/admin/fragments/images/create',
@@ -150,7 +154,7 @@ export default function EditPost() {
 			content: post.content,
 			description: post.description,
 			slug: post.slug,
-			publishAt: formatDateStringForPostDefault(post.publishAt),
+			publishAt: post.publishAt ? formatDateStringForPostDefault(new Date(post.publishAt.toLocaleString('en-US', { timeZone: hints.timeZone }))) : undefined,
 		},
 	})
 
@@ -234,19 +238,6 @@ export default function EditPost() {
 						...getInputProps(fields.publishAt, { type: 'datetime-local' }),
 					}}
 					errors={fields.publishAt.errors}
-				/>
-				<Field
-					labelProps={{
-						htmlFor: 'timezone',
-						children: 'Timezone',
-					}}
-					inputProps={{
-						id: 'timezone',
-						name: 'timezone',
-						type: 'text',
-						defaultValue: 'America/New_York',
-					}}
-					errors={fields.timezone.errors}
 				/>
 
 				<div>

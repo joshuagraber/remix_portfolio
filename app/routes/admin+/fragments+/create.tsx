@@ -22,6 +22,7 @@ import { Field, ErrorList } from '#app/components/forms'
 import { MDXEditorComponent } from '#app/components/mdx/editor.tsx'
 import { StatusButton } from '#app/components/ui/status-button'
 import { requireUserId } from '#app/utils/auth.server'
+import { getHints } from '#app/utils/client-hints.tsx'
 import { prisma } from '#app/utils/db.server'
 import { formatContentForEditor, makePostSlug } from '#app/utils/mdx.ts'
 import { getPostImageSource } from '#app/utils/misc.tsx'
@@ -64,6 +65,7 @@ export async function loader() {
 export async function action({ request }: ActionFunctionArgs) {
 	const authorId = await requireUserId(request)
 	const formData = await request.formData()
+	const { timeZone } = getHints(request);
 
 	const submission = await parseWithZod(formData, {
 		schema: PostSchema,
@@ -77,11 +79,11 @@ export async function action({ request }: ActionFunctionArgs) {
 		)
 	}
 
-	const { title, content, description, publishAt, slug, timezone } =
+	const { title, content, description, publishAt, slug } =
 		submission.value
 
-	const publishAtWithTimezone = publishAt
-		? DateTime.fromISO(publishAt.toISOString(), { zone: timezone }).toISO()
+	const publishAtWithTimeZone = publishAt
+		? DateTime.fromISO(publishAt.toISOString(), { zone: timeZone }).toISO()
 		: null
 
 	try {
@@ -91,7 +93,7 @@ export async function action({ request }: ActionFunctionArgs) {
 				content,
 				description,
 				slug: makePostSlug(title, slug),
-				publishAt: publishAtWithTimezone,
+				publishAt: publishAtWithTimeZone,
 				authorId,
 			},
 		})
@@ -140,14 +142,14 @@ export default function NewPost() {
 	}, [content])
 
 	useEffect(() => {
-		const timezoneField = document.getElementById(
-			'timezone',
+		const timeZoneField = document.getElementById(
+			'timeZone',
 		) as HTMLInputElement
-		if (timezoneField) {
-			console.log('timezone field being set', {
+		if (timeZoneField) {
+			console.log('timeZone field being set', {
 				intl: Intl.DateTimeFormat().resolvedOptions().timeZone,
 			})
-			timezoneField.value =
+			timeZoneField.value =
 				Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York'
 		}
 	}, [])
@@ -219,19 +221,6 @@ export default function NewPost() {
 						...getInputProps(fields.publishAt, { type: 'datetime-local' }),
 					}}
 					errors={fields.publishAt.errors}
-				/>
-				<Field
-					labelProps={{
-						htmlFor: 'timezone',
-						children: 'Timezone',
-					}}
-					inputProps={{
-						id: 'timezone',
-						name: 'timezone',
-						type: 'text',
-						defaultValue: 'America/New_York',
-					}}
-					errors={fields.timezone.errors}
 				/>
 
 				<div>

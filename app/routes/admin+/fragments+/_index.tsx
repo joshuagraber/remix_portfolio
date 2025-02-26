@@ -89,7 +89,7 @@ export default function AdminPosts() {
 									<span>•</span>
 									<span>
 										{post.publishAt
-											? `Published ${formatDateStringForPostDefault(post.publishAt)}`
+											? `Published ${post.publishAt}`
 											: 'Draft'}
 									</span>
 									<span>•</span>
